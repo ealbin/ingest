@@ -28,7 +28,7 @@ def from_string( serialized_chunk ):
     None
         maybe?
     """
-    __debug_mode = True
+    __debug_mode = False
         
     # deserialize protobuf DataChunk
     chunk = None

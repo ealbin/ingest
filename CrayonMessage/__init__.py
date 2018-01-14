@@ -24,7 +24,7 @@ def from_msg( serialized_msg ):
     None
         maybe?
     """
-    __debug_mode = True
+    __debug_mode = False
     
     # deserialize protobuf CrayonMessage
     protobuf_msg = None

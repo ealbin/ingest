@@ -21,6 +21,7 @@ def from_tarfile( filepath ):
         I think it will just be write to Cassandra...(?)
     """
     __debug_mode = True
+    __debug_N    = 1000
     
     # load tarfile into memory
     try:
@@ -39,6 +40,6 @@ def from_tarfile( filepath ):
         CrayonMessage.from_msg( msg )
         msg.close()
         # TODO: write cassandra
-        if __debug_mode and msg_i == 9 : print 'DEBUG break after 10 messages'; break
+        if __debug_mode and msg_i == __debug_N - 1 : print 'DEBUG break after {0} messages'.format(__debug_N); break
             
     crayfile.close()
