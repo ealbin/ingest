@@ -4,7 +4,6 @@ ingest.from_tarfile( filepath )
 """
 
 import tarfile
-
 import CrayonMessage
 
 def from_tarfile( filepath ):
@@ -23,6 +22,7 @@ def from_tarfile( filepath ):
     """
     __debug_mode = True
     
+    # load tarfile into memory
     try:
         crayfile = tarfile.open( filepath, 'r:gz' )
         if __debug_mode: print 'LOADED tarfile successfully: {0}'.format(crayfile.name)

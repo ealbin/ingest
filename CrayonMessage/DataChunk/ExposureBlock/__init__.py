@@ -1,3 +1,3 @@
 
-def ingest_object( object ):
+def ingest( object ):
     pass

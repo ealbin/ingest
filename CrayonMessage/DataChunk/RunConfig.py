@@ -1,5 +1,5 @@
 
-def ingest_object( run_config ):
+def ingest( run_config ):
 
     #return object
     pass

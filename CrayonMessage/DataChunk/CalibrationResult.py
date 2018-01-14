@@ -1,5 +1,5 @@
 
-def ingest_object( object ):
+def ingest( object ):
 
     #return (object)
     pass
