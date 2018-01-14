@@ -1,7 +1,6 @@
-import CrayonMessage
+import DataChunk
 
-def deserialize( serialized_message ):
+def from_msg( msg ):
 
-    #CrayonMessage.deserialize( serialized_message )
-    #return object
+    #DataChunk.ingest_serialized( serialized_payload )
     pass
