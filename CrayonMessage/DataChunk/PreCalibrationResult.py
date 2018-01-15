@@ -41,8 +41,8 @@ def ingest( result, football ):
     # enforce expected structure
     if not len(manifest) - len(bytes) - len(messages) - len(enums) - len(basics) == 0:
         football['error_string'] += '[PreCalibrationResult] len(all) - len(expected) = {0} [!= 0]; '.format(len(manifest)-len(bytes)-len(messages)-len(enums)-len(basics))
-    if not len( bytes ) == 0:
-        football['error_string'] += '[PreCalibrationResult] len(bytes) = {0} [!= 0]; '.format(len(bytes))
+    if not len( bytes ) == 1:
+        football['error_string'] += '[PreCalibrationResult] len(bytes) = {0} [!= 1]; '.format(len(bytes))
     if not len( enums ) == 0:
         football['error_string'] += '[PreCalibrationResult] len(enums) = {0} [!= 0]; '.format(len(enums))   
     if not len( messages ) == 0:
