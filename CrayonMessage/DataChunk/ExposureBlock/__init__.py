@@ -9,10 +9,8 @@ ingest( google protobuf ExposureBlock object )
 """    
 
 import Event
-import ByteBlock
-import ZeroBiasSquare
 
-def ingest( block ):
+def ingest( block, football ):
     """Ingest protobuf object into a python dictionary.
     
     Parameters
@@ -20,10 +18,13 @@ def ingest( block ):
     block : google protobuf ExposureBlock
         ExposureBlock to be read
     
+    football : dictionary
+        Collection of column name-value pairs representing the data.
+    
     Returns
     -------
     None
-        maybe?
+        Implicitly updates the football.
     """
     __debug_mode = False
     
@@ -41,17 +42,13 @@ def ingest( block ):
 
     # enforce expected structure
     if not len(manifest) - len(bytes) - len(messages) - len(enums) - len(basics) == 0:
-        # TODO: error additional unknown data
-        pass
+        football['error_string'] += '[ExposureBlock] len(all) - len(expected) = {0} [!= 0]; '.format(len(manifest)-len(bytes)-len(messages)-len(enums)-len(basics))
     if not len( bytes ) == 0:
-        # TODO: err len( bytes ) = {0} [!= 0] format( len(bytes) )
-        pass
+        football['error_string'] += '[ExposureBlock] len(bytes) = {0} [!= 0]; '.format(len(bytes))
     if not len( enums ) == 1:
-        # TODO: err len( enums ) = {0} [!= 1] format( len(enums) )
-        pass
+        football['error_string'] += '[ExposureBlock] len(enums) = {0} [!= 1]; '.format(len(enums))    
     if not enums[0]['field'].name == 'daq_state':
-        # TODO: err "{0}" [!= "daq_state"] format( enums[0]['field'].name )
-        pass
+        football['error_string'] += '[ExposureBlock] enums[0]["field"].name = {0} [!= "daq_state"]; '.format(enums[0]['field'].name)
 
     v = ''
     if   enums[0]['value'] == 0:
@@ -63,17 +60,16 @@ def ingest( block ):
     elif enums[0]['value'] == 3:
         v = 'PRECALIBRATION'
     else:
-        # TODO: err daq_state {0} unknown [!={0,1,2,3}] format( enums[0]['value'] )
-        pass
+        football['error_string'] += '[ExposureBlock] daq_state = {0} [!= {0,1,2,3}]; '.format(enums[0]['value'])
 
     # TODO: append or update enums
     # e.g. enums[0]['value'] = v
     # e.g. basics['daq_state'] = v
 
     for message in messages:
-        if not message['field'].name == 'events':
-            # TODO: err unknown subfield "{0}" [!= "events"] format(message['field'].name)
-            continue
+        if message['field'].name == 'events':
+            for event in message['value']:
+                Event.ingest( event, football )
+        else:
+            football['error_string'] += '[ExposureBlock] message["field"].name = {0} [!= {events, byteblocks, zerobiassquares}]; '.format(message['field'].name)
 
-        for event in message['value']:
-            Event.ingest( event )

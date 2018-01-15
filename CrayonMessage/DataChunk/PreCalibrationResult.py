@@ -8,7 +8,7 @@ ingest( google protobuf PreCalibrationResult object )
     Ingest protobuf object into a python dictionary.
 """
 
-def ingest( result ):
+def ingest( result, football ):
     """Ingest protobuf object into a python dictionary.
     
     Parameters
@@ -16,10 +16,13 @@ def ingest( result ):
     result : google protobuf PreCalibrationResult
         PreCalibration to be read
         
+    football : dictionary
+        Collection of column name-value pairs representing the data.
+            
     Returns
     -------
     None
-        maybe?
+        Implicitly updates the football.
     """
     __debug_mode = True
         
@@ -37,16 +40,12 @@ def ingest( result ):
 
     # enforce expected structure
     if not len(manifest) - len(bytes) - len(messages) - len(enums) - len(basics) == 0:
-        # TODO: error additional unknown data
-        pass
+        football['error_string'] += '[PreCalibrationResult] len(all) - len(expected) = {0} [!= 0]; '.format(len(manifest)-len(bytes)-len(messages)-len(enums)-len(basics))
     if not len( bytes ) == 0:
-        # TODO: err len( bytes ) = {0} [!= 0] format( len(bytes) )
-        pass
+        football['error_string'] += '[PreCalibrationResult] len(bytes) = {0} [!= 0]; '.format(len(bytes))
     if not len( enums ) == 0:
-        # TODO: err len( enums ) = {0} [!= 0] format( len(enums) )
-        pass
+        football['error_string'] += '[PreCalibrationResult] len(enums) = {0} [!= 0]; '.format(len(enums))   
     if not len( messages ) == 0:
-        # TODO: err len( messages ) = {0} [!= 0] format( len(messages) )
-        pass
+        football['error_string'] += '[PreCalibrationResult] len(messages) = {0} [!= 0]; '.format(len(messages))
 
-    # save basics, possibly break out strings
+

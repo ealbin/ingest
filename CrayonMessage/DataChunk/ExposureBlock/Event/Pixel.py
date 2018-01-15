@@ -8,7 +8,7 @@ ingest( google protobuf Pixel object )
     Ingest protobuf object into a python dictionary.
 """
 
-def ingest( pixel ):
+def ingest( pixel, football ):
     """Ingest protobuf object into a python dictionary.
     
     Parameters
@@ -16,10 +16,13 @@ def ingest( pixel ):
     pixel : google protobuf Pixel
         Pixel to be read
         
+    football : dictionary
+        Collection of column name-value pairs representing the data.
+        
     Returns
     -------
     None
-        maybe?
+        Implicitly updates the football.
     """
     __debug_mode = False
 
@@ -37,16 +40,10 @@ def ingest( pixel ):
 
     # enforce expected structure
     if not len(manifest) - len(bytes) - len(messages) - len(enums) - len(basics) == 0:
-        # TODO: error additional unknown data
-        pass
+        football['error_string'] += '[Pixel] len(all) - len(expected) = {0} [!= 0]; '.format(len(manifest)-len(bytes)-len(messages)-len(enums)-len(basics))
     if not len( bytes ) == 0:
-        # TODO: err len( bytes ) = {0} [!= 0] format( len(bytes) )
-        pass
+        football['error_string'] += '[Pixel] len(bytes) = {0} [!= 0]; '.format(len(bytes))
     if not len( enums ) == 0:
-        # TODO: err len( enums ) = {0} [!= 0] format( len(enums) )
-        pass
+        football['error_string'] += '[Pixel] len(enums) = {0} [!= 0]; '.format(len(enums))    
     if not len( messages ) == 0:
-        # TODO: err len( messages ) = {0} [!= 0] format( len( messages ) )
-        pass
-
-    # save the pixel basics
+        football['error_string'] += '[Pixel] len(messages) = {0} [!= 0]; '.format(len(messages))        

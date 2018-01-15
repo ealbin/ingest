@@ -8,18 +8,21 @@ ingest( google protobuf ByteBlock object )
     Ingest protobuf object into a python dictionary.
 """
 
-def ingest( block ):
+def ingest( block, football ):
     """Ingest protobuf object into a python dictionary.
     
     Parameters
     ----------
     block : google protobuf ByteBlock
         Calibration to be read
+
+    football : dictionary
+        Collection of column name-value pairs representing the data.
         
     Returns
     -------
     None
-        maybe?
+        Implicitly updates the football.
     """
     __debug_mode = True
         
@@ -37,16 +40,10 @@ def ingest( block ):
 
     # enforce expected structure
     if not len(manifest) - len(bytes) - len(messages) - len(enums) - len(basics) == 0:
-        # TODO: error additional unknown data
-        pass
+        football['error_string'] += '[ByteBlock] len(all) - len(expected) = {0} [!= 0]; '.format(len(manifest)-len(bytes)-len(messages)-len(enums)-len(basics))
     if not len( bytes ) == 0:
-        # TODO: err len( bytes ) = {0} [!= 0] format( len(bytes) )
-        pass
+        football['error_string'] += '[ByteBlock] len(bytes) = {0} [!= 0]; '.format(len(bytes))
     if not len( enums ) == 0:
-        # TODO: err len( enums ) = {0} [!= 0] format( len(enums) )
-        pass
+        football['error_string'] += '[ByteBlock] len(enums) = {0} [!= 0]; '.format(len(enums))    
     if not len( messages ) == 0:
-        # TODO: err len( messages ) = {0} [!= 0] format( len(messages) )
-        pass
-
-    # save basics, possibly break out strings
+        football['error_string'] += '[ByteBlock] len(messages) = {0} [!= 0]; '.format(len(messages))    

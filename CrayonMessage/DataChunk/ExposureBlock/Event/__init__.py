@@ -8,9 +8,11 @@ ingest( google protobuf Event object )
     Ingest protobuf object into a python dictionary.
 """
 
+import ByteBlock
 import Pixel
+import ZeroBiasSquare
 
-def ingest( event ):
+def ingest( event, football ):
     """Ingest protobuf object into a python dictionary.
     
     Parameters
@@ -18,10 +20,13 @@ def ingest( event ):
     event : google protobuf Event
         Event to be read
         
+    football : dictionary
+        Collection of column name-value pairs representing the data.        
+        
     Returns
     -------
     None
-        maybe?
+        Implicitly updates the football.
     """
     __debug_mode = False
 
@@ -39,19 +44,26 @@ def ingest( event ):
 
     # enforce expected structure
     if not len(manifest) - len(bytes) - len(messages) - len(enums) - len(basics) == 0:
-        # TODO: error additional unknown data
-        pass
+        football['error_string'] += '[Event] len(all) - len(expected) = {0} [!= 0]; '.format(len(manifest)-len(bytes)-len(messages)-len(enums)-len(basics))
     if not len( bytes ) == 0:
-        # TODO: err len( bytes ) = {0} [!= 0] format( len(bytes) )
-        pass
+        football['error_string'] += '[Event] len(bytes) = {0} [!= 0]; '.format(len(bytes))
     if not len( enums ) == 0:
-        # TODO: err len( enums ) = {0} [!= 0] format( len(enums) )
-        pass
+        football['error_string'] += '[Event] len(enums) = {0} [!= 0]; '.format(len(enums))    
+
 
     for message in messages:
-        if not message['field'].name == 'pixels':
-            # TODO: err unknown subfield "{0}" [!= "pixels"] format(message['field'].name)
-            continue
+        if message['field'].name == 'pixels':
+            for pixel in message['value']:
+                Pixel.ingest( pixel, football )
+        
+        elif message['field'].name == 'byteblocks':
+            for byteblock in message['value']:
+                ByteBlock.ingest( byteblock, football )
+                
+        elif message['field'].name == 'zerobiassquares':
+            for square in message['value']:
+                ZeroBiasSquare.ingest( square, football )
+        
+        else:
+            football['error_string'] += '[Event] message["field"].name = {0} [!= {pixels, byteblocks, zerobiassquares}]; '.format(message['field'].name)
 
-        for event in message['value']:
-            Pixel.ingest( event )

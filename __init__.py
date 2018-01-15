@@ -3,8 +3,11 @@
 ingest.from_tarfile( filepath ) 
 """
 
+import os
 import tarfile
 import CrayonMessage
+import Cassandra
+
 
 def from_tarfile( filepath ):
     """Ingest a Crayfis tarfile into Cassandra.
@@ -18,7 +21,7 @@ def from_tarfile( filepath ):
     Returns
     -------
     None
-        I think it will just be write to Cassandra...(?)
+        Writes data contained in filepath to Cassandra
     """
     __debug_mode = True
     __debug_N    = 1000
@@ -28,18 +31,23 @@ def from_tarfile( filepath ):
         crayfile = tarfile.open( filepath, 'r:gz' )
         if __debug_mode: print 'LOADED tarfile successfully: {0}'.format(crayfile.name)
     except Exception as e:
-        # TODO: process error
-        pass
+        print 'terminal error: {0} cannot be found/opened.'.format(filepath)
+        return
                 
     craymsgs = [ m for m in crayfile.getmembers() if m.name.endswith('.msg') ]
     if __debug_mode: print 'FOUND {0} messages'.format(len(craymsgs))
 
+    host = os.uname()
     for msg_i, message in enumerate(craymsgs):
-        # TODO: metadata = host, filepath, message.name
+        football = Cassandra.get_football( clean=True )
+        football['metadata'] = { 'host':host, 'file':filepath, 'message':message.name }
+        
         msg = crayfile.extractfile( message )
-        CrayonMessage.from_msg( msg )
+        CrayonMessage.from_msg( msg, football )
         msg.close()
-        # TODO: write cassandra
+        
+        Cassandra.write_football()
         if __debug_mode and msg_i == __debug_N - 1 : print 'DEBUG break after {0} messages'.format(__debug_N); break
             
     crayfile.close()
+
