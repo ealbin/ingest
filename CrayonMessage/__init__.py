@@ -1,11 +1,11 @@
 """CrayonMessage
 deserialization, format enforcement and error checking.
 
-functions
----------
+intended use:
+-------------
 
-from_msg( tarfile.ExFileObject serialized message  )
-    Ingest extracted message.
+    from_msg( tarfile.ExFileObject serialized message, Cassandra football  )
+        Ingest extracted message (update the football).
 """
 
 import crayfis_data_pb2
@@ -20,13 +20,12 @@ def from_msg( serialized_msg, football ):
         Serialized raw object from tarfile.extractfile( message ).
     
     football : dictionary
-        Collection of column name-value pairs representing the data
-        contained in serialized_msg.   
+        Collection of Cassandra table name-value pairs representing the data.
  
     Returns
     -------
     None
-        Implicitly updates the football and passes it to the next player.
+        Implicitly updates the football and passes it.
     """
     __debug_mode = False
     
@@ -68,6 +67,8 @@ def from_msg( serialized_msg, football ):
 
     if not len( football['error_string'] ) == 0:
         return
+
+    football['crayon_message'] = basics
         
     # deserialize protobuf datachunk
     DataChunk.from_string( bytes[0]['value'], football )

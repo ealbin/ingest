@@ -1,15 +1,15 @@
 """RunConfig
 deserialization, format enforcement and error checking.
 
-functions
----------
+inteded use:
+------------
 
-ingest( google protobuf RunConfig object )
-    Ingest protobuf object into a python dictionary.
+    ingest( google protobuf RunConfig object, Cassandra football )
+        Ingest protobuf object (update the football).
 """
 
 def ingest( runconfig, football ):
-    """Ingest protobuf object into a python dictionary.
+    """Ingest protobuf object.
     
     Parameters
     ----------
@@ -17,14 +17,14 @@ def ingest( runconfig, football ):
         RunConfig to be read
         
     football : dictionary
-        Collection of column name-value pairs representing the data.
+        Collection of Cassandra table name-value pairs representing the data.
         
     Returns
     -------
     None
         Implicitly updates the football.
     """
-    __debug_mode = True
+    __debug_mode = False
         
     # break out members by type-category                         
     manifest = [ {'field':f, 'value':v} for [f,v] in runconfig.ListFields() ]
@@ -48,3 +48,4 @@ def ingest( runconfig, football ):
     if not len( messages ) == 0:
         football['error_string'] += '[RunConfig] len(messages) = {0} [!= 0]; '.format(len(messages))        
 
+    football['run_configs'].append(basics)

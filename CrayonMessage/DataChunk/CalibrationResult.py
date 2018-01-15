@@ -1,15 +1,15 @@
 """CalibrationResult
 deserialization, format enforcement and error checking.
 
-functions
----------
+intended use:
+-------------
 
-ingest( google protobuf CalibrationResult object )
-    Ingest protobuf object into a python dictionary.
+    ingest( google protobuf CalibrationResult object, Cassandra football )
+        Ingest protobuf object (update the football).
 """
 
 def ingest( result, football ):
-    """Ingest protobuf object into a python dictionary.
+    """Ingest protobuf object.
     
     Parameters
     ----------
@@ -17,14 +17,14 @@ def ingest( result, football ):
         Calibration to be read
         
     football : dictionary
-        Collection of column name-value pairs representing the data.
+        Collection of Cassandra table name-value pairs representing the data.
         
     Returns
     -------
     None
         Implicitly updates the football.
     """
-    __debug_mode = True
+    __debug_mode = False
         
     # break out members by type-category                         
     manifest = [ {'field':f, 'value':v} for [f,v] in result.ListFields() ]
@@ -47,3 +47,5 @@ def ingest( result, football ):
         football['error_string'] += '[CalibrationResult] len(enums) = {0} [!= 0]; '.format(len(enums))    
     if not len( messages ) == 0:
         football['error_string'] += '[CalibrationResult] len(messages) = {0} [!= 0]; '.format(len(messages))        
+    
+    football['calibration_results'].append(basics)

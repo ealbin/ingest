@@ -1,6 +1,10 @@
-"""Cassandra data ingestion.
+"""Cassandra data ingestion module
 
-ingest.from_tarfile( filepath ) 
+intended use:
+-------------
+
+    ingest.from_tarfile( filepath ) 
+        Ingest CrayonMessages from file.tar.gz into Cassandra
 """
 
 import os

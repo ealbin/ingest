@@ -1,11 +1,11 @@
 """Event
 deserialization, format enforcement and error checking.
 
-functions
----------
+inteded use:
+------------
 
-ingest( google protobuf Event object )
-    Ingest protobuf object into a python dictionary.
+    ingest( google protobuf Event object, Cassandra football )
+        Ingest protobuf object (updates the football).
 """
 
 import ByteBlock
@@ -13,7 +13,7 @@ import Pixel
 import ZeroBiasSquare
 
 def ingest( event, football ):
-    """Ingest protobuf object into a python dictionary.
+    """Ingest protobuf object.
     
     Parameters
     ----------
@@ -21,7 +21,7 @@ def ingest( event, football ):
         Event to be read
         
     football : dictionary
-        Collection of column name-value pairs representing the data.        
+        Collection of Cassandra table name-value pairs representing the data.        
         
     Returns
     -------
@@ -50,6 +50,7 @@ def ingest( event, football ):
     if not len( enums ) == 0:
         football['error_string'] += '[Event] len(enums) = {0} [!= 0]; '.format(len(enums))    
 
+    football['exposure_blocks'][-1]['events'].append({ 'header':basics, 'pixels':[], 'byteblocks':[], 'zerobiassquares':[] })
 
     for message in messages:
         if message['field'].name == 'pixels':

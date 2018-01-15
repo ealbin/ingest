@@ -4,7 +4,7 @@ import time
 import os 
 import ingest
 
-origin = '/data/daq.crayfis.io/raw/2018/'  # data source
+origin = '/mnt/c/Users/EricK/crayfis/cassandra-dev/craydata/' #'/data/daq.crayfis.io/raw/2018/'  # data source
 print 'tarfile source: ' + origin
 
 tarfiles = []
@@ -21,8 +21,10 @@ print
 start = time.time()
 for file_n, file in enumerate(tarfiles):
     ingest.from_tarfile( file )
+    print
 #    print 'Progress: file {0} of {1}, msg fails: {2}, successes: {3}, seconds: {4}\r'.format( file_n+1, len(tarfiles), fails, successes, time.time() - start ),
         
 print 'seconds: {0}'.format( time.time() - start )
 print 'done.'
+
 

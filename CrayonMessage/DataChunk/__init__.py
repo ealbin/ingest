@@ -1,11 +1,11 @@
 """DataChunk
 deserialization, format enforcement and error checking.
 
-functions
----------
+intended use:
+-------------
 
-from_string( string serialized message )
-    Ingest serialized datachunk.
+    from_string( string serialized message, Cassandra football )
+        Ingest serialized datachunk (update the football).
 """    
 
 import crayfis_data_pb2
@@ -24,12 +24,12 @@ def from_string( serialized_chunk, football ):
         Serialized protobuf DataChunk object
     
     football : dictionary
-        Collection of column name-value pairs representing the data.
+        Collection of Cassandra table name-value pairs representing the data.
         
     Returns
     -------
     None
-        Implicitly updates the football and passes it to the next player.
+        Implicitly updates the football and passes it.
     """
     __debug_mode = False
         

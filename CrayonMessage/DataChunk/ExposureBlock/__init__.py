@@ -1,17 +1,17 @@
 """ExposureBlock
 deserialization, format enforcement and error checking.
 
-functions
----------
+intended use:
+-------------
 
-ingest( google protobuf ExposureBlock object )
-    Ingest protobuf object into a python dictionary.
+    ingest( google protobuf ExposureBlock object, Cassandra football )
+        Ingest protobuf object (update the football).
 """    
 
 import Event
 
 def ingest( block, football ):
-    """Ingest protobuf object into a python dictionary.
+    """Ingest protobuf object.
     
     Parameters
     ----------
@@ -19,7 +19,7 @@ def ingest( block, football ):
         ExposureBlock to be read
     
     football : dictionary
-        Collection of column name-value pairs representing the data.
+        Collection of Cassandra table name-value pairs representing the data.
     
     Returns
     -------
@@ -50,22 +50,20 @@ def ingest( block, football ):
     if not enums[0]['field'].name == 'daq_state':
         football['error_string'] += '[ExposureBlock] enums[0]["field"].name = {0} [!= "daq_state"]; '.format(enums[0]['field'].name)
 
-    v = ''
+    state = ''
     if   enums[0]['value'] == 0:
-        v = 'INIT'
+        state = 'INIT'
     elif enums[0]['value'] == 1:
-        v = 'CALIBRATION'
+        state = 'CALIBRATION'
     elif enums[0]['value'] == 2:
-        v = 'DATA'
+        state = 'DATA'
     elif enums[0]['value'] == 3:
-        v = 'PRECALIBRATION'
+        state = 'PRECALIBRATION'
     else:
         football['error_string'] += '[ExposureBlock] daq_state = {0} [!= {0,1,2,3}]; '.format(enums[0]['value'])
 
-    # TODO: append or update enums
-    # e.g. enums[0]['value'] = v
-    # e.g. basics['daq_state'] = v
-
+    football['exposure_blocks'].append( { 'header':basics, 'daq_state':state, 'events':[] } )
+    
     for message in messages:
         if message['field'].name == 'events':
             for event in message['value']:

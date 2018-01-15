@@ -1,15 +1,15 @@
 """ZeroBiasSquare
 deserialization, format enforcement and error checking.
 
-functions
----------
+inteded use:
+------------
 
-ingest( google protobuf ZeroBiasSquare object )
-    Ingest protobuf object into a python dictionary.
+    ingest( google protobuf ZeroBiasSquare object, Cassandra football )
+        Ingest protobuf object (updates the football).
 """
 
 def ingest( square, football ):
-    """Ingest protobuf object into a python dictionary.
+    """Ingest protobuf object.
     
     Parameters
     ----------
@@ -17,7 +17,7 @@ def ingest( square, football ):
         Calibration to be read
         
     football : dictionary
-        Collection of column name-value pairs representing the data.
+        Collection of Cassandra table name-value pairs representing the data.
             
     Returns
     -------
@@ -47,3 +47,5 @@ def ingest( square, football ):
         football['error_string'] += '[ZeroBiasSquare] len(enums) = {0} [!= 0]; '.format(len(enums))    
     if not len( messages ) == 0:
         football['error_string'] += '[ZeroBiasSquare] len(messages) = {0} [!= 0]; '.format(len(messages))        
+
+    football['exposure_blocks'][-1]['events'][-1]['zerobiassquares'].append(basics)
