@@ -44,7 +44,7 @@ def from_tarfile( filepath ):
     host = os.uname()
     for msg_i, message in enumerate(craymsgs):
         football = Cassandra.get_football( clean=True )
-        football['metadata'] = { 'host':host, 'file':filepath, 'message':message.name }
+        football.add_metadata(host=host, filepath=filepath, msg_name=message.name)
         
         msg = crayfile.extractfile( message )
         CrayonMessage.from_msg( msg, football )

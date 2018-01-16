@@ -34,11 +34,11 @@ def from_msg( serialized_msg, football ):
     try:
         serialized_msg.seek(0)
         serialized_string = serialized_msg.read()
-        football['raw_string'] = serialized_string
+        football.add_serialized( serialized_string )
         protobuf_msg = crayfis_data_pb2.CrayonMessage.FromString( serialized_string )
         if __debug_mode: print '[CrayonMessage] DESERIALIZED protobuf string successfully'
     except Exception as e:
-        football['error_string'] += '[CrayonMessage] deserialization failure; '
+        football.add_error('[CrayonMessage] deserialization failure')
         return
                          
     # break out members by type-category                         
@@ -55,20 +55,20 @@ def from_msg( serialized_msg, football ):
     
     # enforce expected structure
     if not len(manifest) - len(bytes) - len(messages) - len(enums) - len(basics) == 0:
-        football['error_string'] += '[CrayonMessage] len(all) - len(expected) = {0} [!= 0]; '.format(len(manifest)-len(bytes)-len(messages)-len(enums)-len(basics))
+        football.add_error('[CrayonMessage] len(all) - len(expected) = {0} [!= 0]'.format(len(manifest)-len(bytes)-len(messages)-len(enums)-len(basics)))
     if not len( messages ) == 0:
-        football['error_string'] += '[CrayonMessage] len(messages) = {0} [!= 0]; '.format(len(messages))
+        football.add_error('[CrayonMessage] len(messages) = {0} [!= 0]'.format(len(messages)))
     if not len( enums ) == 0:
-        football['error_string'] += '[CrayonMessage] len(enums) = {0} [!= 0]; '.format(len(enums))    
+        football.add_error('[CrayonMessage] len(enums) = {0} [!= 0]'.format(len(enums)))    
     if not len( bytes ) == 1:
-        football['error_string'] += '[CrayonMessage] len(bytes) = {0} [!= 1]; '.format(len(bytes))        
+        football.add_error('[CrayonMessage] len(bytes) = {0} [!= 1]'.format(len(bytes)))        
     if not bytes[0]['field'].name == 'payload':
-        football['error_string'] += '[CrayonMessage] bytes[0]["field"].name = {0} [!= "payload"]; '.format(bytes[0]['field'].name)
+        football.add_error('[CrayonMessage] bytes[0]["field"].name = {0} [!= "payload"]'.format(bytes[0]['field'].name))
 
-    if not len( football['error_string'] ) == 0:
+    if not football.n_errors() == 0:
         return
 
-    football['crayon_message'] = basics
+    football.add_headers( basics )
         
     # deserialize protobuf datachunk
     DataChunk.from_string( bytes[0]['value'], football )
