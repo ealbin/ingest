@@ -1,87 +1,75 @@
+"""`calibration_results` Cassandra Football
+
+Acts as the interface between Google protobuf
+and Cassandra.  Updated by direct member access
+as passed around.
+"""
+
 import format
 
-# calibration_results table
-
 class Football:
-    
-    device_id     = None # varchar
-    submit_time   = None # varint
-    tarfile       = None # varchar
-    tarmember     = None # varchar
-    user_id       = None # varint
-    app_code      = None # varchar
-    remote_addr   = None # inet
-    
-    run_id        = None # varint
-    run_id_hi     = None # varint
-    
-    start_time    = None # varint
-    end_time      = None # varint
-    
-    hist_pixel    = None # set<varint>
-    hist_l2pixel  = None # set<varint>
-    hist_maxpixel = None # set<varint>
-    hist_numpixel = None # set<varint>
+
+    def __init__(self):
+        self.clear()
 
     def clear(self):
-        # should mirror above
-        Football.device_id     = None # varchar
-        Football.submit_time   = None # varint
-        Football.tarfile       = None # varchar
-        Football.tarmember     = None # varchar
-        Football.user_id       = None # varint
-        Football.app_code      = None # varchar
-        Football.remote_addr   = None # inet
+        self.device_id     = None # varchar
+        self.submit_time   = None # varint
+        self.tarfile       = None # varchar
+        self.tarmember     = None # varchar
+        self.user_id       = None # varint
+        self.app_code      = None # varchar
+        self.remote_addr   = None # inet
         
-        Football.run_id        = None # varint
-        Football.run_id_hi     = None # varint
+        self.run_id        = None # varint
+        self.run_id_hi     = None # varint
         
-        Football.start_time    = None # varint
-        Football.end_time      = None # varint
+        self.start_time    = None # varint
+        self.end_time      = None # varint
         
-        Football.hist_pixel    = None # set<varint>
-        Football.hist_l2pixel  = None # set<varint>
-        Football.hist_maxpixel = None # set<varint>
-        Football.hist_numpixel = None # set<varint>        
+        self.hist_pixel    = None # set<varint>
+        self.hist_l2pixel  = None # set<varint>
+        self.hist_maxpixel = None # set<varint>
+        self.hist_numpixel = None # set<varint>        
             
     def names(self):
         # must be same order as values()
         names = ''
-        if Football.device_id     is not None: names += 'device_id, '
-        if Football.submit_time   is not None: names += 'submit_time, '
-        if Football.tarfile       is not None: names += 'tarfile, '
-        if Football.tarmember     is not None: names += 'tarmember, '        
-        if Football.user_id       is not None: names += 'user_id, '
-        if Football.app_code      is not None: names += 'app_code, '
-        if Football.remote_addr   is not None: names += 'remote_addr, '
-        if Football.run_id        is not None: names += 'run_id, '
-        if Football.run_id_hi     is not None: names += 'run_id_hi, '
-        if Football.start_time    is not None: names += 'start_time, '
-        if Football.end_time      is not None: names += 'end_time, '
-        if Football.hist_pixel    is not None: names += 'hist_pixel, '
-        if Football.hist_l2pixel  is not None: names += 'hist_l2pixel, '
-        if Football.hist_maxpixel is not None: names += 'hist_maxpixel, '
-        if Football.hist_numpixel is not None: names += 'hist_numpixel, '
-        names.rstrip(', ')
+        if self.device_id     is not None: names += 'device_id, '
+        if self.submit_time   is not None: names += 'submit_time, '
+        if self.tarfile       is not None: names += 'tarfile, '
+        if self.tarmember     is not None: names += 'tarmember, '        
+        if self.user_id       is not None: names += 'user_id, '
+        if self.app_code      is not None: names += 'app_code, '
+        if self.remote_addr   is not None: names += 'remote_addr, '
+        if self.run_id        is not None: names += 'run_id, '
+        if self.run_id_hi     is not None: names += 'run_id_hi, '
+        if self.start_time    is not None: names += 'start_time, '
+        if self.end_time      is not None: names += 'end_time, '
+        if self.hist_pixel    is not None: names += 'hist_pixel, '
+        if self.hist_l2pixel  is not None: names += 'hist_l2pixel, '
+        if self.hist_maxpixel is not None: names += 'hist_maxpixel, '
+        if self.hist_numpixel is not None: names += 'hist_numpixel, '
+        if names != '': names = names[:-2]
         return names               
     
     def values(self):
         # must be same order as names()
         values = ''
-        if Football.device_id     is not None: values += format.varchar(Football.device_id)        + ', '
-        if Football.submit_time   is not None: values += str(Football.submit_time)                 + ', '
-        if Football.tarfile       is not None: values += format.varchar(Football.tarfile)          + ', '
-        if Football.tarmember     is not None: values += format.varchar(Football.tarmember)        + ', '        
-        if Football.user_id       is not None: values += str(Football.user_id)                     + ', '
-        if Football.app_code      is not None: values += format.varchar(Football.app_code)         + ', '
-        if Football.remote_addr   is not None: values += format.inet(Football.remote_addr)         + ', '
-        if Football.run_id        is not None: values += str(Football.run_id)                      + ', '
-        if Football.run_id_hi     is not None: values += str(Football.run_id_hi)                   + ', '
-        if Football.start_time    is not None: values += str(Football.start_time)                  + ', '
-        if Football.end_time      is not None: values += str(Football.end_time)                    + ', '
-        if Football.hist_pixel    is not None: values += format.set_varint(Football.hist_pixel)    + ', '
-        if Football.hist_l2pixel  is not None: values += format.set_varint(Football.hist_l2pixel)  + ', '
-        if Football.hist_maxpixel is not None: values += format.set_varint(Football.hist_maxpixel) + ', '
-        if Football.hist_numpixel is not None: values += format.set_varint(Football.hist_numpixel) + ', '
-        values.rstrip(', ')
+        if self.device_id     is not None: values += format.varchar(self.device_id)        + ', '
+        if self.submit_time   is not None: values += str(self.submit_time)                 + ', '
+        if self.tarfile       is not None: values += format.varchar(self.tarfile)          + ', '
+        if self.tarmember     is not None: values += format.varchar(self.tarmember)        + ', '        
+        if self.user_id       is not None: values += str(self.user_id)                     + ', '
+        if self.app_code      is not None: values += format.varchar(self.app_code)         + ', '
+        if self.remote_addr   is not None: values += format.inet(self.remote_addr)         + ', '
+        if self.run_id        is not None: values += str(self.run_id)                      + ', '
+        if self.run_id_hi     is not None: values += str(self.run_id_hi)                   + ', '
+        if self.start_time    is not None: values += str(self.start_time)                  + ', '
+        if self.end_time      is not None: values += str(self.end_time)                    + ', '
+        if self.hist_pixel    is not None: values += format.set_varint(self.hist_pixel)    + ', '
+        if self.hist_l2pixel  is not None: values += format.set_varint(self.hist_l2pixel)  + ', '
+        if self.hist_maxpixel is not None: values += format.set_varint(self.hist_maxpixel) + ', '
+        if self.hist_numpixel is not None: values += format.set_varint(self.hist_numpixel) + ', '
+        if values != '': values = values[:-2]
         return values

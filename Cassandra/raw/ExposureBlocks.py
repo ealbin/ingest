@@ -1,215 +1,170 @@
+"""`exposure_blocks` Cassandra Football
+
+Acts as the interface between Google protobuf
+and Cassandra.  Updated by direct member access
+as passed around.
+"""
+
 import format
 
-# exposure_blocks table
-
 class Football:
-    device_id        = None # varchar
-    submit_time      = None # varint
-    tarfile          = None # varchar
-    tarmember        = None # varchar
-    user_id          = None # varint
-    app_code         = None # varchar
-    remote_addr      = None # inet
-    
-    precal_id        = None # varint
-    precal_id_hi     = None # varint
-    
-    start_time       = None # varint
-    end_time         = None # varint
-    start_time_nano  = None # varint
-    end_time_nano    = None # varint
-    start_time_ntp   = None # varint
-    end_time_ntp     = None # varint
-    
-    gps_lat          = None # double
-    gps_lon          = None # double
-    gps_altitude     = None # double
-    gps_accuracy     = None # double
-    gps_fixtime      = None # varint
-    gps_fixtime_nano = None # varint
-    
-    battery_temp     = None # varint 
-    battery_end_temp = None # varint 
-    daq_state        = None # varchar 
-    res_x            = None # varint
-    res_y            = None # varint 
-    
-    L1_thresh        = None # varint 
-    L2_thresh        = None # varint 
-    L0_conf          = None # varchar
-    L1_conf          = None # varchar
-    L2_conf          = None # varchar
-    L0_processed     = None # varint
-    L1_processed     = None # varint
-    L2_processed     = None # varint
-    L0_pass          = None # varint
-    L1_pass          = None # varint
-    L2_pass          = None # varint
-    L0_skip          = None # varint
-    L1_skip          = None # varint
-    L2_skip          = None # varint
-    frames_dropped   = None # varint
-    
-    hist             = None # set<varint>
-    xbn              = None #  varint
-    aborted          = None # boolean
-    
-    event_ids        = None # set<uuid>
+
+    def __init__(self):
+        self.clear()
 
     def clear(self):
-        # should mirror above
-        device_id        = None # varchar
-        Football.submit_time      = None # varint
-        Football.tarfile          = None # varchar
-        Football.tarmember        = None # varchar
-        Football.user_id          = None # varint
-        Football.app_code         = None # varchar
-        Football.remote_addr      = None # inet
+        self.device_id        = None # varchar
+        self.submit_time      = None # varint
+        self.tarfile          = None # varchar
+        self.tarmember        = None # varchar
+        self.user_id          = None # varint
+        self.app_code         = None # varchar
+        self.remote_addr      = None # inet
         
-        Football.precal_id        = None # varint
-        Football.precal_id_hi     = None # varint
+        self.precal_id        = None # varint
+        self.precal_id_hi     = None # varint
         
-        Football.start_time       = None # varint
-        Football.end_time         = None # varint
-        Football.start_time_nano  = None # varint
-        Football.end_time_nano    = None # varint
-        Football.start_time_ntp   = None # varint
-        Football.end_time_ntp     = None # varint
+        self.start_time       = None # varint
+        self.end_time         = None # varint
+        self.start_time_nano  = None # varint
+        self.end_time_nano    = None # varint
+        self.start_time_ntp   = None # varint
+        self.end_time_ntp     = None # varint
         
-        Football.gps_lat          = None # double
-        Football.gps_lon          = None # double
-        Football.gps_altitude     = None # double
-        Football.gps_accuracy     = None # double
-        Football.gps_fixtime      = None # varint
-        Football.gps_fixtime_nano = None # varint
+        self.gps_lat          = None # double
+        self.gps_lon          = None # double
+        self.gps_altitude     = None # double
+        self.gps_accuracy     = None # double
+        self.gps_fixtime      = None # varint
+        self.gps_fixtime_nano = None # varint
         
-        Football.battery_temp     = None # varint 
-        Football.battery_end_temp = None # varint 
-        Football.daq_state        = None # varchar 
-        Football.res_x            = None # varint
-        Football.res_y            = None # varint 
+        self.battery_temp     = None # varint 
+        self.battery_end_temp = None # varint 
+        self.daq_state        = None # varchar 
+        self.res_x            = None # varint
+        self.res_y            = None # varint 
         
-        Football.L1_thresh        = None # varint 
-        Football.L2_thresh        = None # varint 
-        Football.L0_conf          = None # varchar
-        Football.L1_conf          = None # varchar
-        Football.L2_conf          = None # varchar
-        Football.L0_processed     = None # varint
-        Football.L1_processed     = None # varint
-        Football.L2_processed     = None # varint
-        Football.L0_pass          = None # varint
-        Football.L1_pass          = None # varint
-        Football.L2_pass          = None # varint
-        Football.L0_skip          = None # varint
-        Football.L1_skip          = None # varint
-        Football.L2_skip          = None # varint
-        Football.frames_dropped   = None # varint
+        self.L1_thresh        = None # varint 
+        self.L2_thresh        = None # varint 
+        self.L0_conf          = None # varchar
+        self.L1_conf          = None # varchar
+        self.L2_conf          = None # varchar
+        self.L0_processed     = None # varint
+        self.L1_processed     = None # varint
+        self.L2_processed     = None # varint
+        self.L0_pass          = None # varint
+        self.L1_pass          = None # varint
+        self.L2_pass          = None # varint
+        self.L0_skip          = None # varint
+        self.L1_skip          = None # varint
+        self.L2_skip          = None # varint
+        self.frames_dropped   = None # varint
         
-        Football.hist             = None # set<varint>
-        Football.xbn              = None # varint
-        Football.aborted          = None # boolean
+        self.hist             = None # set<varint>
+        self.xbn              = None # varint
+        self.aborted          = None # boolean
         
-        Football.event_ids        = None # set<uuid>
+        self.event_ids        = None # set<uuid>
     
         
     def names(self):
         # must be in same order as values()
         names = ''
-        if Football.device_id        is not None: names += 'device_id, '
-        if Football.submit_time      is not None: names += 'submit_time, '
-        if Football.tarfile          is not None: names += 'tarfile, '
-        if Football.tarmember        is not None: names += 'tarmember, '        
-        if Football.user_id          is not None: names += 'user_id, '
-        if Football.app_code         is not None: names += 'app_code, '
-        if Football.remote_addr      is not None: names += 'remote_addr, '
-        if Football.precal_id        is not None: names += 'precal_id, '
-        if Football.precal_id_hi     is not None: names += 'precal_id_hi, '
-        if Football.start_time       is not None: names += 'start_time, '
-        if Football.end_time         is not None: names += 'end_time, '
-        if Football.start_time_nano  is not None: names += 'start_time_nano, '
-        if Football.end_time_nano    is not None: names += 'end_time_nano, '
-        if Football.start_time_ntp   is not None: names += 'start_time_ntp, '
-        if Football.end_time_ntp     is not None: names += 'end_time_ntp, '
-        if Football.gps_lat          is not None: names += 'gps_lat, '
-        if Football.gps_lon          is not None: names += 'gps_lon, '
-        if Football.gps_altitude     is not None: names += 'gps_altitude, '
-        if Football.gps_accuracy     is not None: names += 'gps_accuracy, '
-        if Football.gps_fixtime      is not None: names += 'gps_fixtime, '
-        if Football.gps_fixtime_nano is not None: names += 'gps_fixtime_nano, '
-        if Football.battery_temp     is not None: names += 'battery_temp, '
-        if Football.battery_end_temp is not None: names += 'battery_end_temp, '
-        if Football.daq_state        is not None: names += 'daq_state, '
-        if Football.res_x            is not None: names += 'res_x, '
-        if Football.res_y            is not None: names += 'res_y, '
-        if Football.L1_thresh        is not None: names += 'L1_thresh, '
-        if Football.L2_thresh        is not None: names += 'L2_thresh, '
-        if Football.L0_conf          is not None: names += 'L0_conf, '
-        if Football.L1_conf          is not None: names += 'L1_conf, '
-        if Football.L2_conf          is not None: names += 'L2_conf, '
-        if Football.L0_processed     is not None: names += 'L0_processed, '
-        if Football.L1_processed     is not None: names += 'L1_processed, '
-        if Football.L2_processed     is not None: names += 'L2_processed, '
-        if Football.L0_pass          is not None: names += 'L0_pass, '
-        if Football.L1_pass          is not None: names += 'L1_pass, '
-        if Football.L2_pass          is not None: names += 'L2_pass, '
-        if Football.L0_skip          is not None: names += 'L0_skip, '
-        if Football.L1_skip          is not None: names += 'L1_skip, '
-        if Football.L2_skip          is not None: names += 'L2_skip, '
-        if Football.frames_dropped   is not None: names += 'frames_dropped, '
-        if Football.hist             is not None: names += 'hist, '
-        if Football.xbn              is not None: names += 'xbn, '
-        if Football.aborted          is not None: names += 'aborted, '
-        if Football.event_ids        is not None: names += 'event_ids, '
-        names.rstrip(', ')
+        if self.device_id        is not None: names += 'device_id, '
+        if self.submit_time      is not None: names += 'submit_time, '
+        if self.tarfile          is not None: names += 'tarfile, '
+        if self.tarmember        is not None: names += 'tarmember, '        
+        if self.user_id          is not None: names += 'user_id, '
+        if self.app_code         is not None: names += 'app_code, '
+        if self.remote_addr      is not None: names += 'remote_addr, '
+        if self.precal_id        is not None: names += 'precal_id, '
+        if self.precal_id_hi     is not None: names += 'precal_id_hi, '
+        if self.start_time       is not None: names += 'start_time, '
+        if self.end_time         is not None: names += 'end_time, '
+        if self.start_time_nano  is not None: names += 'start_time_nano, '
+        if self.end_time_nano    is not None: names += 'end_time_nano, '
+        if self.start_time_ntp   is not None: names += 'start_time_ntp, '
+        if self.end_time_ntp     is not None: names += 'end_time_ntp, '
+        if self.gps_lat          is not None: names += 'gps_lat, '
+        if self.gps_lon          is not None: names += 'gps_lon, '
+        if self.gps_altitude     is not None: names += 'gps_altitude, '
+        if self.gps_accuracy     is not None: names += 'gps_accuracy, '
+        if self.gps_fixtime      is not None: names += 'gps_fixtime, '
+        if self.gps_fixtime_nano is not None: names += 'gps_fixtime_nano, '
+        if self.battery_temp     is not None: names += 'battery_temp, '
+        if self.battery_end_temp is not None: names += 'battery_end_temp, '
+        if self.daq_state        is not None: names += 'daq_state, '
+        if self.res_x            is not None: names += 'res_x, '
+        if self.res_y            is not None: names += 'res_y, '
+        if self.L1_thresh        is not None: names += 'L1_thresh, '
+        if self.L2_thresh        is not None: names += 'L2_thresh, '
+        if self.L0_conf          is not None: names += 'L0_conf, '
+        if self.L1_conf          is not None: names += 'L1_conf, '
+        if self.L2_conf          is not None: names += 'L2_conf, '
+        if self.L0_processed     is not None: names += 'L0_processed, '
+        if self.L1_processed     is not None: names += 'L1_processed, '
+        if self.L2_processed     is not None: names += 'L2_processed, '
+        if self.L0_pass          is not None: names += 'L0_pass, '
+        if self.L1_pass          is not None: names += 'L1_pass, '
+        if self.L2_pass          is not None: names += 'L2_pass, '
+        if self.L0_skip          is not None: names += 'L0_skip, '
+        if self.L1_skip          is not None: names += 'L1_skip, '
+        if self.L2_skip          is not None: names += 'L2_skip, '
+        if self.frames_dropped   is not None: names += 'frames_dropped, '
+        if self.hist             is not None: names += 'hist, '
+        if self.xbn              is not None: names += 'xbn, '
+        if self.aborted          is not None: names += 'aborted, '
+        if self.event_ids        is not None: names += 'event_ids, '
+        if names != '': names = names[:-2]
         return names               
     
     def values(self):
         # must be in same order as names()
         values = ''
-        if Football.device_id        is not None: values += format.varchar(Football.device_id)     + ', '
-        if Football.submit_time      is not None: values += str(Football.submit_time)              + ', '
-        if Football.tarfile          is not None: values += format.varchar(Football.tarfile)       + ', '
-        if Football.tarmember        is not None: values += format.varchar(Football.tarmember)     + ', '        
-        if Football.user_id          is not None: values += str(Football.user_id)                  + ', '
-        if Football.app_code         is not None: values += format.varchar(Football.app_code)      + ', '
-        if Football.remote_addr      is not None: values += format.inet(Football.remote_addr)      + ', '
-        if Football.precal_id        is not None: values += str(Football.precal_id)                + ', '
-        if Football.precal_id_hi     is not None: values += str(Football.precal_id_hi)             + ', '
-        if Football.start_time       is not None: values += str(Football.start_time)               + ', '
-        if Football.end_time         is not None: values += str(Football.end_time)                 + ', '
-        if Football.start_time_nano  is not None: values += str(Football.start_time_nano)          + ', '
-        if Football.end_time_nano    is not None: values += str(Football.end_time_nano)            + ', '
-        if Football.start_time_ntp   is not None: values += str(Football.start_time_ntp)           + ', '
-        if Football.end_time_ntp     is not None: values += str(Football.end_time_ntp)             + ', '
-        if Football.gps_lat          is not None: values += str(Football.gps_lat)                  + ', '
-        if Football.gps_lon          is not None: values += str(Football.gps_lon)                  + ', '
-        if Football.gps_altitude     is not None: values += str(Football.gps_altitude)             + ', '
-        if Football.gps_accuracy     is not None: values += str(Football.gps_accuracy)             + ', '
-        if Football.gps_fixtime      is not None: values += str(Football.gps_fixtime)              + ', '        
-        if Football.gps_fixtime_nano is not None: values += str(Football.gps_fixtime_nano)         + ', '
-        if Football.battery_temp     is not None: values += str(Football.battery_temp)             + ', '
-        if Football.battery_end_temp is not None: values += str(Football.battery_end_temp)         + ', '
-        if Football.daq_state        is not None: values += format.varchar(Football.daq_state)     + ', '
-        if Football.res_x            is not None: values += str(Football.res_x)                    + ', '
-        if Football.res_y            is not None: values += str(Football.res_y)                    + ', '
-        if Football.L1_thresh        is not None: values += str(Football.L1_thresh)                + ', '
-        if Football.L2_thresh        is not None: values += str(Football.L2_thresh)                + ', '
-        if Football.L0_conf          is not None: values += format.varchar(Football.L0_conf)       + ', '
-        if Football.L1_conf          is not None: values += format.varchar(Football.L1_conf)       + ', '
-        if Football.L2_conf          is not None: values += format.varchar(Football.L2_conf)       + ', '       
-        if Football.L0_processed     is not None: values += str(Football.L0_processed)             + ', '
-        if Football.L1_processed     is not None: values += str(Football.L1_processed)             + ', '
-        if Football.L2_processed     is not None: values += str(Football.L2_processed)             + ', '
-        if Football.L0_pass          is not None: values += str(Football.L0_pass)                  + ', '
-        if Football.L1_pass          is not None: values += str(Football.L1_pass)                  + ', '
-        if Football.L2_pass          is not None: values += str(Football.L2_pass)                  + ', '
-        if Football.L0_skip          is not None: values += str(Football.L0_skip)                  + ', '
-        if Football.L1_skip          is not None: values += str(Football.L1_skip)                  + ', '
-        if Football.L2_skip          is not None: values += str(Football.L2_skip)                  + ', '
-        if Football.frames_dropped   is not None: values += str(Football.frames_dropped)           + ', '
-        if Football.hist             is not None: values += format.set_numeric(Football.hist)      + ', '
-        if Football.xbn              is not None: values += str(Football.xbn)                      + ', '
-        if Football.aborted          is not None: values += format.boolean(Football.aborted)       + ', '
-        if Football.event_ids        is not None: values += format.set_numeric(Football.event_ids) + ', '
-        values.rstrip(', ')
+        if self.device_id        is not None: values += format.varchar(self.device_id)     + ', '
+        if self.submit_time      is not None: values += str(self.submit_time)              + ', '
+        if self.tarfile          is not None: values += format.varchar(self.tarfile)       + ', '
+        if self.tarmember        is not None: values += format.varchar(self.tarmember)     + ', '        
+        if self.user_id          is not None: values += str(self.user_id)                  + ', '
+        if self.app_code         is not None: values += format.varchar(self.app_code)      + ', '
+        if self.remote_addr      is not None: values += format.inet(self.remote_addr)      + ', '
+        if self.precal_id        is not None: values += str(self.precal_id)                + ', '
+        if self.precal_id_hi     is not None: values += str(self.precal_id_hi)             + ', '
+        if self.start_time       is not None: values += str(self.start_time)               + ', '
+        if self.end_time         is not None: values += str(self.end_time)                 + ', '
+        if self.start_time_nano  is not None: values += str(self.start_time_nano)          + ', '
+        if self.end_time_nano    is not None: values += str(self.end_time_nano)            + ', '
+        if self.start_time_ntp   is not None: values += str(self.start_time_ntp)           + ', '
+        if self.end_time_ntp     is not None: values += str(self.end_time_ntp)             + ', '
+        if self.gps_lat          is not None: values += str(self.gps_lat)                  + ', '
+        if self.gps_lon          is not None: values += str(self.gps_lon)                  + ', '
+        if self.gps_altitude     is not None: values += str(self.gps_altitude)             + ', '
+        if self.gps_accuracy     is not None: values += str(self.gps_accuracy)             + ', '
+        if self.gps_fixtime      is not None: values += str(self.gps_fixtime)              + ', '        
+        if self.gps_fixtime_nano is not None: values += str(self.gps_fixtime_nano)         + ', '
+        if self.battery_temp     is not None: values += str(self.battery_temp)             + ', '
+        if self.battery_end_temp is not None: values += str(self.battery_end_temp)         + ', '
+        if self.daq_state        is not None: values += format.varchar(self.daq_state)     + ', '
+        if self.res_x            is not None: values += str(self.res_x)                    + ', '
+        if self.res_y            is not None: values += str(self.res_y)                    + ', '
+        if self.L1_thresh        is not None: values += str(self.L1_thresh)                + ', '
+        if self.L2_thresh        is not None: values += str(self.L2_thresh)                + ', '
+        if self.L0_conf          is not None: values += format.varchar(self.L0_conf)       + ', '
+        if self.L1_conf          is not None: values += format.varchar(self.L1_conf)       + ', '
+        if self.L2_conf          is not None: values += format.varchar(self.L2_conf)       + ', '       
+        if self.L0_processed     is not None: values += str(self.L0_processed)             + ', '
+        if self.L1_processed     is not None: values += str(self.L1_processed)             + ', '
+        if self.L2_processed     is not None: values += str(self.L2_processed)             + ', '
+        if self.L0_pass          is not None: values += str(self.L0_pass)                  + ', '
+        if self.L1_pass          is not None: values += str(self.L1_pass)                  + ', '
+        if self.L2_pass          is not None: values += str(self.L2_pass)                  + ', '
+        if self.L0_skip          is not None: values += str(self.L0_skip)                  + ', '
+        if self.L1_skip          is not None: values += str(self.L1_skip)                  + ', '
+        if self.L2_skip          is not None: values += str(self.L2_skip)                  + ', '
+        if self.frames_dropped   is not None: values += str(self.frames_dropped)           + ', '
+        if self.hist             is not None: values += format.set_numeric(self.hist)      + ', '
+        if self.xbn              is not None: values += str(self.xbn)                      + ', '
+        if self.aborted          is not None: values += format.boolean(self.aborted)       + ', '
+        if self.event_ids        is not None: values += format.set_numeric(self.event_ids) + ', '
+        if values != '': values = values[:-2]
         return values

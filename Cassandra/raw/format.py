@@ -1,3 +1,5 @@
+"""Format conversion for Cassandra data types
+"""
 
 def varchar( varchar ):
     return "'{0}'".format( repr(varchar)[1:-1].replace("'","''") )

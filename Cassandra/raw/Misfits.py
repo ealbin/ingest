@@ -1,46 +1,45 @@
-import format
+"""`misfits` Cassandra Football
 
-# misfits table
+Acts as the interface between Google protobuf
+and Cassandra.  Updated by direct member access
+as passed around.
+"""
+
+import format
 
 class Football:
 
-    errors       = None # varchar
-    device_id    = None # varchar
-    submit_time  = None # varint
-    tarfile      = None # varchar
-    tarmember    = None # varchar
-    message      = None # blob
-
-    def clear(self):
-        # should mirror above
-        Football.errors       = None # varchar
-        Football.device_id    = None # varchar
-        Football.submit_time  = None # varint
-        Football.tarfile      = None # varchar
-        Football.tarmember    = None # varchar
-        Football.message      = None # blob
+    def __init__(self):
+        self.clear()
         
+    def clear(self):
+        self.errors       = None # varchar
+        self.device_id    = None # varchar
+        self.submit_time  = None # varint
+        self.tarfile      = None # varchar
+        self.tarmember    = None # varchar
+        self.message      = None # blob
+
     def names(self):
         # must be same order as values()
         names = ''
-        print Football.device_id
-        if Football.errors      is not None: names += 'errors, '
-        if Football.device_id   is not None: names += 'device_id, '
-        if Football.submit_time is not None: names += 'submit_time, '
-        if Football.tarfile     is not None: names += 'tarfile, '
-        if Football.tarmember   is not None: names += 'tarmember, '
-        if Football.message     is not None: names += 'message'
-        names.rstrip(', ')
+        if self.errors      is not None: names += 'errors, '
+        if self.device_id   is not None: names += 'device_id, '
+        if self.submit_time is not None: names += 'submit_time, '
+        if self.tarfile     is not None: names += 'tarfile, '
+        if self.tarmember   is not None: names += 'tarmember, '
+        if self.message     is not None: names += 'message, '
+        if names != '': names = names[:-2]
         return names
             
     def values(self):
         # must be same order as names()
         values = ''
-        if Football.errors      is not None: values += format.varchar(Football.errors)     + ', '
-        if Football.device_id   is not None: values += format.varchar(Football.device_id)  + ', '
-        if Football.submit_time is not None: values += str(Football.submit_time)           + ', '
-        if Football.tarfile     is not None: values += format.varchar(Football.tarfile)    + ', ' 
-        if Football.tarmember   is not None: values += format.varchar(Football.tarmemmber) + ', '
-        if Football.message     is not None: values += format.blob(Football.message)       + ', '
-        values.rstrip(', ')        
+        if self.errors      is not None: values += format.varchar(self.errors)     + ', '
+        if self.device_id   is not None: values += format.varchar(self.device_id)  + ', '
+        if self.submit_time is not None: values += str(self.submit_time)           + ', '
+        if self.tarfile     is not None: values += format.varchar(self.tarfile)    + ', ' 
+        if self.tarmember   is not None: values += format.varchar(self.tarmemmber) + ', '
+        if self.message     is not None: values += format.blob(self.message)       + ', '
+        if values != '': values = values[:-2]
         return values
