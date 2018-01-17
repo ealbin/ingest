@@ -92,6 +92,7 @@ class Football:
             try:
                 setattr( self, basic['field'].name, basic['value'] )
             except Exception as e:
+                if self.__debug_mode: print '[raw.calibration_result] attribute unknown: ' + basic['field'].name
                 return False
         return True
         if self.__debug_mode: print '[raw.calibration_result] basics set'

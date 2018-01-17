@@ -31,19 +31,20 @@ precalibration_result = PreCalibrationResult.Football()
 n_errors = 0
 
 def clear():
+    global n_errors
+    n_errors = 0
     misfit               .clear()
     exposure_block       .clear()
     event                .clear()
     run_config           .clear()
     calibration_result   .clear()
     precalibration_result.clear()
-    n_errors = 0
     if __debug_mode: print '[raw_keyspace] football cleared'
 
 def add_error( error_string ):
     global n_errors
-    misfit.add_error( error_string )
     n_errors += 1
+    misfit.add_error( error_string )
     if __debug_mode: print '[raw_keyspace] error added'
     
 def get_n_errors():
@@ -71,6 +72,7 @@ def set_headers( basics ):
     is_sucessful &= calibration_result   .set_basics( basics )
     is_sucessful &= precalibration_result.set_basics( basics )
     if __debug_mode: print '[raw_keyspace] headers set'
+    return True
 #    return is_sucessful
 
 def insert_misfit():

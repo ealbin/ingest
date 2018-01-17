@@ -54,7 +54,7 @@ class __BallBag:
     def set_headers(self, basics):
         """log CrayonMessage headers
         """
-        raw_keyspace.set_headers( basics )
+        return raw_keyspace.set_headers( basics )
 
 
     def insert_misfit(self):

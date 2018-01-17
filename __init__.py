@@ -28,7 +28,7 @@ def from_tarfile( filepath ):
         Writes data contained in filepath to Cassandra
     """
     __debug_mode = True
-    __debug_N    = 1000
+    __debug_N    = 10
     
     # load tarfile into memory
     try:

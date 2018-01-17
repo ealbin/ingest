@@ -27,7 +27,7 @@ def from_msg( serialized_msg, football ):
     None
         Implicitly updates the football and passes it.
     """
-    __debug_mode = False
+    __debug_mode = True
     
     # deserialize protobuf CrayonMessage
     protobuf_msg = None
@@ -72,6 +72,6 @@ def from_msg( serialized_msg, football ):
     if not football.set_headers( basics ):
         football.add_error( '[CrayonMessage] field name missmatch: {0}'.format([b['field'].name for b in basics]) )
         return
-        
+
     # deserialize protobuf datachunk
-    #DataChunk.from_string( bytes[0]['value'], football )
+    DataChunk.from_string( bytes[0]['value'], football )

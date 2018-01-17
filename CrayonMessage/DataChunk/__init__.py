@@ -31,8 +31,8 @@ def from_string( serialized_chunk, football ):
     None
         Implicitly updates the football and passes it.
     """
-    __debug_mode = False
-        
+    __debug_mode = True
+    
     # deserialize protobuf DataChunk
     chunk = None
     try:
@@ -66,26 +66,30 @@ def from_string( serialized_chunk, football ):
     if len( messages ) == 0:
         football.add_error( '[DataChunk] len(messages) = {0} [> 0]; '.format(len(messages)) )            
 
-    if not football.n_errors() == 0:
+    if not football.get_n_errors() == 0:
         football.insert_misfit()
         return
 
     for message in messages:
         if message['field'].name == 'exposure_blocks':
             for block in message['value']:
-                ExposureBlock.ingest(block, football)
+                #ExposureBlock.ingest(block, football)
+                pass
 
         elif message['field'].name == 'run_configs':
             for config in message['value']:
-                RunConfig.ingest(config, football)
+                #RunConfig.ingest(config, football)
+                pass
 
         elif message['field'].name == 'calibration_results':                
             for result in message['value']:
-                CalibrationResult.ingest(result, football)
+                #CalibrationResult.ingest(result, football)
+                pass
                 
         elif message['field'].name == 'precalibration_results':
             for result in message['value']:
-                PreCalibrationResult.ingest(result, football)
+                #PreCalibrationResult.ingest(result, football)
+                pass
 
         else:
             football.add_error( '[DataChunk] message["field"].name = {0} [!= {exposure_blocks, run_configs, calibration_results, precalibration_results}]; '.format(message['field'].name) )
