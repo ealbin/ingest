@@ -4,12 +4,12 @@ Acts as the interface between Google protobuf
 and Cassandra.  Updated by direct member access
 as passed around.
 """
-
 import format
 
 class Football:
 
     def __init__(self):
+        self.__debug_mode = True
         self.clear()
         
     def clear(self):
@@ -20,6 +20,7 @@ class Football:
         self.tarmember    = None # varchar
         self.host         = None # varchar
         self.message      = None # blob
+        if self.__debug_mode: print '[raw.misfit] cleared'
 
     def get_names(self):
         # must be same order as values()
@@ -32,6 +33,7 @@ class Football:
         if self.host        is not None: names += 'host, '
         if self.message     is not None: names += 'message, '
         if names != '': names = names[:-2]
+        if self.__debug_mode: print '[raw.misfit] names: ' + names
         return names
             
     def get_values(self):
@@ -45,21 +47,25 @@ class Football:
         if self.host        is not None: values += format.varchar(self.host)       + ', '
         if self.message     is not None: values += format.blob(self.message)       + ', '
         if values != '': values = values[:-2]
+        if self.__debug_mode: print '[raw.misfit] values[:100]: ' + values[:100]
         return values
 
     def set_metadata(self, host='', tarfile='', tarmember=''):
         self.host      = host
         self.tarfile   = tarfile
         self.tarmember = tarmember
+        if self.__debug_mode: print '[raw.misfit] metadata set'
     
     def set_serialized(self, serialized_string):
         self.message = serialized_string
+        if self.__debug_mode: print '[raw.misfit] serialized message set'
 
     def add_error(self, error_string):
         if self.errors is not None:
             self.errors += '; ' + error_string
         else:
             self.errors = error_string
+        if self.__debug_mode: print '[raw.misfit] error added'
 
     def set_basics(self, basics ):
         for basic in basics:
@@ -68,4 +74,5 @@ class Football:
             except Exception as e:
                 return False
         return True
+        if self.__debug_mode: print '[raw.misfit] basics set'
 

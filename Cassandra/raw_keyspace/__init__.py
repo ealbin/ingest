@@ -13,6 +13,7 @@ intended use:
         calibration_results
         precalibration_results
 """    
+__debug_mode = True
 
 import Misfit
 import ExposureBlock
@@ -37,10 +38,12 @@ def clear():
     calibration_result   .clear()
     precalibration_result.clear()
     n_errors = 0
+    if __debug_mode: print '[raw_keyspace] football cleared'
 
 def add_error( error_string ):
     misfit.add_error( error_string )
     n_errors += 1
+    if __debug_mode: print '[raw_keyspace] error added'
     
 def get_n_errors():
     return n_errors
@@ -52,9 +55,11 @@ def set_metadata(host='', tarfile='', tarmember=''):
     run_config           .set_metadata( host=host, tarfile=tarfile, tarmember=tarmember )
     calibration_result   .set_metadata( host=host, tarfile=tarfile, tarmember=tarmember )
     precalibration_result.set_metadata( host=host, tarfile=tarfile, tarmember=tarmember )
+    if __debug_mode: print '[raw_keyspace] metadata set'
 
 def set_serialized( serialized_string ):
     misfit.set_serialized( serialized_string )
+    if __debug_mode: print '[raw_keyspace] serialized message set'
     
 def set_headers( basics ):
     is_sucessful  = True
@@ -64,6 +69,7 @@ def set_headers( basics ):
     is_sucessful &= run_config           .set_basics( basics )
     is_sucessful &= calibration_result   .set_basics( basics )
     is_sucessful &= precalibration_result.add_basics( basics )
+    if __debug_mode: print '[raw_keyspace] headers set'
 #    return is_sucessful
     
 def insert_run_config( basics ):

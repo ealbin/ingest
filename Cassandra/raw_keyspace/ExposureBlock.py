@@ -10,6 +10,7 @@ import format
 class Football:
 
     def __init__(self):
+        self.__debug_mode = True
         self.clear()
 
     def clear(self):
@@ -66,7 +67,7 @@ class Football:
         self.aborted          = None # boolean
         
         self.event_ids        = None # set<uuid>
-    
+        if self.__debug_mode: print '[raw.exposure_block] cleared'    
         
     def get_names(self):
         # must be in same order as values()
@@ -118,6 +119,7 @@ class Football:
         if self.aborted          is not None: names += 'aborted, '
         if self.event_ids        is not None: names += 'event_ids, '
         if names != '': names = names[:-2]
+        if self.__debug_mode: print '[raw.exposure_block] names: ' + names
         return names               
     
     def get_values(self):
@@ -170,12 +172,14 @@ class Football:
         if self.aborted          is not None: values += format.boolean(self.aborted)       + ', '
         if self.event_ids        is not None: values += format.set_numeric(self.event_ids) + ', '
         if values != '': values = values[:-2]
+        if self.__debug_mode: print '[raw.exposure_block] values[:100]: ' + values[:100]
         return values
 
     def set_metadata(self, host='', tarfile='', tarmember=''):
         self.host      = host
         self.tarfile   = tarfile
         self.tarmember = tarmember
+        if self.__debug_mode: print '[raw.exposure_block] metadata set'
 
     def set_basics(self, basics ):
         for basic in basics:
@@ -184,4 +188,4 @@ class Football:
             except Exception as e:
                 return False
         return True
-
+        if self.__debug_mode: print '[raw.exposure_block] basics set'

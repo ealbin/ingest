@@ -10,6 +10,7 @@ inteded use:
         gets passed down the CrayonMessage hierarchy, and
         writes to Cassandra as data is ingested.
 """
+__debug_mode = True
 
 import raw_keyspace
 
@@ -92,6 +93,7 @@ class __BallBag:
 #    def add_byteb( byteblock ):
     
 __football = __BallBag()
+if __debug_mode: print '[Cassandra] football is ready'
 
 def get_football():
     """Returns football.
@@ -99,6 +101,7 @@ def get_football():
     of Cassandra table columns across multiple tables in
     multiple keyspaces to their respective values.
     """
+    if __debug_mode: print '[Cassandra] passing football'
     return __football
 
 #def write_football():

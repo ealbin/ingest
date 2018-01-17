@@ -10,6 +10,7 @@ import format
 class Football:
     
     def __init__(self):
+        self.__debug_mode = True
         self.clear()
 
     def clear(self):
@@ -43,6 +44,7 @@ class Football:
         self.second_hist        = None # set<varint>
         self.hotcell            = None # set<varint>
         self.res_x              = None # varint
+        if self.__debug_mode: print '[raw.precalibration_result] cleared'
         
     def get_names(self):
         # must be same order as values()
@@ -72,6 +74,7 @@ class Football:
         if self.hotcell            is not None: names += 'hotcell, '
         if self.res_x              is not None: names += 'res_x, '
         if names != '': names = names[:-2]
+        if self.__debug_mode: print '[raw.precalibration_result] names: ' + names
         return names               
     
     def get_values(self):
@@ -102,12 +105,14 @@ class Football:
         if self.hotcell            is not None: values += format.set_numeric(self.hotcell)        + ', '
         if self.res_x              is not None: values += str(self.res_x)                         + ', '
         if values != '': values = values[:-2]
+        if self.__debug_mode: print '[raw.precalibration_result] values[:100]: ' + values[:100]
         return values
 
     def set_metadata(self, host='', tarfile='', tarmember=''):
         self.host      = host
         self.tarfile   = tarfile
         self.tarmember = tarmember
+        if self.__debug_mode: print '[raw.precalibration_result] metadata set'
 
     def set_basics(self, basics ):
         for basic in basics:
@@ -116,4 +121,4 @@ class Football:
             except Exception as e:
                 return False
         return True
-
+        if self.__debug_mode: print '[raw.precalibration_result] basics set'

@@ -10,6 +10,7 @@ import format
 class Football:
 
     def __init__(self):
+        self.__debug_mode = True    
         self.clear()
 
     def clear(self):
@@ -85,7 +86,7 @@ class Football:
         self.byte_block         = None # frozen <byteblock> 
         self.pixels             = None # set<frozen <pixel>>            
         self.zero_bias          = None # frozen <square>        
-    
+        if self.__debug_mode: print '[raw.event] cleared'    
             
     def get_names(self):
         # must be in same order as values()
@@ -153,6 +154,7 @@ class Football:
         if self.pixels             is not None: names += 'pixels, '
         if self.zero_bias          is not None: names += 'zero_bias, '
         if names != '': names = names[:-2]
+        if self.__debug_mode: print '[raw.event] names: ' + names
         return names               
     
     def get_values(self):
@@ -221,12 +223,14 @@ class Football:
         if self.pixels             is not None: values += format.pixels(self.pixels)         + ', '
         if self.zero_bias          is not None: values += format.zero_bias(self.zer_bias)    + ', '
         if values != '': values = values[:-2]
+        if self.__debug_mode: print '[raw.event] values[:100]: ' + values[:100]
         return values
 
     def set_metadata(self, host='', tarfile='', tarmember=''):
         self.host      = host
         self.tarfile   = tarfile
         self.tarmember = tarmember
+        if self.__debug_mode: print '[raw.event] metadata set'
 
     def set_basics(self, basics ):
         for basic in basics:
@@ -235,4 +239,4 @@ class Football:
             except Exception as e:
                 return False
         return True
-
+        if self.__debug_mode: print '[raw.event] basics set'

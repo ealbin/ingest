@@ -10,6 +10,7 @@ import format
 class Football:
 
     def __init__(self):
+        self.__debug_mode = True
         self.clear()
 
     def clear(self):
@@ -31,6 +32,7 @@ class Football:
         self.os_params     = None # varchar
         self.camera_params = None # varchar
         self.camera_id     = None # varint
+        if self.__debug_mode: print '[raw.run_config] cleared'
         
     def get_names(self):
         # must be in same order as values()
@@ -52,6 +54,7 @@ class Football:
         if self.camera_params is not None: names += 'camera_params, '
         if self.camera_id     is not None: names += 'camera_id, '
         if names != '': names = names[:-2]
+        if self.__debug_mode: print '[raw.run_config] names: ' + names
         return names               
     
     def get_values(self):
@@ -74,12 +77,14 @@ class Football:
         if self.camera_params is not None: values += format.varchar(self.camera_params) + ', '
         if self.camera_id     is not None: values += str(self.camera_id)                + ', '
         if values != '': values = values[:-2]
+        if self.__debug_mode: print '[raw.run_config] values[:100]: ' + values[:100]
         return values
 
     def set_metadata(self, host='', tarfile='', tarmember=''):
         self.host      = host
         self.tarfile   = tarfile
         self.tarmember = tarmember
+        if self.__debug_mode: print '[raw.run_config] metadata set'
 
     def set_basics(self, basics ):
         for basic in basics:
@@ -88,4 +93,5 @@ class Football:
             except Exception as e:
                 return False
         return True
+        if self.__debug_mode: print '[raw.run_config] basics set'
 

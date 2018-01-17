@@ -8,8 +8,9 @@ as passed around.
 import format
 
 class Football:
-
+    
     def __init__(self):
+        self.__debug_mode = True
         self.clear()
 
     def clear(self):
@@ -32,6 +33,7 @@ class Football:
         self.hist_l2pixel  = None # set<varint>
         self.hist_maxpixel = None # set<varint>
         self.hist_numpixel = None # set<varint>        
+        if self.__debug_mode: print '[raw.calibration_result] cleared'
             
     def get_names(self):
         # must be same order as values()
@@ -53,6 +55,7 @@ class Football:
         if self.hist_maxpixel is not None: names += 'hist_maxpixel, '
         if self.hist_numpixel is not None: names += 'hist_numpixel, '
         if names != '': names = names[:-2]
+        if self.__debug_mode: print '[raw.calibration_result] names: ' + names
         return names               
     
     def get_values(self):
@@ -75,12 +78,14 @@ class Football:
         if self.hist_maxpixel is not None: values += format.set_varint(self.hist_maxpixel) + ', '
         if self.hist_numpixel is not None: values += format.set_varint(self.hist_numpixel) + ', '
         if values != '': values = values[:-2]
+        if self.__debug_mode: print '[raw.calibration_result] values[:100]: ' + values[:100]
         return values
 
     def set_metadata(self, host='', tarfile='', tarmember=''):
         self.host      = host
         self.tarfile   = tarfile
         self.tarmember = tarmember
+        if self.__debug_mode: print '[raw.calibration_result] metadata set'
 
     def set_basics(self, basics):
         for basic in basics:
@@ -89,4 +94,4 @@ class Football:
             except Exception as e:
                 return False
         return True
-
+        if self.__debug_mode: print '[raw.calibration_result] basics set'
