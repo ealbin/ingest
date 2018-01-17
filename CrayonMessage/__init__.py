@@ -74,4 +74,4 @@ def from_msg( serialized_msg, football ):
         return
         
     # deserialize protobuf datachunk
-    DataChunk.from_string( bytes[0]['value'], football )
+    #DataChunk.from_string( bytes[0]['value'], football )

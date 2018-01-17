@@ -42,6 +42,7 @@ class __BallBag:
     def set_metadata(self, host='', tarfile='', tarmember=''):
         """log metadata
         """
+        host = repr(host)
         raw_keyspace.set_metadata( host=host, tarfile=tarfile, tarmember=tarmember )
 
     def set_serialized( serialized_string ):

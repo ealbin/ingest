@@ -172,7 +172,7 @@ class Football:
         if values != '': values = values[:-2]
         return values
 
-    def set_metadata(host='', tarfile='', tarmember=''):
+    def set_metadata(self, host='', tarfile='', tarmember=''):
         self.host      = host
         self.tarfile   = tarfile
         self.tarmember = tarmember

@@ -47,15 +47,15 @@ class Football:
         if values != '': values = values[:-2]
         return values
 
-    def set_metadata(host='', tarfile='', tarmember=''):
+    def set_metadata(self, host='', tarfile='', tarmember=''):
         self.host      = host
         self.tarfile   = tarfile
         self.tarmember = tarmember
     
-    def set_serialized( serialized_string ):
+    def set_serialized(self, serialized_string):
         self.message = serialized_string
 
-    def add_error( error_string ):
+    def add_error(self, error_string):
         if self.errors is not None:
             self.errors += '; ' + error_string
         else:
