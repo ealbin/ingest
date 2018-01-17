@@ -58,14 +58,14 @@ class Football:
     
     def set_serialized(self, serialized_string):
         self.message = serialized_string
-        if self.__debug_mode: print '[raw.misfit] serialized message set'
+        if self.__debug_mode: print '[raw.misfit] serialized message[:100]: ' + repr(serialized_string)[1:101]
 
     def add_error(self, error_string):
         if self.errors is not None:
             self.errors += '; ' + error_string
         else:
             self.errors = error_string
-        if self.__debug_mode: print '[raw.misfit] error added'
+        if self.__debug_mode: print '[raw.misfit] error added: "' + error_string + '"'
 
     def set_basics(self, basics ):
         for basic in basics:

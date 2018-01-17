@@ -41,6 +41,7 @@ def clear():
     if __debug_mode: print '[raw_keyspace] football cleared'
 
 def add_error( error_string ):
+    global n_errors
     misfit.add_error( error_string )
     n_errors += 1
     if __debug_mode: print '[raw_keyspace] error added'
@@ -55,7 +56,7 @@ def set_metadata(host='', tarfile='', tarmember=''):
     run_config           .set_metadata( host=host, tarfile=tarfile, tarmember=tarmember )
     calibration_result   .set_metadata( host=host, tarfile=tarfile, tarmember=tarmember )
     precalibration_result.set_metadata( host=host, tarfile=tarfile, tarmember=tarmember )
-    if __debug_mode: print '[raw_keyspace] metadata set'
+    if __debug_mode: print '[raw_keyspace] metadata set: ' + host[:20] + '...' + tarfile[-20:] + ' ' + tarmember
 
 def set_serialized( serialized_string ):
     misfit.set_serialized( serialized_string )
@@ -68,9 +69,13 @@ def set_headers( basics ):
     is_sucessful &= event                .set_basics( basics )
     is_sucessful &= run_config           .set_basics( basics )
     is_sucessful &= calibration_result   .set_basics( basics )
-    is_sucessful &= precalibration_result.add_basics( basics )
+    is_sucessful &= precalibration_result.set_basics( basics )
     if __debug_mode: print '[raw_keyspace] headers set'
 #    return is_sucessful
+
+def insert_misfit():
+# TODO:    misfit.write
+    pass
     
 def insert_run_config( basics ):
     if run_config.set_basics( basics ):

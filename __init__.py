@@ -49,7 +49,7 @@ def from_tarfile( filepath ):
         football.set_metadata(host=host, tarfile=filepath, tarmember=message.name)
 
         msg = crayfile.extractfile( message )
-        #CrayonMessage.from_msg( msg, football )
+        CrayonMessage.from_msg( msg, football )
         msg.close()
 
         if __debug_mode and msg_i == __debug_N - 1 : print 'DEBUG break after {0} messages'.format(__debug_N); break

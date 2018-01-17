@@ -46,12 +46,12 @@ class __BallBag:
         host = repr(host)
         raw_keyspace.set_metadata( host=host, tarfile=tarfile, tarmember=tarmember )
 
-    def set_serialized( serialized_string ):
+    def set_serialized(self, serialized_string ):
         """log raw, serialized CrayonMessage
         """
         raw_keyspace.set_serialized( serialized_string )
     
-    def set_headers( basics ):
+    def set_headers(self, basics):
         """log CrayonMessage headers
         """
         raw_keyspace.set_headers( basics )
@@ -62,27 +62,27 @@ class __BallBag:
         """
         return raw_keyspace.insert_misfit()
 
-    def insert_runconfig( basics ):
+    def insert_runconfig(self, basics):
         """INSERT runconfig object into Cassandra
         """ 
         return raw_keyspace.insert_runconfig( basics )
         
-    def insert_calibration_result( basics ):
+    def insert_calibration_result(self, basics):
         """INSERT calibration_result object into Cassandra
         """
         return raw_keyspace.insert_calibration_result( basics )
 
-    def insert_precalibration_result( basics ):
+    def insert_precalibration_result(self, basics):
         """INSERT precalibration_result object into Cassandra
         """
         return raw_keyspace.insert_precalibration_result( basics )
 
-    def insert_exposure_block( basics, daq_state='', event_ids=[] ):
+    def insert_exposure_block(self, basics, daq_state='', event_ids=[]):
         """INSERT exposure_block object into Cassandra
         """
         return raw_keyspace.insert_exposure_block( basics, daq_state=daq_state, event_ids=event_ids )
 
-    def insert_event( basics ):
+    def insert_event(self, basics):
         """INSERT event object into Cassandra
         """
         return raw_keyspace.insert_event( basics )

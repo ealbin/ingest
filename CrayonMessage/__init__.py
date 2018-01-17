@@ -65,7 +65,7 @@ def from_msg( serialized_msg, football ):
     if not bytes[0]['field'].name == 'payload':
         football.add_error( '[CrayonMessage] bytes[0]["field"].name = {0} [!= "payload"]'.format(bytes[0]['field'].name) )
 
-    if not football.n_errors() == 0:
+    if not football.get_n_errors() == 0:
         football.insert_misfit()
         return
 
