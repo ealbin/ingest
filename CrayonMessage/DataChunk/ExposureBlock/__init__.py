@@ -42,13 +42,13 @@ def ingest( block, football ):
 
     # enforce expected structure
     if not len(manifest) - len(bytes) - len(messages) - len(enums) - len(basics) == 0:
-        football['error_string'] += '[ExposureBlock] len(all) - len(expected) = {0} [!= 0]; '.format(len(manifest)-len(bytes)-len(messages)-len(enums)-len(basics))
+        football.add_error( '[ExposureBlock] len(all) - len(expected) = {0} [!= 0]; '.format(len(manifest)-len(bytes)-len(messages)-len(enums)-len(basics)) )
     if not len( bytes ) == 0:
-        football['error_string'] += '[ExposureBlock] len(bytes) = {0} [!= 0]; '.format(len(bytes))
+        football.add_error( '[ExposureBlock] len(bytes) = {0} [!= 0]; '.format(len(bytes)) )
     if not len( enums ) == 1:
-        football['error_string'] += '[ExposureBlock] len(enums) = {0} [!= 1]; '.format(len(enums))    
+        football.add_error( '[ExposureBlock] len(enums) = {0} [!= 1]; '.format(len(enums)) )  
     if not enums[0]['field'].name == 'daq_state':
-        football['error_string'] += '[ExposureBlock] enums[0]["field"].name = {0} [!= "daq_state"]; '.format(enums[0]['field'].name)
+        football.add_error( '[ExposureBlock] enums[0]["field"].name = {0} [!= "daq_state"]; '.format(enums[0]['field'].name) )
 
     state = ''
     if   enums[0]['value'] == 0:
@@ -60,14 +60,16 @@ def ingest( block, football ):
     elif enums[0]['value'] == 3:
         state = 'PRECALIBRATION'
     else:
-        football['error_string'] += '[ExposureBlock] daq_state = {0} [!= {0,1,2,3}]; '.format(enums[0]['value'])
+        football.add_error( '[ExposureBlock] daq_state = {0} [!= {0,1,2,3}]; '.format(enums[0]['value']) )
 
-    football['exposure_blocks'].append( { 'header':basics, 'daq_state':state, 'events':[] } )
-    
+    event_ids = []
     for message in messages:
         if message['field'].name == 'events':
             for event in message['value']:
                 Event.ingest( event, football )
+                # TODO: update event_ids
         else:
-            football['error_string'] += '[ExposureBlock] message["field"].name = {0} [!= {events, byteblocks, zerobiassquares}]; '.format(message['field'].name)
+            football.add_error( '[ExposureBlock] message["field"].name = {0} [!= {events, byteblocks, zerobiassquares}]; '.format(message['field'].name) )
 
+    if not football.insert_exposure_block( basics, daq_state=state, event_ids=event_ids ):
+        football.add_error( '[ExposureBlock] field name missmatch: {0}'.format([b['field'].name for b in basics]) )

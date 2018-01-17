@@ -42,15 +42,16 @@ def from_tarfile( filepath ):
     if __debug_mode: print 'FOUND {0} messages'.format(len(craymsgs))
 
     host = os.uname()
+    football = Cassandra.get_football()
+
     for msg_i, message in enumerate(craymsgs):
-        football = Cassandra.get_football( clean=True )
-        football.add_metadata(host=host, filepath=filepath, msg_name=message.name)
-        
+        Cassandra.clear_football()
+        football.set_metadata(host=host, tarfile=filepath, tarmember=message.name)
+
         msg = crayfile.extractfile( message )
         CrayonMessage.from_msg( msg, football )
         msg.close()
-        
-        Cassandra.write_football()
+
         if __debug_mode and msg_i == __debug_N - 1 : print 'DEBUG break after {0} messages'.format(__debug_N); break
             
     crayfile.close()

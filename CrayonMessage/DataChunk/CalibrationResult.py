@@ -40,12 +40,13 @@ def ingest( result, football ):
 
     # enforce expected structure
     if not len(manifest) - len(bytes) - len(messages) - len(enums) - len(basics) == 0:
-        football['error_string'] += '[CalibrationResult] len(all) - len(expected) = {0} [!= 0]; '.format(len(manifest)-len(bytes)-len(messages)-len(enums)-len(basics))
+        football.add_error( '[CalibrationResult] len(all) - len(expected) = {0} [!= 0]; '.format(len(manifest)-len(bytes)-len(messages)-len(enums)-len(basics)) )
     if not len( bytes ) == 0:
-        football['error_string'] += '[CalibrationResult] len(bytes) = {0} [!= 0]; '.format(len(bytes))
+        football.add_error( '[CalibrationResult] len(bytes) = {0} [!= 0]; '.format(len(bytes)) )
     if not len( enums ) == 0:
-        football['error_string'] += '[CalibrationResult] len(enums) = {0} [!= 0]; '.format(len(enums))    
+        football.add_error( '[CalibrationResult] len(enums) = {0} [!= 0]; '.format(len(enums)) )  
     if not len( messages ) == 0:
-        football['error_string'] += '[CalibrationResult] len(messages) = {0} [!= 0]; '.format(len(messages))        
+        football.add_error( '[CalibrationResult] len(messages) = {0} [!= 0]; '.format(len(messages)) )
     
-    football['calibration_results'].append(basics)
+    if not football.insert_calibration_result( basics ):
+        football.add_error( '[CalibrationResult] field name missmatch: {0}'.format([b['field'].name for b in basics]) )

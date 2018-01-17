@@ -17,6 +17,7 @@ class Football:
         self.submit_time        = None # varint
         self.tarfile            = None # varchar
         self.tarmember          = None # varchar
+        self.host               = None # varchar
         self.user_id            = None # varint
         self.app_code           = None # varchar
         self.remote_addr        = None # inet
@@ -43,13 +44,14 @@ class Football:
         self.hotcell            = None # set<varint>
         self.res_x              = None # varint
         
-    def names(self):
+    def get_names(self):
         # must be same order as values()
         names = ''
         if self.device_id          is not None: names += 'device_id, '
         if self.submit_time        is not None: names += 'submit_time, '
         if self.tarfile            is not None: names += 'tarfile, '
         if self.tarmember          is not None: names += 'tarmember, '        
+        if self.host               is not None: names += 'host, '
         if self.user_id            is not None: names += 'user_id, '
         if self.app_code           is not None: names += 'app_code, '
         if self.remote_addr        is not None: names += 'remote_addr, '
@@ -72,13 +74,14 @@ class Football:
         if names != '': names = names[:-2]
         return names               
     
-    def values(self):
+    def get_values(self):
         # must be same order as names()
         values = ''
         if self.device_id          is not None: values += format.varchar(self.device_id)          + ', '
         if self.submit_time        is not None: values += str(self.submit_time)                   + ', '
         if self.tarfile            is not None: values += format.varchar(self.tarfile)            + ', '
         if self.tarmember          is not None: values += format.varchar(self.tarmember)          + ', '        
+        if self.host               is not None: values += format.varchar(self.host)               + ', '
         if self.user_id            is not None: values += str(self.user_id)                       + ', '
         if self.app_code           is not None: values += format.varchar(self.app_code)           + ', '
         if self.remote_addr        is not None: values += format.inet(self.remote_addr)           + ', '
@@ -100,3 +103,17 @@ class Football:
         if self.res_x              is not None: values += str(self.res_x)                         + ', '
         if values != '': values = values[:-2]
         return values
+
+    def set_metadata(host='', tarfile='', tarmember=''):
+        self.host      = host
+        self.tarfile   = tarfile
+        self.tarmember = tarmember
+
+    def set_basics(self, basics ):
+        for basic in basics:
+            try:
+                setattr( self, basic['field'].name, basic['value'] )
+            except Exception as e:
+                return False
+        return True
+

@@ -44,13 +44,11 @@ def ingest( event, football ):
 
     # enforce expected structure
     if not len(manifest) - len(bytes) - len(messages) - len(enums) - len(basics) == 0:
-        football['error_string'] += '[Event] len(all) - len(expected) = {0} [!= 0]; '.format(len(manifest)-len(bytes)-len(messages)-len(enums)-len(basics))
+        football.add_error( '[Event] len(all) - len(expected) = {0} [!= 0]; '.format(len(manifest)-len(bytes)-len(messages)-len(enums)-len(basics)) )
     if not len( bytes ) == 0:
-        football['error_string'] += '[Event] len(bytes) = {0} [!= 0]; '.format(len(bytes))
+        football.add_error( '[Event] len(bytes) = {0} [!= 0]; '.format(len(bytes)) )
     if not len( enums ) == 0:
-        football['error_string'] += '[Event] len(enums) = {0} [!= 0]; '.format(len(enums))    
-
-    football['exposure_blocks'][-1]['events'].append({ 'header':basics, 'pixels':[], 'byteblocks':[], 'zerobiassquares':[] })
+        football.add_error( '[Event] len(enums) = {0} [!= 0]; '.format(len(enums)) )  
 
     for message in messages:
         if message['field'].name == 'pixels':
@@ -66,5 +64,7 @@ def ingest( event, football ):
                 ZeroBiasSquare.ingest( square, football )
         
         else:
-            football['error_string'] += '[Event] message["field"].name = {0} [!= {pixels, byteblocks, zerobiassquares}]; '.format(message['field'].name)
+            football.add_error( '[Event] message["field"].name = {0} [!= {pixels, byteblocks, zerobiassquares}]; '.format(message['field'].name) )
 
+    if not football.insert_event( basics ):
+        football.add_error( '[Event] field name missmatch: {0}'.format([b['field'].name for b in basics]) )

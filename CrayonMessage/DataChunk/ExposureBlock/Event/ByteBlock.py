@@ -40,12 +40,13 @@ def ingest( block, football ):
 
     # enforce expected structure
     if not len(manifest) - len(bytes) - len(messages) - len(enums) - len(basics) == 0:
-        football['error_string'] += '[ByteBlock] len(all) - len(expected) = {0} [!= 0]; '.format(len(manifest)-len(bytes)-len(messages)-len(enums)-len(basics))
+        football.add_error( '[ByteBlock] len(all) - len(expected) = {0} [!= 0]; '.format(len(manifest)-len(bytes)-len(messages)-len(enums)-len(basics)) )
     if not len( bytes ) == 0:
-        football['error_string'] += '[ByteBlock] len(bytes) = {0} [!= 0]; '.format(len(bytes))
+        football.add_error( '[ByteBlock] len(bytes) = {0} [!= 0]; '.format(len(bytes)) )
     if not len( enums ) == 0:
-        football['error_string'] += '[ByteBlock] len(enums) = {0} [!= 0]; '.format(len(enums))    
+        football.add_error( '[ByteBlock] len(enums) = {0} [!= 0]; '.format(len(enums)) )  
     if not len( messages ) == 0:
-        football['error_string'] += '[ByteBlock] len(messages) = {0} [!= 0]; '.format(len(messages))    
+        football.add_error( '[ByteBlock] len(messages) = {0} [!= 0]; '.format(len(messages)) )
 
-    football['exposure_blocks'][-1]['events'][-1]['byteblocks'].append(basics)
+#    if not football.set_byte
+#    football['exposure_blocks'][-1]['events'][-1]['byteblocks'].append(basics)

@@ -40,15 +40,17 @@ def ingest( result, football ):
 
     # enforce expected structure
     if not len(manifest) - len(bytes) - len(messages) - len(enums) - len(basics) == 0:
-        football['error_string'] += '[PreCalibrationResult] len(all) - len(expected) = {0} [!= 0]; '.format(len(manifest)-len(bytes)-len(messages)-len(enums)-len(basics))
+        football.add_error( '[PreCalibrationResult] len(all) - len(expected) = {0} [!= 0]; '.format(len(manifest)-len(bytes)-len(messages)-len(enums)-len(basics)) )
     if not len( bytes ) == 1:
-        football['error_string'] += '[PreCalibrationResult] len(bytes) = {0} [!= 1]; '.format(len(bytes))
+        football.add_error( '[PreCalibrationResult] len(bytes) = {0} [!= 1]; '.format(len(bytes)) )
     if not len( enums ) == 0:
-        football['error_string'] += '[PreCalibrationResult] len(enums) = {0} [!= 0]; '.format(len(enums))   
+        football.add_error( '[PreCalibrationResult] len(enums) = {0} [!= 0]; '.format(len(enums)) ) 
     if not len( messages ) == 0:
-        football['error_string'] += '[PreCalibrationResult] len(messages) = {0} [!= 0]; '.format(len(messages))
+        football.add_error( '[PreCalibrationResult] len(messages) = {0} [!= 0]; '.format(len(messages)) )
 
     # TODO: handle bytes
     print '>>> [PreCalibrationResult] TODO: handle bytes'
 
-    football['precalibration_results'].append(basics)
+    if not football.insert_precalibration_result( basics ):
+        football.add_error( '[PreCalibrationResult] field name missmatch: {0}'.format([b['field'].name for b in basics]) )
+

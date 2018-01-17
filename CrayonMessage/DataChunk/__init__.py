@@ -39,7 +39,7 @@ def from_string( serialized_chunk, football ):
         chunk = crayfis_data_pb2.DataChunk.FromString( serialized_chunk )
         if __debug_mode: print '[DataChunk] DESERIALIZED protobuf string successfully'
     except Exception as e:
-        football['error_string'] += '[DataChunk] deserialization failure; '
+        football.add_error( '[DataChunk] deserialization failure' )
         return
 
     # break out members by type-category                         
@@ -56,17 +56,18 @@ def from_string( serialized_chunk, football ):
 
     # enforce expected structure
     if not len(manifest) - len(bytes) - len(messages) - len(enums) - len(basics) == 0:
-        football['error_string'] += '[DataChunk] len(all) - len(expected) = {0} [!= 0]; '.format(len(manifest)-len(bytes)-len(messages)-len(enums)-len(basics))
+        football.add_error( '[DataChunk] len(all) - len(expected) = {0} [!= 0]; '.format(len(manifest)-len(bytes)-len(messages)-len(enums)-len(basics)) )
     if not len( basics ) == 0:
-        football['error_string'] += '[DataChunk] len(basics) = {0} [!= 0]; '.format(len(basics))
+        football.add_error( '[DataChunk] len(basics) = {0} [!= 0]; '.format(len(basics)) )
     if not len( bytes ) == 0:
-        football['error_string'] += '[DataChunk] len(bytes) = {0} [!= 0]; '.format(len(bytes))    
+        football.add_error( '[DataChunk] len(bytes) = {0} [!= 0]; '.format(len(bytes)) )
     if not len( enums ) == 0:
-        football['error_string'] += '[DataChunk] len(enums) = {0} [!= 0]; '.format(len(enums))        
+        football.add_error( '[DataChunk] len(enums) = {0} [!= 0]; '.format(len(enums)) )      
     if len( messages ) == 0:
-        football['error_string'] += '[DataChunk] len(messages) = {0} [> 0]; '.format(len(messages))            
+        football.add_error( '[DataChunk] len(messages) = {0} [> 0]; '.format(len(messages)) )            
 
-    if not len( football['error_string'] ) == 0:
+    if not football.n_errors() == 0:
+        football.insert_misfit()
         return
 
     for message in messages:
@@ -87,4 +88,4 @@ def from_string( serialized_chunk, football ):
                 PreCalibrationResult.ingest(result, football)
 
         else:
-            football['error_string'] += '[DataChunk] message["field"].name = {0} [!= {exposure_blocks, run_configs, calibration_results, precalibration_results}]; '.format(message['field'].name)
+            football.add_error( '[DataChunk] message["field"].name = {0} [!= {exposure_blocks, run_configs, calibration_results, precalibration_results}]; '.format(message['field'].name) )
