@@ -74,7 +74,7 @@ def from_string( serialized_chunk, football ):
     for message in messages:
         if message['field'].name == 'exposure_blocks':
             for block in message['value']:
-                #ExposureBlock.ingest(block, football)
+                ExposureBlock.ingest(block, football)
                 pass
 
         elif message['field'].name == 'run_configs':

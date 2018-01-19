@@ -48,5 +48,6 @@ def ingest( block, football ):
     if not len( messages ) == 0:
         football.add_error( '[ByteBlock] len(messages) = {0} [!= 0]; '.format(len(messages)) )
 
+    return True
 #    if not football.set_byte
 #    football['exposure_blocks'][-1]['events'][-1]['byteblocks'].append(basics)

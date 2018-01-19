@@ -48,4 +48,5 @@ def ingest( square, football ):
     if not len( messages ) == 0:
         football.add_error( '[ZeroBiasSquare] len(messages) = {0} [!= 0]; '.format(len(messages)) )
 
+    return True
     #football['exposure_blocks'][-1]['events'][-1]['zerobiassquares'].append(basics)

@@ -43,20 +43,16 @@ def from_tarfile( filepath ):
 
     host = os.uname()
     football = Cassandra.get_football()
-
     for msg_i, message in enumerate(craymsgs):
         football.clear()
-        is_sucessful = football.set_metadata(host=host, tarfile=filepath, tarmember=message.name)
-        if not is_sucessful:
+        if not football.set_metadata(host=host, tarfile=filepath, tarmember=message.name):
             football.add_error( '[ingest] metadata failure, check attribute names ingest/Cassandra/[keyspace]/[table].py' )
             football.insert_misfit()
-            continue
+            continue # abort this one, go to next message
 
         msg = crayfile.extractfile( message )
         CrayonMessage.from_msg( msg, football )
         msg.close()
 
         if __debug_mode and msg_i == __debug_N - 1 : print 'DEBUG break after {0} messages'.format(__debug_N); break
-            
     crayfile.close()
-

@@ -48,4 +48,5 @@ def ingest( pixel, football ):
     if not len( messages ) == 0:
         football.add_error( '[Pixel] len(messages) = {0} [!= 0]; '.format(len(messages)) )
 
+    return True
 #    football.['exposure_blocks'][-1]['events'][-1]['pixels'].append(basics)

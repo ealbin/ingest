@@ -82,30 +82,30 @@ def set_headers( basics ):
 # Specific insertions
 #--------------------
 def insert_misfit():
-    write.insert( names=misfit.get_names(), values=misfit.get_values() )
+    write.insert( 'raw.misfits', names=misfit.get_names(), values=misfit.get_values() )
     return True
     
 def insert_run_config( basics ):
     run_config.set_basics( basics )
-    write.insert( names=run_config.get_names(), values=run_config.get_values() )
+    write.insert( 'raw.run_configs', names=run_config.get_names(), values=run_config.get_values() )
     return True
 
 def insert_calibration_result( basics ):
     calibration_result.set_basics( basics )
-    write.insert( names=calibration_result.get_names(), values=calibration_result.get_values() )
+    write.insert( 'raw.calibration_results', names=calibration_result.get_names(), values=calibration_result.get_values() )
     return True
 
 def insert_precalibration_result( basics ):
     precalibration_result.set_basics( basics )
-    write.insert( names=precalibration_result.get_names(), values=precalibration_result.get_values() )
+    write.insert( 'raw.precalibration_results', names=precalibration_result.get_names(), values=precalibration_result.get_values() )
     return True
 
 def insert_exposure_block( basics, daq_state='', event_ids=[] ):
     exposure_block.set_basics( basics, daq_state=daq_state, event_ids=event_ids )
-    write.insert( names=exposure_block.get_names(), values=exposure_block.get_values() )
+    write.insert( 'raw.exposure_blocks', names=exposure_block.get_names(), values=exposure_block.get_values() )
     return True
     
 def insert_event( basics ):
     event.set_basics( basics )    
-    write.insert( names=eventsget_names(), values=event.get_values() )
+    write.insert( 'raw.events', names=event.get_names(), values=event.get_values() )
     return True

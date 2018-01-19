@@ -34,11 +34,14 @@ def from_msg( serialized_msg, football ):
     try:
         serialized_msg.seek(0)
         serialized_string = serialized_msg.read()
-        football.set_serialized( serialized_string )
+        if not football.set_serialized( serialized_string ):
+            football.add_error( '[CrayonMessage] could not save serialized message' )
+            football.insert_misfit()
+            return
         protobuf_msg = crayfis_data_pb2.CrayonMessage.FromString( serialized_string )
         if __debug_mode: print '[CrayonMessage] DESERIALIZED protobuf string successfully'
     except Exception as e:
-        football.add_error('[CrayonMessage] deserialization failure')
+        football.add_error( '[CrayonMessage] deserialization failure' )
         football.insert_misfit()
         return 
                          
