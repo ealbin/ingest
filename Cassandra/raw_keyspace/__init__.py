@@ -51,8 +51,20 @@ def add_error( error_string ):
     misfit.add_error( error_string )
     if __debug_mode: print '[raw_keyspace] error added'
     
+def add_pixel( basics ):
+    event.add_pixel( basics )
+
+def add_byteblock( basics ):
+    event.add_byteblock( basics )
+    
+def add_zerobiassquare( basics ):
+    event.add_zerobiassquare( basics )
+
 def get_n_errors():
     return n_errors
+
+def get_event_uuid():
+    return event.get_uuid()
 
 def set_metadata(host='', tarfile='', tarmember=''):
     is_sucessful  = misfit               .set_metadata( host=host, tarfile=tarfile, tarmember=tarmember )
@@ -83,29 +95,35 @@ def set_headers( basics ):
 #--------------------
 def insert_misfit():
     write.insert( 'raw.misfits', names=misfit.get_names(), values=misfit.get_values() )
+    clear()
     return True
     
 def insert_run_config( basics ):
     run_config.set_basics( basics )
     write.insert( 'raw.run_configs', names=run_config.get_names(), values=run_config.get_values() )
+    run_config.clear()
     return True
 
 def insert_calibration_result( basics ):
     calibration_result.set_basics( basics )
     write.insert( 'raw.calibration_results', names=calibration_result.get_names(), values=calibration_result.get_values() )
+    calibration_result.clear()
     return True
 
 def insert_precalibration_result( basics ):
     precalibration_result.set_basics( basics )
     write.insert( 'raw.precalibration_results', names=precalibration_result.get_names(), values=precalibration_result.get_values() )
+    precalibration_result.clear()
     return True
 
 def insert_exposure_block( basics, daq_state='', event_ids=[] ):
     exposure_block.set_basics( basics, daq_state=daq_state, event_ids=event_ids )
     write.insert( 'raw.exposure_blocks', names=exposure_block.get_names(), values=exposure_block.get_values() )
+    exposure_block.clear()
     return True
     
 def insert_event( basics ):
     event.set_basics( basics )    
     write.insert( 'raw.events', names=event.get_names(), values=event.get_values() )
+    event.clear()
     return True

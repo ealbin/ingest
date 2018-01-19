@@ -16,8 +16,8 @@ def ingest( result, football ):
     result : google protobuf PreCalibrationResult
         PreCalibration to be read
         
-    football : dictionary
-        Collection of Cassandra table name-value pairs representing the data.
+    football : Cassandra football object
+        Interface to Cassandra.
             
     Returns
     -------
@@ -51,9 +51,11 @@ def ingest( result, football ):
     # TODO: handle bytes
     print '>>> [PreCalibrationResult] TODO: handle bytes'
 
+    # save precalibration_result to Cassandra
     if not football.insert_precalibration_result( basics ):
         football.add_error( '[PreCalibrationResult] field name missmatch: {0}'.format([b['field'].name for b in basics]) )
-        football.insert_misfit()
+
+    if not football.get_n_errors():
         return False
     return True
 

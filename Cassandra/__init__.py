@@ -41,11 +41,31 @@ class __BallBag:
         """log an error message
         """
         raw_keyspace.add_error( error )
+
+    def add_pixel(self, basics):
+        """add a pixel to the current event
+        """
+        return raw_keyspace.add_pixel( basics )
+
+    def add_byteblock(self, basics):
+        """add a byteblock to the current event
+        """
+        return raw_keyspace.add_byteblock( basics )
+        
+    def add_zerobiassquare(self, basics):
+        """add a zerobias square to the current event
+        """
+        return raw_keyspace.add_byteblock( basics )
             
     def get_n_errors(self):
         """return N errors logged
         """
         return raw_keyspace.get_n_errors()
+
+    def get_event_uuid(self):
+        """return current event uuid
+        """
+        return raw_keyspace.get_event_uuid()
 
     def set_metadata(self, host='', tarfile='', tarmember=''):
         """log metadata
@@ -121,11 +141,8 @@ class __BallBag:
         is_sucessful = raw_keyspace.insert_event( basics )
         return is_sucessful
 
-# TODO:
-#    def add_pixel( pixel ):
-#    def add_zbias( zerobias ):
-#    def add_byteb( byteblock ):
-    
+#-----------------------------------------------------------------------------
+
 __football = __BallBag()
 if __debug_mode: print '[Cassandra] football is ready'
 
@@ -144,22 +161,3 @@ def get_football():
     """
     if __debug_mode: print '[Cassandra] passing football'
     return __football
-
-#def write_football():
-#    """write football to Cassandra
-#    """
-#    global __football
-#    if not len(__football['error_string']) == 0:
-#        print __football['error_string']
-#    else:
-#        for [k, v] in __football.viewitems():
-#            print '{0}_____: {1}'.format( k.upper(), repr(v)[:1000] )
-#        print '\n\n'    
-#        print __football['crayon_message']
-#        print __football['exposure_blocks']
-#        print __football['run_configs']
-#        print __football['calibration_results']
-#        print __football['precalibration_results']
-#    for [f,v] in __football.viewitems():
-#        print f, v
-

@@ -5,7 +5,7 @@ intended use:
 -------------
 
     from_msg( tarfile.ExFileObject serialized message, Cassandra football  )
-        Ingest extracted message (update the football).
+        Ingest crayon message (and update the football).
 """
 
 import crayfis_data_pb2
@@ -19,13 +19,13 @@ def from_msg( serialized_msg, football ):
     serialized_msg : tarfile.ExFileObject
         Serialized raw object from tarfile.extractfile( message ).
     
-    football : dictionary
-        Collection of Cassandra table name-value pairs representing the data.
+    football : Cassandra football object
+        The interface to Cassandra that gets passed around.
  
     Returns
     -------
     None
-        Implicitly updates the football and passes it.
+        Updates Cassandra through the football, then passes it.
     """
     __debug_mode = False
     
@@ -73,6 +73,7 @@ def from_msg( serialized_msg, football ):
         football.insert_misfit()
         return
 
+    # save current headers
     if not football.set_headers( basics ):
         football.add_error( '[CrayonMessage] field name missmatch: {0}'.format([b['field'].name for b in basics]) )
         football.insert_misfit()

@@ -16,13 +16,13 @@ def ingest( square, football ):
     square : google protobuf ZeroBiasSquare
         Calibration to be read
         
-    football : dictionary
-        Collection of Cassandra table name-value pairs representing the data.
+    football : Cassandra football object
+        Interface to Cassandra.
             
     Returns
     -------
-    None
-        Implicitly updates the football.
+    boolean
+        True if sucessful, False if misfit behavior
     """
     __debug_mode = False
         
@@ -48,5 +48,10 @@ def ingest( square, football ):
     if not len( messages ) == 0:
         football.add_error( '[ZeroBiasSquare] len(messages) = {0} [!= 0]; '.format(len(messages)) )
 
+    if not football.add_zerobiassquare(basics):
+        football.add_error( '[ZeroBiasSquare] Bad zero bias square' )
+        
+    if not football.get_n_errors() == 0:
+        return False
     return True
-    #football['exposure_blocks'][-1]['events'][-1]['zerobiassquares'].append(basics)
+    

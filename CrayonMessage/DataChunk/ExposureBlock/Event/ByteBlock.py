@@ -16,13 +16,13 @@ def ingest( block, football ):
     block : google protobuf ByteBlock
         Calibration to be read
 
-    football : dictionary
-        Collection of Cassandra table name-value pairs representing the data.
+    football : Cassandra football object
+        Interface to Cassandra.
         
     Returns
     -------
-    None
-        Implicitly updates the football.
+    boolean
+        True if sucessfull, False if misfit behavior
     """
     __debug_mode = False
         
@@ -48,6 +48,9 @@ def ingest( block, football ):
     if not len( messages ) == 0:
         football.add_error( '[ByteBlock] len(messages) = {0} [!= 0]; '.format(len(messages)) )
 
+    if not football.add_byteblock(basics):
+        football.add_error( '[ByteBlock] Bad byteblock' )
+        
+    if not football.get_n_errors() == 0:
+        return False
     return True
-#    if not football.set_byte
-#    football['exposure_blocks'][-1]['events'][-1]['byteblocks'].append(basics)

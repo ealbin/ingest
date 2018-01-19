@@ -20,8 +20,8 @@ def ingest( event, football ):
     event : google protobuf Event
         Event to be read
         
-    football : dictionary
-        Collection of Cassandra table name-value pairs representing the data.        
+    football : Cassandra football object
+        Cassandra interface.
         
     Returns
     -------
@@ -55,31 +55,24 @@ def ingest( event, football ):
             for pixel in message['value']:
                 if not Pixel.ingest( pixel, football ):
                     football.add_error( '[Event] bad pixel' )
-                    football.insert_misfit()
-                    return False
         
         elif message['field'].name == 'byteblocks':
             for byteblock in message['value']:
                 if not ByteBlock.ingest( byteblock, football ):
                     football.add_error( '[Event] bad pixel' )
-                    football.insert_misfit()
-                    return False
                 
         elif message['field'].name == 'zerobiassquares':
             for square in message['value']:
                 if not ZeroBiasSquare.ingest( square, football ):
                     football.add_error( '[Event] bad pixel' )
-                    football.insert_misfit()
-                    return False
                             
         else:
             football.add_error( '[Event] message["field"].name = {0} [!= {pixels, byteblocks, zerobiassquares}]; '.format(message['field'].name) )
-            football.insert_misfit()
-            return False
 
+    # save event to Cassandra
     if not football.insert_event( basics ):
         football.add_error( '[Event] field name missmatch: {0}'.format([b['field'].name for b in basics]) )
-        football.insert_misfit()
-        return False
 
+    if not football.get_n_errors():
+        return False
     return True

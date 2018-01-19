@@ -15,6 +15,15 @@ class Football:
         self.__debug_mode = False
         self.clear()
 
+    def add_pixel(self, basics):
+        return True
+    
+    def add_byteblock(self, basics):
+        return True
+        
+    def add_zerobiassquare(self, basics):
+        return True
+
     def clear(self):
         self.device_id          = None # varchar
         self.submit_time        = None # varint
@@ -90,6 +99,10 @@ class Football:
         self.zero_bias          = None # frozen <square>        
         if self.__debug_mode: print '[raw.event] cleared'    
             
+    def get_uuid(self):
+        # TODO: make UUID
+        return 0
+
     def get_names(self):
         # must be in same order as get_values()
         names = ''

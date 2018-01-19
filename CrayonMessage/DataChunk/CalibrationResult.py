@@ -16,8 +16,8 @@ def ingest( result, football ):
     result : google protobuf CalibrationResult
         Calibration to be read
         
-    football : dictionary
-        Collection of Cassandra table name-value pairs representing the data.
+    football : Cassandra football object
+        Interface to Cassandra.
         
     Returns
     -------
@@ -48,8 +48,10 @@ def ingest( result, football ):
     if not len( messages ) == 0:
         football.add_error( '[CalibrationResult] len(messages) = {0} [!= 0]; '.format(len(messages)) )
     
+    # save calibration_result to Cassandra
     if not football.insert_calibration_result( basics ):
         football.add_error( '[CalibrationResult] field name missmatch: {0}'.format([b['field'].name for b in basics]) )
-        football.insert_misfit()
+
+    if not football.get_n_errors() == 0:
         return False
     return True

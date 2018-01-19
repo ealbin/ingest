@@ -18,8 +18,8 @@ def ingest( block, football ):
     block : google protobuf ExposureBlock
         ExposureBlock to be read
     
-    football : dictionary
-        Collection of Cassandra table name-value pairs representing the data.
+    football : Cassandra football object
+        Interface to Cassandra
     
     Returns
     -------
@@ -50,6 +50,7 @@ def ingest( block, football ):
     if not enums[0]['field'].name == 'daq_state':
         football.add_error( '[ExposureBlock] enums[0]["field"].name = {0} [!= "daq_state"]; '.format(enums[0]['field'].name) )
 
+    # translate enum into string
     state = ''
     if   enums[0]['value'] == 0:
         state = 'INIT'
@@ -62,17 +63,23 @@ def ingest( block, football ):
     else:
         football.add_error( '[ExposureBlock] daq_state = {0} [!= {0,1,2,3}]; '.format(enums[0]['value']) )
 
+    # collect event_ids
     event_ids = []
     for message in messages:
         if message['field'].name == 'events':
             for event in message['value']:
-                Event.ingest( event, football )
-                # TODO: update event_ids
+                # save event to Cassandra
+                if not Event.ingest( event, football ):
+                    football.add_error( '[ExposureBlock] bad event' )
+                    continue
+                event_ids.append( football.get_event_uuid() )
         else:
             football.add_error( '[ExposureBlock] message["field"].name = {0} [!= {events, byteblocks, zerobiassquares}]; '.format(message['field'].name) )
 
+    # save exposure_block to Cassandra
     if not football.insert_exposure_block( basics, daq_state=state, event_ids=event_ids ):
         football.add_error( '[ExposureBlock] field name missmatch: {0}'.format([b['field'].name for b in basics]) )
-        football.insert_misfit()
+
+    if not football.get_n_errors() == 0:
         return False
     return True

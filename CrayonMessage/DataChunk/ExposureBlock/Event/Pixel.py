@@ -16,13 +16,13 @@ def ingest( pixel, football ):
     pixel : google protobuf Pixel
         Pixel to be read
         
-    football : dictionary
-        Collection of Cassandra table name-value pairs representing the data.
+    football : Cassandra football object
+        Cassandra interface.
         
     Returns
     -------
-    None
-        Implicitly updates the football.
+    boolean
+        True if sucessful, False if misfit behavior
     """
     __debug_mode = False
 
@@ -48,5 +48,10 @@ def ingest( pixel, football ):
     if not len( messages ) == 0:
         football.add_error( '[Pixel] len(messages) = {0} [!= 0]; '.format(len(messages)) )
 
+    # save pixel basics to event
+    if not football.add_pixel( basics ):
+        football.add_error( '[Pixel] bad pixel' )
+    
+    if not football.get_n_errors():
+        return False
     return True
-#    football.['exposure_blocks'][-1]['events'][-1]['pixels'].append(basics)

@@ -45,12 +45,14 @@ def from_tarfile( filepath ):
     football = Cassandra.get_football()
     for msg_i, message in enumerate(craymsgs):
         football.clear()
+        # save metadata
         if not football.set_metadata(host=host, tarfile=filepath, tarmember=message.name):
             football.add_error( '[ingest] metadata failure, check attribute names ingest/Cassandra/[keyspace]/[table].py' )
             football.insert_misfit()
             continue # abort this one, go to next message
 
         msg = crayfile.extractfile( message )
+        # save message to Cassandra
         CrayonMessage.from_msg( msg, football )
         msg.close()
 

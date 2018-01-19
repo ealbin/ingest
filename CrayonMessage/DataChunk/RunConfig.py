@@ -16,8 +16,8 @@ def ingest( runconfig, football ):
     runconfig : google protobuf RunConfig
         RunConfig to be read
         
-    football : dictionary
-        Collection of Cassandra table name-value pairs representing the data.
+    football : Cassandra football object
+        Interface to Cassandra.
         
     Returns
     -------
@@ -25,7 +25,7 @@ def ingest( runconfig, football ):
         True if sucessful, False if misfit behavior
     """
     __debug_mode = False
-        
+    
     # break out members by type-category                         
     manifest = [ {'field':f, 'value':v} for [f,v] in runconfig.ListFields() ]
     bytes    = [ m for m in manifest if m['field'].type == m['field'].TYPE_BYTES   ]
@@ -48,8 +48,10 @@ def ingest( runconfig, football ):
     if not len( messages ) == 0:
         football.add_error( '[RunConfig] len(messages) = {0} [!= 0]; '.format(len(messages)) )
 
+    # save run_config to Cassandra
     if not football.insert_run_config( basics ):
         football.add_error( '[RunConfig] field name missmatch: {0}'.format([b['field'].name for b in basics]) )
-        football.insert_misfit()
+
+    if not football.get_n_errors() == 0:
         return False
     return True

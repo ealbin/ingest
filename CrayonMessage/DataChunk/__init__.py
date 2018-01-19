@@ -5,7 +5,7 @@ intended use:
 -------------
 
     from_string( string serialized message, Cassandra football )
-        Ingest serialized datachunk (update the football).
+        Ingest serialized datachunk (update Cassandra via the football).
 """    
 
 import crayfis_data_pb2
@@ -23,13 +23,13 @@ def from_string( serialized_chunk, football ):
     serialized_chunk : string
         Serialized protobuf DataChunk object
     
-    football : dictionary
-        Collection of Cassandra table name-value pairs representing the data.
+    football : Cassandra football object
+        Interface to Cassandra that gets passed around.
         
     Returns
     -------
     None
-        Implicitly updates the football and passes it.
+        Updates Cassandra via the football, and then passes it.
     """
     __debug_mode = False
     
@@ -71,28 +71,37 @@ def from_string( serialized_chunk, football ):
         football.insert_misfit()
         return
 
+    # save DataChunks to Cassandra
     for message in messages:
         if message['field'].name == 'exposure_blocks':
             for block in message['value']:
                 if not ExposureBlock.ingest(block, football):
-                    break
+                    football.add_error( '[DataChunk] bad exposure_block' )
+                    football.insert_misfit()
+                    return
 
         elif message['field'].name == 'run_configs':
             for config in message['value']:
                 if not RunConfig.ingest(config, football):
-                    break
+                    football.add_error( '[DataChunk] bad run_config' )
+                    football.insert_misfit()
+                    return
 
         elif message['field'].name == 'calibration_results':                
             for result in message['value']:
                 if not CalibrationResult.ingest(result, football):
-                    break
+                    football.add_error( '[DataChunk] bad calibration_result' )
+                    football.insert_misfit()
+                    return
                 
         elif message['field'].name == 'precalibration_results':
             for result in message['value']:
                 if not PreCalibrationResult.ingest(result, football):
-                    break
+                    football.add_error( '[DataChunk] bad precalibration_result' )
+                    football.insert_misfit()
+                    return
 
         else:
             football.add_error( '[DataChunk] message["field"].name = {0} [!= {exposure_blocks, run_configs, calibration_results, precalibration_results}]; '.format(message['field'].name) )
             football.insert_misfit()
-            break
+            return
