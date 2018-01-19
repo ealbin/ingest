@@ -27,7 +27,7 @@ def from_msg( serialized_msg, football ):
     None
         Implicitly updates the football and passes it.
     """
-    __debug_mode = True
+    __debug_mode = False
     
     # deserialize protobuf CrayonMessage
     protobuf_msg = None
@@ -39,7 +39,8 @@ def from_msg( serialized_msg, football ):
         if __debug_mode: print '[CrayonMessage] DESERIALIZED protobuf string successfully'
     except Exception as e:
         football.add_error('[CrayonMessage] deserialization failure')
-        return
+        football.insert_misfit()
+        return 
                          
     # break out members by type-category                         
     manifest = [ {'field':f, 'value':v} for [f,v] in protobuf_msg.ListFields() ]
@@ -71,6 +72,7 @@ def from_msg( serialized_msg, football ):
 
     if not football.set_headers( basics ):
         football.add_error( '[CrayonMessage] field name missmatch: {0}'.format([b['field'].name for b in basics]) )
+        football.insert_misfit()
         return
 
     # deserialize protobuf datachunk

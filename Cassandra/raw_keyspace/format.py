@@ -2,7 +2,12 @@
 """
 
 def varchar( varchar ):
-    return "'{0}'".format( repr(varchar)[1:-1].replace("'","''") )
+    string = repr(varchar)
+    if string[0].lower() == 'u':
+        string = string[2:-1]
+    else:
+        string = string[1:-1]
+    return "'{0}'".format( string.replace("'","''") )
     
 def inet( inet ):
     return varchar( inet )
@@ -14,12 +19,12 @@ def boolean( boolean ):
     return str(boolean).lower()
 
 def set_numeric( array ):
-    str = '{ '
+    string = '{ '
     for a in array:
-        str += str(a) + ', '
-    str.rstrip(', ')
-    str += ' }'
-    return str
+        string += str(a) + ', '
+    string.rstrip(', ')
+    string += ' }'
+    return string
 
 def byte_block( block ):
     # TODO: this

@@ -4,19 +4,24 @@ inteded use:
 ------------
 
     get_football()
-        The football is a python object for mapping the names
-        of Cassandra table columns across multiple tables in
-        multiple keyspaces to their respective values.  It
-        gets passed down the CrayonMessage hierarchy, and
-        writes to Cassandra as data is ingested.
+        The football interfaces the back-end of 
+        how and what to write to Cassandra across 
+        tables across keyspaces.  Pass it around,
+        and ask it to write for you.
+        
+        intended use:
+            football = get_football()
+            football.clear() # to reset at any time
+            e.g.
+                football.insert_run_config( basics ) 
 """
-__debug_mode = True
+__debug_mode = False
 
 import raw_keyspace
 
 class __BallBag:
     """private class to isolate the user
-    from multiple keyspace footballs.
+    from multiple keyspace footballs...
     If there are multiple keyspaces..
     """
     def __init__(self):
@@ -29,7 +34,9 @@ class __BallBag:
         """clear all footballs of data
         """
         raw_keyspace.clear()
-
+    
+    # Errors and shared data
+    #-----------------------
     def add_error(self, error):
         """log an error message
         """
@@ -44,48 +51,75 @@ class __BallBag:
         """log metadata
         """
         host = repr(host)
-        raw_keyspace.set_metadata( host=host, tarfile=tarfile, tarmember=tarmember )
+        is_sucessful = raw_keyspace.set_metadata( host=host, tarfile=tarfile, tarmember=tarmember )
+        return is_sucessful
 
     def set_serialized(self, serialized_string ):
         """log raw, serialized CrayonMessage
         """
-        raw_keyspace.set_serialized( serialized_string )
+        is_sucessful = raw_keyspace.set_serialized( serialized_string )
+        return is_sucessful
     
     def set_headers(self, basics):
         """log CrayonMessage headers
         """
-        return raw_keyspace.set_headers( basics )
+        is_sucessful = raw_keyspace.set_headers( basics )
+        return is_sucessful
 
-
+    # Specific insertions
+    #--------------------
     def insert_misfit(self):
         """INSERT misfit object into Cassandra
         """
-        return raw_keyspace.insert_misfit()
+        is_sucessful = raw_keyspace.insert_misfit()
+        return is_sucessful
 
-    def insert_runconfig(self, basics):
+    def insert_run_config(self, basics):
         """INSERT runconfig object into Cassandra
+           Parameters:
+               basics : Google protobuf field descriptor object and value
         """ 
-        return raw_keyspace.insert_runconfig( basics )
+        is_sucessful = raw_keyspace.insert_run_config( basics )
+        return is_sucessful
         
     def insert_calibration_result(self, basics):
         """INSERT calibration_result object into Cassandra
+           Parameters:
+               basics : Google protobuf field descriptor object and value        
         """
-        return raw_keyspace.insert_calibration_result( basics )
+        is_sucessful = raw_keyspace.insert_calibration_result( basics )
+        return is_sucessful
 
     def insert_precalibration_result(self, basics):
         """INSERT precalibration_result object into Cassandra
+           Parameters:
+               basics : Google protobuf field descriptor object and value        
         """
-        return raw_keyspace.insert_precalibration_result( basics )
+        is_sucessful = raw_keyspace.insert_precalibration_result( basics )
+        return is_sucessful
 
     def insert_exposure_block(self, basics, daq_state='', event_ids=[]):
         """INSERT exposure_block object into Cassandra
+           Parameters:
+               basics    : Google protobuf field descriptor object and value
+                           Collection of basic data types (no objects).
+                           
+               daq_state : string
+                           Decoded daq_state enum string.
+                           
+               event_ids : array
+                           UUIDs of related events that occured in this block.
         """
-        return raw_keyspace.insert_exposure_block( basics, daq_state=daq_state, event_ids=event_ids )
+        is_sucessful = raw_keyspace.insert_exposure_block( basics, daq_state=daq_state, event_ids=event_ids )
+        return is_sucessful
 
     def insert_event(self, basics):
         """INSERT event object into Cassandra
+           Parameters:
+               basics : Google protobuf field descriptor object and value 
         """
-        return raw_keyspace.insert_event( basics )
+        is_sucessful = raw_keyspace.insert_event( basics )
+        return is_sucessful
 
 # TODO:
 #    def add_pixel( pixel ):
@@ -97,9 +131,16 @@ if __debug_mode: print '[Cassandra] football is ready'
 
 def get_football():
     """Returns football.
-    The football is a python object for mapping the names
-    of Cassandra table columns across multiple tables in
-    multiple keyspaces to their respective values.
+    The football interfaces the back-end of 
+    how and what to write to Cassandra across 
+    tables across keyspaces.  Pass it around,
+    and ask it to write for you.
+    
+    intended use:
+        football = get_football()
+        football.clear() # to reset at any time
+        e.g.
+            football.insert_run_config( basics ) 
     """
     if __debug_mode: print '[Cassandra] passing football'
     return __football

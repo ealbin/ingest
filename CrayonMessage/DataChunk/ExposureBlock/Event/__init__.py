@@ -25,8 +25,8 @@ def ingest( event, football ):
         
     Returns
     -------
-    None
-        Implicitly updates the football.
+    boolean
+        True if sucessful, False if misfit behavior.
     """
     __debug_mode = False
 
@@ -53,18 +53,33 @@ def ingest( event, football ):
     for message in messages:
         if message['field'].name == 'pixels':
             for pixel in message['value']:
-                Pixel.ingest( pixel, football )
+                if not Pixel.ingest( pixel, football ):
+                    football.add_error( '[Event] bad pixel' )
+                    football.insert_misfit()
+                    return False
         
         elif message['field'].name == 'byteblocks':
             for byteblock in message['value']:
-                ByteBlock.ingest( byteblock, football )
+                if not ByteBlock.ingest( byteblock, football ):
+                    football.add_error( '[Event] bad pixel' )
+                    football.insert_misfit()
+                    return False
                 
         elif message['field'].name == 'zerobiassquares':
             for square in message['value']:
-                ZeroBiasSquare.ingest( square, football )
-        
+                if not ZeroBiasSquare.ingest( square, football ):
+                    football.add_error( '[Event] bad pixel' )
+                    football.insert_misfit()
+                    return False
+                            
         else:
             football.add_error( '[Event] message["field"].name = {0} [!= {pixels, byteblocks, zerobiassquares}]; '.format(message['field'].name) )
+            football.insert_misfit()
+            return False
 
     if not football.insert_event( basics ):
         football.add_error( '[Event] field name missmatch: {0}'.format([b['field'].name for b in basics]) )
+        football.insert_misfit()
+        return False
+
+    return True

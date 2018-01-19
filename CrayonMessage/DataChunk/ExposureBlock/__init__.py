@@ -23,8 +23,8 @@ def ingest( block, football ):
     
     Returns
     -------
-    None
-        Implicitly updates the football.
+    boolean
+        True if sucessful, False if misfit behavior.
     """
     __debug_mode = False
     
@@ -73,3 +73,6 @@ def ingest( block, football ):
 
     if not football.insert_exposure_block( basics, daq_state=state, event_ids=event_ids ):
         football.add_error( '[ExposureBlock] field name missmatch: {0}'.format([b['field'].name for b in basics]) )
+        football.insert_misfit()
+        return False
+    return True

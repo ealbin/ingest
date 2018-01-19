@@ -24,7 +24,7 @@ def ingest( block, football ):
     None
         Implicitly updates the football.
     """
-    __debug_mode = True
+    __debug_mode = False
         
     # break out members by type-category                         
     manifest = [ {'field':f, 'value':v} for [f,v] in block.ListFields() ]

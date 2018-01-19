@@ -1,8 +1,10 @@
 """`run_configs` Cassandra Football
 
 Acts as the interface between Google protobuf
-and Cassandra.  Updated by direct member access
-as passed around.
+and Cassandra.  Updated by set_() functions.
+Cassandra-compatable strings are returned by
+get_() functions.
+
 """
 
 import format
@@ -10,7 +12,7 @@ import format
 class Football:
 
     def __init__(self):
-        self.__debug_mode = True
+        self.__debug_mode = False
         self.clear()
 
     def clear(self):
@@ -23,8 +25,10 @@ class Football:
         self.app_code      = None # varchar
         self.remote_addr   = None # inet
         
-        self.run_id        = None # varint
-        self.run_id_hi     = None # varint
+        # appears as id / id_hi in Google protobuf
+        # appears as run_id / run_id_hi in Cassandra
+        self.id            = None # varint
+        self.id_hi         = None # varint
         
         self.start_time    = None # varint
         self.crayfis_build = None # varchar
@@ -35,7 +39,7 @@ class Football:
         if self.__debug_mode: print '[raw.run_config] cleared'
         
     def get_names(self):
-        # must be in same order as values()
+        # must be in same order as get_values()
         names = ''
         if self.device_id     is not None: names += 'device_id, '
         if self.submit_time   is not None: names += 'submit_time, '
@@ -45,8 +49,8 @@ class Football:
         if self.user_id       is not None: names += 'user_id, '
         if self.app_code      is not None: names += 'app_code, '
         if self.remote_addr   is not None: names += 'remote_addr, '
-        if self.run_id        is not None: names += 'run_id, '
-        if self.run_id_hi     is not None: names += 'run_id_hi, '
+        if self.id            is not None: names += 'run_id, '
+        if self.id_hi         is not None: names += 'run_id_hi, '
         if self.start_time    is not None: names += 'start_time, '
         if self.crayfis_build is not None: names += 'crayfis_build, '
         if self.hw_params     is not None: names += 'hw_params, '
@@ -58,7 +62,7 @@ class Football:
         return names               
     
     def get_values(self):
-        # must be in same order as names()
+        # must be in same order as get_names()
         values = ''
         if self.device_id     is not None: values += format.varchar(self.device_id)     + ', '
         if self.submit_time   is not None: values += str(self.submit_time)              + ', '
@@ -68,8 +72,8 @@ class Football:
         if self.user_id       is not None: values += str(self.user_id)                  + ', '
         if self.app_code      is not None: values += format.varchar(self.app_code)      + ', '
         if self.remote_addr   is not None: values += format.inet(self.remote_addr)      + ', '
-        if self.run_id        is not None: values += str(self.run_id)                   + ', '
-        if self.run_id_hi     is not None: values += str(self.run_id_hi)                + ', '
+        if self.id            is not None: values += str(self.id)                       + ', '
+        if self.id_hi         is not None: values += str(self.id_hi)                    + ', '
         if self.start_time    is not None: values += str(self.start_time)               + ', '
         if self.crayfis_build is not None: values += format.varchar(self.crayfis_build) + ', '
         if self.hw_params     is not None: values += format.varchar(self.hw_params)     + ', '
@@ -85,6 +89,7 @@ class Football:
         self.tarfile   = tarfile
         self.tarmember = tarmember
         if self.__debug_mode: print '[raw.run_config] metadata set'
+        return True
 
     def set_basics(self, basics ):
         for basic in basics:
@@ -93,6 +98,6 @@ class Football:
             except Exception as e:
                 if self.__debug_mode: print '[raw.run_config] attribute unknown: ' + basic['field'].name
                 return False
-        return True
         if self.__debug_mode: print '[raw.run_config] basics set'
+        return True
 

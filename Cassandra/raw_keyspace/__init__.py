@@ -2,7 +2,7 @@
 
 intended use:
 -------------
-    Intended to be called by Cassandra interface.
+    Internals of the Cassandra football.
     Handles neuances unique to the `raw` keyspace.
     
     Tables:
@@ -13,7 +13,7 @@ intended use:
         calibration_results
         precalibration_results
 """    
-__debug_mode = True
+__debug_mode = False
 
 import Misfit
 import ExposureBlock
@@ -21,6 +21,8 @@ import Event
 import RunConfig
 import CalibrationResult
 import PreCalibrationResult
+
+import write
 
 misfit                = Misfit.Football()
 exposure_block        = ExposureBlock.Football()
@@ -41,6 +43,8 @@ def clear():
     precalibration_result.clear()
     if __debug_mode: print '[raw_keyspace] football cleared'
 
+# Errors and shared data
+#-----------------------
 def add_error( error_string ):
     global n_errors
     n_errors += 1
@@ -51,50 +55,57 @@ def get_n_errors():
     return n_errors
 
 def set_metadata(host='', tarfile='', tarmember=''):
-    misfit               .set_metadata( host=host, tarfile=tarfile, tarmember=tarmember )
-    exposure_block       .set_metadata( host=host, tarfile=tarfile, tarmember=tarmember )
-    event                .set_metadata( host=host, tarfile=tarfile, tarmember=tarmember )
-    run_config           .set_metadata( host=host, tarfile=tarfile, tarmember=tarmember )
-    calibration_result   .set_metadata( host=host, tarfile=tarfile, tarmember=tarmember )
-    precalibration_result.set_metadata( host=host, tarfile=tarfile, tarmember=tarmember )
+    is_sucessful  = misfit               .set_metadata( host=host, tarfile=tarfile, tarmember=tarmember )
+    is_sucessful &= exposure_block       .set_metadata( host=host, tarfile=tarfile, tarmember=tarmember )
+    is_sucessful &= event                .set_metadata( host=host, tarfile=tarfile, tarmember=tarmember )
+    is_sucessful &= run_config           .set_metadata( host=host, tarfile=tarfile, tarmember=tarmember )
+    is_sucessful &= calibration_result   .set_metadata( host=host, tarfile=tarfile, tarmember=tarmember )
+    is_sucessful &= precalibration_result.set_metadata( host=host, tarfile=tarfile, tarmember=tarmember )
     if __debug_mode: print '[raw_keyspace] metadata set: ' + host[:20] + '...' + tarfile[-20:] + ' ' + tarmember
+    return is_sucessful
 
 def set_serialized( serialized_string ):
-    misfit.set_serialized( serialized_string )
+    is_sucessful = misfit.set_serialized( serialized_string )
     if __debug_mode: print '[raw_keyspace] serialized message set'
+    return is_sucessful
     
 def set_headers( basics ):
-    is_sucessful  = True
-    is_sucessful &= misfit               .set_basics( basics )
+    is_sucessful  = misfit               .set_basics( basics )
     is_sucessful &= exposure_block       .set_basics( basics )
     is_sucessful &= event                .set_basics( basics )
     is_sucessful &= run_config           .set_basics( basics )
     is_sucessful &= calibration_result   .set_basics( basics )
     is_sucessful &= precalibration_result.set_basics( basics )
     if __debug_mode: print '[raw_keyspace] headers set'
-    return True
-#    return is_sucessful
+    return is_sucessful
 
+# Specific insertions
+#--------------------
 def insert_misfit():
-# TODO:    misfit.write
-    pass
+    write.insert( names=misfit.get_names(), values=misfit.get_values() )
+    return True
     
 def insert_run_config( basics ):
-    if run_config.set_basics( basics ):
-        run_config.write
-#    return run_config.set_basics( basics )
     run_config.set_basics( basics )
+    write.insert( names=run_config.get_names(), values=run_config.get_values() )
+    return True
 
 def insert_calibration_result( basics ):
-    return calibration_result.set_basics( basics )
+    calibration_result.set_basics( basics )
+    write.insert( names=calibration_result.get_names(), values=calibration_result.get_values() )
+    return True
 
 def insert_precalibration_result( basics ):
-    return precalibration_result.set_basics( basics )
+    precalibration_result.set_basics( basics )
+    write.insert( names=precalibration_result.get_names(), values=precalibration_result.get_values() )
+    return True
 
 def insert_exposure_block( basics, daq_state='', event_ids=[] ):
-    exposure_block.daq_state = daq_state
-    exposure_block.event_ids = event_ids
-    return exposure_block.set_basics( basics )
+    exposure_block.set_basics( basics, daq_state=daq_state, event_ids=event_ids )
+    write.insert( names=exposure_block.get_names(), values=exposure_block.get_values() )
+    return True
     
 def insert_event( basics ):
-    return event.set_basics( basics )
+    event.set_basics( basics )    
+    write.insert( names=eventsget_names(), values=event.get_values() )
+    return True

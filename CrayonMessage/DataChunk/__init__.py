@@ -31,7 +31,7 @@ def from_string( serialized_chunk, football ):
     None
         Implicitly updates the football and passes it.
     """
-    __debug_mode = True
+    __debug_mode = False
     
     # deserialize protobuf DataChunk
     chunk = None
@@ -40,6 +40,7 @@ def from_string( serialized_chunk, football ):
         if __debug_mode: print '[DataChunk] DESERIALIZED protobuf string successfully'
     except Exception as e:
         football.add_error( '[DataChunk] deserialization failure' )
+        football.insert_misfit()
         return
 
     # break out members by type-category                         
@@ -78,18 +79,20 @@ def from_string( serialized_chunk, football ):
 
         elif message['field'].name == 'run_configs':
             for config in message['value']:
-                #RunConfig.ingest(config, football)
-                pass
+                if not RunConfig.ingest(config, football):
+                    break
 
         elif message['field'].name == 'calibration_results':                
             for result in message['value']:
-                #CalibrationResult.ingest(result, football)
-                pass
+                if not CalibrationResult.ingest(result, football):
+                    break
                 
         elif message['field'].name == 'precalibration_results':
             for result in message['value']:
-                #PreCalibrationResult.ingest(result, football)
-                pass
+                if not PreCalibrationResult.ingest(result, football):
+                    break
 
         else:
             football.add_error( '[DataChunk] message["field"].name = {0} [!= {exposure_blocks, run_configs, calibration_results, precalibration_results}]; '.format(message['field'].name) )
+            football.insert_misfit()
+            break

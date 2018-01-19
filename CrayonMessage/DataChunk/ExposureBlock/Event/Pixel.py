@@ -40,12 +40,12 @@ def ingest( pixel, football ):
 
     # enforce expected structure
     if not len(manifest) - len(bytes) - len(messages) - len(enums) - len(basics) == 0:
-        football['error_string'] += '[Pixel] len(all) - len(expected) = {0} [!= 0]; '.format(len(manifest)-len(bytes)-len(messages)-len(enums)-len(basics))
+        football.add_error( '[Pixel] len(all) - len(expected) = {0} [!= 0]; '.format(len(manifest)-len(bytes)-len(messages)-len(enums)-len(basics)) )
     if not len( bytes ) == 0:
-        football['error_string'] += '[Pixel] len(bytes) = {0} [!= 0]; '.format(len(bytes))
+        football.add_error( '[Pixel] len(bytes) = {0} [!= 0]; '.format(len(bytes)) )
     if not len( enums ) == 0:
-        football['error_string'] += '[Pixel] len(enums) = {0} [!= 0]; '.format(len(enums))    
+        football.add_error( '[Pixel] len(enums) = {0} [!= 0]; '.format(len(enums)) )
     if not len( messages ) == 0:
-        football['error_string'] += '[Pixel] len(messages) = {0} [!= 0]; '.format(len(messages))        
+        football.add_error( '[Pixel] len(messages) = {0} [!= 0]; '.format(len(messages)) )
 
-    football['exposure_blocks'][-1]['events'][-1]['pixels'].append(basics)
+#    football.['exposure_blocks'][-1]['events'][-1]['pixels'].append(basics)

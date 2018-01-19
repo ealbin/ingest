@@ -27,8 +27,8 @@ def from_tarfile( filepath ):
     None
         Writes data contained in filepath to Cassandra
     """
-    __debug_mode = True
-    __debug_N    = 10
+    __debug_mode = False
+    __debug_N    = 100
     
     # load tarfile into memory
     try:
@@ -46,7 +46,11 @@ def from_tarfile( filepath ):
 
     for msg_i, message in enumerate(craymsgs):
         football.clear()
-        football.set_metadata(host=host, tarfile=filepath, tarmember=message.name)
+        is_sucessful = football.set_metadata(host=host, tarfile=filepath, tarmember=message.name)
+        if not is_sucessful:
+            football.add_error( '[ingest] metadata failure, check attribute names ingest/Cassandra/[keyspace]/[table].py' )
+            football.insert_misfit()
+            continue
 
         msg = crayfile.extractfile( message )
         CrayonMessage.from_msg( msg, football )

@@ -1,8 +1,10 @@
 """`precalibration_results` Cassandra Football
 
 Acts as the interface between Google protobuf
-and Cassandra.  Updated by direct member access
-as passed around.
+and Cassandra.  Updated by set_() functions.
+Cassandra-compatable strings are returned by
+get_() functions.
+
 """
 
 import format
@@ -10,7 +12,7 @@ import format
 class Football:
     
     def __init__(self):
-        self.__debug_mode = True
+        self.__debug_mode = False
         self.clear()
 
     def clear(self):
@@ -47,7 +49,7 @@ class Football:
         if self.__debug_mode: print '[raw.precalibration_result] cleared'
         
     def get_names(self):
-        # must be same order as values()
+        # must be same order as get_values()
         names = ''
         if self.device_id          is not None: names += 'device_id, '
         if self.submit_time        is not None: names += 'submit_time, '
@@ -78,7 +80,7 @@ class Football:
         return names               
     
     def get_values(self):
-        # must be same order as names()
+        # must be same order as get_names()
         values = ''
         if self.device_id          is not None: values += format.varchar(self.device_id)          + ', '
         if self.submit_time        is not None: values += str(self.submit_time)                   + ', '
@@ -113,6 +115,7 @@ class Football:
         self.tarfile   = tarfile
         self.tarmember = tarmember
         if self.__debug_mode: print '[raw.precalibration_result] metadata set'
+        return True
 
     def set_basics(self, basics ):
         for basic in basics:
@@ -121,5 +124,6 @@ class Football:
             except Exception as e:
                 if self.__debug_mode: print '[raw.precalibration_result] attribute unknown: ' + basic['field'].name
                 return False
-        return True
         if self.__debug_mode: print '[raw.precalibration_result] basics set'
+        return True
+

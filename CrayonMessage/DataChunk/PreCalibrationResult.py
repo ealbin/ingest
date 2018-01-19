@@ -21,8 +21,8 @@ def ingest( result, football ):
             
     Returns
     -------
-    None
-        Implicitly updates the football.
+    boolean
+        True if sucessful, False if mifit behavior.
     """
     __debug_mode = False
         
@@ -53,4 +53,7 @@ def ingest( result, football ):
 
     if not football.insert_precalibration_result( basics ):
         football.add_error( '[PreCalibrationResult] field name missmatch: {0}'.format([b['field'].name for b in basics]) )
+        football.insert_misfit()
+        return False
+    return True
 
