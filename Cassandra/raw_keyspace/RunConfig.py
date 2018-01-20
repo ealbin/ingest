@@ -7,7 +7,7 @@ get_() functions.
 
 """
 
-import format
+import writer.format as format
 
 class Football:
 
