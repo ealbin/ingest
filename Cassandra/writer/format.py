@@ -27,35 +27,36 @@ def set_numeric( array ):
     return string
 
 def byte_block( block ):
-    # TODO: this
-    return '' 
+    string  = '{ '
+    if 'x'           in block: string += 'x: {0}, '.format( set_numeric( block['x'] ) )
+    if 'y'           in block: string += 'y: {0}, '.format( set_numeric( block['y'] ) )
+    if 'val'         in block: string += 'val: {0}, '.format( set_numeric( block['val'] ) ) 
+    if 'side_length' in block: string += 'side_length: {0}, '.format( block['side_length'] )
+    string = string[:-2] + ' }'
+    return string
 
 def zero_bias( square ):
-    # TODO: this
-    return ''
-    
+    string  = '{ '
+    if 'x_min'        in square: string += 'x_min: {0}, '.format( square['x_min'] )
+    if 'y_min'        in square: string += 'y_min: {0}, '.format( square['y_min'] ) 
+    if 'val'          in square: string += 'val: {0}, '.format( square['val'] )
+    if 'frame_number' in square: string += 'frame_number: {0}, '.format( square['frame_number'] )
+    string = string[:-2] + ' }'
+    return string
+
 def pixels( pixels ):
-    # TODO: this
-    return ''
-    
-    
-# pixel type def
-#x               varint
-#y               varint
-#val             varint
-#adjusted_val    varint
-#near_max        varint
-#ave_3           double
-#ave_5           double
-
-# square type def
-#x_min           varint
-#y_min           varint
-#val             varint
-#frame_number    varint 
-
-# byteblock type def
-#x               set<varint>
-#y               set<varint>
-#val             set<varint>
-#side_length     varint 
+    string = '{ '
+    for n, pixel in enumerate(pixels):
+        string += 'pixel_{0}: '.format(n)
+        string += '{ '
+        
+        if 'x'            in pixel: string += 'x: {0}, '.format( pixel['x'] )
+        if 'y'            in pixel: string += 'y: {0}, '.format( pixel['y'] )
+        if 'val'          in pixel: string += 'val: {0}, '.format( pixel['val'] )
+        if 'adjusted_val' in pixel: string += 'adjusted_val: {0}, '.format( pixel['adjusted_val'] )
+        if 'near_max'     in pixel: string += 'near_max: {0}, '.format( pixel['near_max'] )
+        if 'ave_3'        in pixel: string += 'ave_3: {0}, '.format( pixel['ave_3'] )
+        if 'ave_5'        in pixel: string += 'ave_5: {0}, '.format( pixel['ave_5'] )
+        string = string[:-2] + ' }, '
+    string = string[:-2] + ' }'
+    return string
