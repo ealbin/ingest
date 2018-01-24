@@ -117,7 +117,7 @@ class Football:
         if self.__debug_mode: print '[raw.precalibration_result] metadata set'
         return True
 
-    def set_basics(self, basics, compressed_weights='' ):
+    def set_attributes(self, basics, compressed_weights=None ):
         self.compressed_weights = compressed_weights
         for basic in basics:
             try:

@@ -68,7 +68,8 @@ class Football:
         self.xbn              = None # varint
         self.aborted          = None # boolean
         
-        self.event_ids        = None # set<uuid>
+        self.block_uuid       = None # varchar
+        self.n_events         = None # varint
         if self.__debug_mode: print '[raw.exposure_block] cleared'    
         
     def get_names(self):
@@ -119,7 +120,8 @@ class Football:
         if self.hist             is not None: names += 'hist, '
         if self.xbn              is not None: names += 'xbn, '
         if self.aborted          is not None: names += 'aborted, '
-        if self.event_ids        is not None: names += 'event_ids, '
+        if self.block_uuid       is not None: names += 'block_uuid, '
+        if self.n_events         is not None: names += 'n_events, '
         if names != '': names = names[:-2]
         if self.__debug_mode: print '[raw.exposure_block] names: ' + names
         return names               
@@ -172,7 +174,8 @@ class Football:
         if self.hist             is not None: values += format.set_numeric(self.hist)      + ', '
         if self.xbn              is not None: values += str(self.xbn)                      + ', '
         if self.aborted          is not None: values += format.boolean(self.aborted)       + ', '
-        if self.event_ids        is not None: values += format.set_numeric(self.event_ids) + ', '
+        if self.block_uuid       is not None: values += format.varchar(self.block_uuid)    + ', '
+        if self.n_events         is not None: values += str(self.n_events)                 + ', '
         if values != '': values = values[:-2]
         if self.__debug_mode: print '[raw.exposure_block] values[:100]: ' + values[:100]
         return values
@@ -184,9 +187,10 @@ class Football:
         if self.__debug_mode: print '[raw.exposure_block] metadata set'
         return True
 
-    def set_basics(self, basics, daq_state='', event_ids=[] ):
-        self.daq_state = daq_state
-        self.event_ids = event_ids
+    def set_attributes(self, basics, daq_state='', block_uuid=None, n_events=0 ):
+        self.daq_state  = daq_state
+        self.block_uuid = block_uuid
+        self.n_events   = n_events
         for basic in basics:
             try:
                 setattr( self, basic['field'].name, basic['value'] )

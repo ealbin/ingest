@@ -12,7 +12,7 @@ import ByteBlock
 import Pixel
 import ZeroBiasSquare
 
-def ingest( event, football ):
+def ingest( event, football, block_uuid=None ):
     """Ingest protobuf object.
     
     Parameters
@@ -75,13 +75,13 @@ def ingest( event, football ):
         else:
             football.add_error( '[Event] message["field"].name = {0} [!= {pixels, byteblocks, zerobiassquares}]; '.format(message['field'].name) )
 
-    if not football.get_n_errors():
+    if not football.get_n_errors() == 0:
         return False
         
     # save event to Cassandra
-    if not football.insert_event( basics, pixels=pixels, byteblock=byteblock, zerobias=zerobias ):
+    if not football.insert_event( basics, block_uuid=block_uuid, pixels=pixels, byteblock=byteblock, zerobias=zerobias ):
         football.add_error( '[Event] field name missmatch: {0}'.format([b['field'].name for b in basics]) )
 
-    if not football.get_n_errors():
+    if not football.get_n_errors() == 0:
         return False
     return True

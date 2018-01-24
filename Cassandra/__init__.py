@@ -106,33 +106,38 @@ class __BallBag:
         is_sucessful = raw_keyspace.insert_precalibration_result( basics, compressed_weights=compressed_weights )
         return is_sucessful
 
-    def insert_exposure_block(self, basics, daq_state='', event_ids=[]):
+    def insert_exposure_block(self, basics, daq_state='', block_uuid=None, n_events=0):
         """INSERT exposure_block object into Cassandra
            Parameters:
-               basics    : Google protobuf field descriptor object and value
-                           Collection of basic data types (no objects).
+               basics     : Google protobuf field descriptor object and value
+                            Collection of basic data types (no objects).
                            
-               daq_state : string
-                           Decoded daq_state enum string.
+               daq_state  : string
+                            Decoded daq_state enum string.
                            
-               event_ids : array
-                           UUIDs of related events that occured in this block.
+               block_uuid : uuid.uuid5( uuid.NAMESPACE_DNS, string )
+                            SHA1 hash UUID composed of a string: start_time+end_time to identify this block.
+                            
+               n_events   : int
+                            Number of events in this exposure block
         """
-        is_sucessful = raw_keyspace.insert_exposure_block( basics, daq_state=daq_state, event_ids=event_ids )
+        is_sucessful = raw_keyspace.insert_exposure_block( basics, daq_state=daq_state, block_uuid=block_uuid, n_events=n_events )
         return is_sucessful
 
-    def insert_event(self, basics, pixels=[], byteblock={}, zerobias={}):
+    def insert_event(self, basics, block_uuid=None, pixels=[], byteblock={}, zerobias={}):
         """INSERT event object into Cassandra
            Parameters:
-               basics    : Google protobuf field descriptor object and value 
+               basics     : Google protobuf field descriptor object and value 
                
-               pixels    : array of name-value attribute pairs for pixels
+               block_uuid : unique identifier to parent exposure block
                
-               byteblock : name-value attribute pairs for byteblock
+               pixels     : array of name-value attribute pairs for pixels
                
-               zerobias  : name-value attribute pairs for zero bias square
+               byteblock  : name-value attribute pairs for byteblock
+               
+               zerobias   : name-value attribute pairs for zero bias square
         """
-        is_sucessful = raw_keyspace.insert_event( basics, pixels=pixels, byteblock=byteblock, zerobias=zerobias )
+        is_sucessful = raw_keyspace.insert_event( basics, block_uuid=block_uuid, pixels=pixels, byteblock=byteblock, zerobias=zerobias )
         return is_sucessful
 
 #-----------------------------------------------------------------------------

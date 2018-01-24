@@ -91,7 +91,7 @@ class Football:
         if self.__debug_mode: print '[raw.run_config] metadata set'
         return True
 
-    def set_basics(self, basics ):
+    def set_attributes(self, basics):
         for basic in basics:
             try:
                 setattr( self, basic['field'].name, basic['value'] )

@@ -8,6 +8,7 @@ intended use:
         Ingest protobuf object (update the football).
 """    
 
+import uuid
 import Event
 
 def ingest( block, football ):
@@ -66,26 +67,39 @@ def ingest( block, football ):
     if not football.get_n_errors() == 0:
         return False
 
-    # collect event_ids
-    event_ids = []
+    # compute block_uuid
+    # SHA1 hash of start_time and end_time 
+    # (in the DNS namespace, because I had to give it one..)
+    start_time = None
+    end_time   = None
+    for basic in basics:
+        if basic['field'].name == 'start_time':
+            start_time = str( basic['value'] )
+        elif basic['field'].name == 'end_time':
+            end_time = str( basic['value'] )
+    if start_time is None or end_time is None:
+        football.add_error( '[ExposureBlock] could not find start_time and/or end_time' )
+        return False            
+    block_uuid = uuid.uuid5( uuid.NAMESPACE_DNS, start_time + end_time )
+
+    n_events = 0
     for message in messages:
         if message['field'].name == 'events':
             for event in message['value']:
                 # save event to Cassandra
-                # TODO: get uuid from events
-                if not Event.ingest( event, football ):
+                n_events += 1
+                if not Event.ingest( event, football, block_uuid=block_uuid ):
                     football.add_error( '[ExposureBlock] bad event' )
                     continue
-                event_ids.append( football.get_event_uuid() )
         else:
             football.add_error( '[ExposureBlock] message["field"].name = {0} [!= {events, byteblocks, zerobiassquares}]; '.format(message['field'].name) )
 
     if not football.get_n_errors() == 0:
         return False
-        
+
     # save exposure_block to Cassandra
-    if not football.insert_exposure_block( basics, daq_state=state, event_ids=event_ids ):
-        football.add_error( '[ExposureBlock] field name missmatch: {0}'.format([b['field'].name for b in basics]) )
+    if not football.insert_exposure_block( basics, daq_state=state, block_uuid=block_uuid, n_events=n_events ):
+        football.add_error( '[ExposureBlock] field name missmatch: {0}'.format([b['field'].name for b in basics]) )        
 
     if not football.get_n_errors() == 0:
         return False

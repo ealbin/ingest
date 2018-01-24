@@ -85,15 +85,12 @@ class Football:
         self.hist               = None # set<varint>
         self.xbn                = None # varint
         
+        self.block_uuid         = None # varchar
         self.byte_block         = None # frozen <byteblock> 
         self.pixels             = None # set<frozen <pixel>>            
         self.zero_bias          = None # frozen <square>        
         if self.__debug_mode: print '[raw.event] cleared'    
             
-    def get_uuid(self):
-        # TODO: make UUID
-        return 0
-
     def get_names(self):
         # must be in same order as get_values()
         names = ''
@@ -156,6 +153,7 @@ class Football:
         if self.std                is not None: names += 'std, '
         if self.hist               is not None: names += 'hist, '
         if self.xbn                is not None: names += 'xbn, '
+        if self.block_uuid         is not None: names += 'block_uuid, '
         if self.byte_block         is not None: names += 'byte_block, '
         if self.pixels             is not None: names += 'pixels, '
         if self.zero_bias          is not None: names += 'zero_bias, '
@@ -225,6 +223,7 @@ class Football:
         if self.std                is not None: values += str(self.std)                      + ', '
         if self.hist               is not None: values += format.set_numeric(self.hist)      + ', '
         if self.xbn                is not None: values += str(self.xbn)                      + ', '
+        if self.block_uuid         is not None: values += format.varchar(self.block_uuid)    + ', '
         if self.byte_block         is not None: values += format.byte_block(self.byte_block) + ', '
         if self.pixels             is not None: values += format.pixels(self.pixels)         + ', '
         if self.zero_bias          is not None: values += format.zero_bias(self.zer_bias)    + ', '
@@ -239,7 +238,7 @@ class Football:
         if self.__debug_mode: print '[raw.event] metadata set'
         return True
 
-    def set_basics(self, basics):
+    def set_attributes(self, basics):
         for basic in basics:
             try:
                 setattr( self, basic['field'].name, basic['value'] )
@@ -249,6 +248,9 @@ class Football:
         if self.__debug_mode: print '[raw.event] basics set'
         return True
 
+
+    def set_block_uuid(self, block_uuid):
+        self.block_uuid = block_uuid
 
     def set_pixels(self, pixels):
         self.pixels = pixels
