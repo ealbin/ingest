@@ -48,6 +48,9 @@ def ingest( result, football ):
     if not len( messages ) == 0:
         football.add_error( '[CalibrationResult] len(messages) = {0} [!= 0]; '.format(len(messages)) )
     
+    if not football.get_n_errors() == 0:
+        return False
+            
     # save calibration_result to Cassandra
     if not football.insert_calibration_result( basics ):
         football.add_error( '[CalibrationResult] field name missmatch: {0}'.format([b['field'].name for b in basics]) )

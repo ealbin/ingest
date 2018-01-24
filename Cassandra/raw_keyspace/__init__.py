@@ -51,15 +51,6 @@ def add_error( error_string ):
     misfit.add_error( error_string )
     if __debug_mode: print '[raw_keyspace] error added'
     
-def add_pixel( basics ):
-    event.add_pixel( basics )
-
-def add_byteblock( basics ):
-    event.add_byteblock( basics )
-    
-def add_zerobiassquare( basics ):
-    event.add_zerobiassquare( basics )
-
 def get_n_errors():
     return n_errors
 
@@ -110,8 +101,8 @@ def insert_calibration_result( basics ):
     calibration_result.clear()
     return True
 
-def insert_precalibration_result( basics ):
-    precalibration_result.set_basics( basics )
+def insert_precalibration_result( basics, compressed_weights='' ):
+    precalibration_result.set_basics( basics, compressed_weights=compressed_weights )
     writer.insert( 'raw.precalibration_results', names=precalibration_result.get_names(), values=precalibration_result.get_values() )
     precalibration_result.clear()
     return True
@@ -122,8 +113,11 @@ def insert_exposure_block( basics, daq_state='', event_ids=[] ):
     exposure_block.clear()
     return True
     
-def insert_event( basics ):
-    event.set_basics( basics )    
+def insert_event( basics, pixels=[], byteblock={}, zerobias={} ):
+    event.set_basics( basics )
+    event.set_pixels( pixels )
+    event.set_byteblock( byteblock )
+    event.set_zerobias( zerobias )    
     writer.insert( 'raw.events', names=event.get_names(), values=event.get_values() )
     event.clear()
     return True

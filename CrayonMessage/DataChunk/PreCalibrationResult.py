@@ -48,14 +48,14 @@ def ingest( result, football ):
     if not len( messages ) == 0:
         football.add_error( '[PreCalibrationResult] len(messages) = {0} [!= 0]; '.format(len(messages)) )
 
-    # TODO: handle bytes
-    print '>>> [PreCalibrationResult] TODO: handle bytes'
-
+    if not football.get_n_errors() == 0:
+        return False
+        
     # save precalibration_result to Cassandra
-    if not football.insert_precalibration_result( basics ):
+    if not football.insert_precalibration_result( basics, compressed_weights=bytes ):
         football.add_error( '[PreCalibrationResult] field name missmatch: {0}'.format([b['field'].name for b in basics]) )
 
-    if not football.get_n_errors():
+    if not football.get_n_errors() == 0:
         return False
     return True
 

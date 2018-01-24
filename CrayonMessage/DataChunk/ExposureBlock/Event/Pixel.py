@@ -21,8 +21,8 @@ def ingest( pixel, football ):
         
     Returns
     -------
-    boolean
-        True if sucessful, False if misfit behavior
+    python dictionary
+        name : value pairs of pixel
     """
     __debug_mode = False
 
@@ -48,10 +48,12 @@ def ingest( pixel, football ):
     if not len( messages ) == 0:
         football.add_error( '[Pixel] len(messages) = {0} [!= 0]; '.format(len(messages)) )
 
-    # save pixel basics to event
-    if not football.add_pixel( basics ):
-        football.add_error( '[Pixel] bad pixel' )
+    # build dictionary
+    pdict = { 'x':None, 'y':None, 'val':None, 'adjusted_val':None, 'near_max':None, 'avg_3':None, 'avg_5':None }
+    for basic in basics:
+        if basic['field'].name not in pdict.keys():
+            football.add_error( '[Pixel] unknown attribute: {0}'.format(basic['field'].name) )
+            continue
+        pdict[ basic['field'].name ] = basic['value']
     
-    if not football.get_n_errors():
-        return False
-    return True
+    return pdict

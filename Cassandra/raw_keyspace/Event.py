@@ -15,15 +15,6 @@ class Football:
         self.__debug_mode = False
         self.clear()
 
-    def add_pixel(self, basics):
-        return True
-    
-    def add_byteblock(self, basics):
-        return True
-        
-    def add_zerobiassquare(self, basics):
-        return True
-
     def clear(self):
         self.device_id          = None # varchar
         self.submit_time        = None # varint
@@ -248,7 +239,7 @@ class Football:
         if self.__debug_mode: print '[raw.event] metadata set'
         return True
 
-    def set_basics(self, basics ):
+    def set_basics(self, basics):
         for basic in basics:
             try:
                 setattr( self, basic['field'].name, basic['value'] )
@@ -259,3 +250,11 @@ class Football:
         return True
 
 
+    def set_pixels(self, pixels):
+        self.pixels = pixels
+            
+    def set_byteblock(self, byteblock):
+        self.byteblock = byteblock
+        
+    def set_zerobias(self, zerobias):
+        self.zerobias = zerobias

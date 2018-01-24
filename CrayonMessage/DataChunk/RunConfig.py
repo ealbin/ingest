@@ -48,6 +48,9 @@ def ingest( runconfig, football ):
     if not len( messages ) == 0:
         football.add_error( '[RunConfig] len(messages) = {0} [!= 0]; '.format(len(messages)) )
 
+    if not football.get_n_errors() == 0:
+        return False
+        
     # save run_config to Cassandra
     if not football.insert_run_config( basics ):
         football.add_error( '[RunConfig] field name missmatch: {0}'.format([b['field'].name for b in basics]) )

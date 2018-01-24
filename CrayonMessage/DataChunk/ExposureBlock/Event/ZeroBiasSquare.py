@@ -21,8 +21,8 @@ def ingest( square, football ):
             
     Returns
     -------
-    boolean
-        True if sucessful, False if misfit behavior
+    python dictionary
+        name : value pairs of square
     """
     __debug_mode = False
         
@@ -48,10 +48,12 @@ def ingest( square, football ):
     if not len( messages ) == 0:
         football.add_error( '[ZeroBiasSquare] len(messages) = {0} [!= 0]; '.format(len(messages)) )
 
-    if not football.add_zerobiassquare(basics):
-        football.add_error( '[ZeroBiasSquare] Bad zero bias square' )
+    # build dictionary
+    zbsdict = { 'x_min':None, 'y_min':None, 'val':None, 'frame_number':None }
+    for basic in basics:
+        if basic['field'].name not in zbsdict.keys():
+            football.add_error( '[ZeroBiasSquare] unknown attribute: {0}'.format(basic['field'].name) )
+            continue
+        zbsdict[ basic['field'].name ] = basic['field'].value
         
-    if not football.get_n_errors() == 0:
-        return False
-    return True
-    
+    return zbsdict    

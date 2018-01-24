@@ -63,12 +63,16 @@ def ingest( block, football ):
     else:
         football.add_error( '[ExposureBlock] daq_state = {0} [!= {0,1,2,3}]; '.format(enums[0]['value']) )
 
+    if not football.get_n_errors() == 0:
+        return False
+
     # collect event_ids
     event_ids = []
     for message in messages:
         if message['field'].name == 'events':
             for event in message['value']:
                 # save event to Cassandra
+                # TODO: get uuid from events
                 if not Event.ingest( event, football ):
                     football.add_error( '[ExposureBlock] bad event' )
                     continue
@@ -76,6 +80,9 @@ def ingest( block, football ):
         else:
             football.add_error( '[ExposureBlock] message["field"].name = {0} [!= {events, byteblocks, zerobiassquares}]; '.format(message['field'].name) )
 
+    if not football.get_n_errors() == 0:
+        return False
+        
     # save exposure_block to Cassandra
     if not football.insert_exposure_block( basics, daq_state=state, event_ids=event_ids ):
         football.add_error( '[ExposureBlock] field name missmatch: {0}'.format([b['field'].name for b in basics]) )

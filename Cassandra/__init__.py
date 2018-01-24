@@ -42,21 +42,6 @@ class __BallBag:
         """
         raw_keyspace.add_error( error )
 
-    def add_pixel(self, basics):
-        """add a pixel to the current event
-        """
-        return raw_keyspace.add_pixel( basics )
-
-    def add_byteblock(self, basics):
-        """add a byteblock to the current event
-        """
-        return raw_keyspace.add_byteblock( basics )
-        
-    def add_zerobiassquare(self, basics):
-        """add a zerobias square to the current event
-        """
-        return raw_keyspace.add_byteblock( basics )
-            
     def get_n_errors(self):
         """return N errors logged
         """
@@ -110,12 +95,15 @@ class __BallBag:
         is_sucessful = raw_keyspace.insert_calibration_result( basics )
         return is_sucessful
 
-    def insert_precalibration_result(self, basics):
+    def insert_precalibration_result(self, basics, compressed_weights=''):
         """INSERT precalibration_result object into Cassandra
            Parameters:
-               basics : Google protobuf field descriptor object and value        
+               basics : Google protobuf field descriptor object and value
+               
+               compressed_weights : string
+                                    Serialized weights        
         """
-        is_sucessful = raw_keyspace.insert_precalibration_result( basics )
+        is_sucessful = raw_keyspace.insert_precalibration_result( basics, compressed_weights=compressed_weights )
         return is_sucessful
 
     def insert_exposure_block(self, basics, daq_state='', event_ids=[]):
@@ -133,12 +121,18 @@ class __BallBag:
         is_sucessful = raw_keyspace.insert_exposure_block( basics, daq_state=daq_state, event_ids=event_ids )
         return is_sucessful
 
-    def insert_event(self, basics):
+    def insert_event(self, basics, pixels=[], byteblock={}, zerobias={}):
         """INSERT event object into Cassandra
            Parameters:
-               basics : Google protobuf field descriptor object and value 
+               basics    : Google protobuf field descriptor object and value 
+               
+               pixels    : array of name-value attribute pairs for pixels
+               
+               byteblock : name-value attribute pairs for byteblock
+               
+               zerobias  : name-value attribute pairs for zero bias square
         """
-        is_sucessful = raw_keyspace.insert_event( basics )
+        is_sucessful = raw_keyspace.insert_event( basics, pixels=pixels, byteblock=byteblock, zerobias=zerobias )
         return is_sucessful
 
 #-----------------------------------------------------------------------------

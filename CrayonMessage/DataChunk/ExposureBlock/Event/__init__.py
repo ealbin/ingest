@@ -50,27 +50,36 @@ def ingest( event, football ):
     if not len( enums ) == 0:
         football.add_error( '[Event] len(enums) = {0} [!= 0]; '.format(len(enums)) )  
 
+    pixels    = []
+    byteblock = None
+    zerobias  = None
     for message in messages:
         if message['field'].name == 'pixels':
             for pixel in message['value']:
-                if not Pixel.ingest( pixel, football ):
-                    football.add_error( '[Event] bad pixel' )
+                pixels.append( Pixel.ingest(pixel, football) )
         
         elif message['field'].name == 'byteblocks':
             for byteblock in message['value']:
-                if not ByteBlock.ingest( byteblock, football ):
-                    football.add_error( '[Event] bad pixel' )
+                if byteblock is not None:
+                    football.add_error( '[Event] too many byteblocks' )
+                else:
+                    byteblock = ByteBlock.ingest(byteblock, football)
                 
         elif message['field'].name == 'zerobiassquares':
             for square in message['value']:
-                if not ZeroBiasSquare.ingest( square, football ):
-                    football.add_error( '[Event] bad pixel' )
+                if zerobias is not None:
+                    football.add_error( '[Event] too many zero-bias squares' )
+                else:
+                    zerobias = ZeroBiasSquare.ingest(square, football)
                             
         else:
             football.add_error( '[Event] message["field"].name = {0} [!= {pixels, byteblocks, zerobiassquares}]; '.format(message['field'].name) )
 
+    if not football.get_n_errors():
+        return False
+        
     # save event to Cassandra
-    if not football.insert_event( basics ):
+    if not football.insert_event( basics, pixels=pixels, byteblock=byteblock, zerobias=zerobias ):
         football.add_error( '[Event] field name missmatch: {0}'.format([b['field'].name for b in basics]) )
 
     if not football.get_n_errors():

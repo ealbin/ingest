@@ -21,8 +21,8 @@ def ingest( block, football ):
         
     Returns
     -------
-    boolean
-        True if sucessfull, False if misfit behavior
+    python dictionary
+        name : value pairs of block
     """
     __debug_mode = False
         
@@ -48,9 +48,12 @@ def ingest( block, football ):
     if not len( messages ) == 0:
         football.add_error( '[ByteBlock] len(messages) = {0} [!= 0]; '.format(len(messages)) )
 
-    if not football.add_byteblock(basics):
-        football.add_error( '[ByteBlock] Bad byteblock' )
-        
-    if not football.get_n_errors() == 0:
-        return False
-    return True
+    # build dictionary
+    bbdict = { 'x':None, 'y':None, 'val':None, 'side_length':None }
+    for basic in basics:
+        if basic['field'].name not in bbdict.keys():
+            football.add_error( '[ByteBlock] unknown attribute: {0}'.format(basic['field'].name) )
+            continue
+        bbdict[ basic['field'].name ] = basic['value']
+
+    return bbdict
