@@ -54,9 +54,6 @@ def add_error( error_string ):
 def get_n_errors():
     return n_errors
 
-def get_event_uuid():
-    return event.get_uuid()
-
 def set_metadata(host='', tarfile='', tarmember=''):
     is_sucessful  = misfit               .set_metadata( host=host, tarfile=tarfile, tarmember=tarmember )
     is_sucessful &= exposure_block       .set_metadata( host=host, tarfile=tarfile, tarmember=tarmember )
@@ -85,31 +82,31 @@ def set_headers( basics ):
 # Specific insertions
 #--------------------
 def insert_misfit():
-    writer.insert( 'raw.misfits', names=misfit.get_names(), values=misfit.get_values() )
+    writer.insert( table='raw.misfits', names=misfit.get_names(), values=misfit.get_values() )
     clear()
     return True
     
 def insert_run_config( basics ):
     run_config.set_attributes( basics )
-    writer.insert( 'raw.run_configs', names=run_config.get_names(), values=run_config.get_values() )
+    writer.insert( table='raw.run_configs', names=run_config.get_names(), values=run_config.get_values() )
     run_config.clear()
     return True
 
 def insert_calibration_result( basics ):
     calibration_result.set_attributes( basics )
-    writer.insert( 'raw.calibration_results', names=calibration_result.get_names(), values=calibration_result.get_values() )
+    writer.insert( table='raw.calibration_results', names=calibration_result.get_names(), values=calibration_result.get_values() )
     calibration_result.clear()
     return True
 
 def insert_precalibration_result( basics, compressed_weights='' ):
     precalibration_result.set_attributes( basics, compressed_weights=compressed_weights )
-    writer.insert( 'raw.precalibration_results', names=precalibration_result.get_names(), values=precalibration_result.get_values() )
+    writer.insert( table='raw.precalibration_results', names=precalibration_result.get_names(), values=precalibration_result.get_values() )
     precalibration_result.clear()
     return True
 
 def insert_exposure_block( basics, daq_state='', block_uuid=None, n_events=0 ):
     exposure_block.set_attributes( basics, daq_state=daq_state, block_uuid=block_uuid, n_events=n_events )
-    writer.insert( 'raw.exposure_blocks', names=exposure_block.get_names(), values=exposure_block.get_values() )
+    writer.insert( table='raw.exposure_blocks', names=exposure_block.get_names(), values=exposure_block.get_values() )
     exposure_block.clear()
     return True
     
@@ -119,6 +116,6 @@ def insert_event( basics, block_uuid=None, pixels=[], byteblock={}, zerobias={} 
     event.set_pixels( pixels )
     event.set_byteblock( byteblock )
     event.set_zerobias( zerobias )    
-    writer.insert( 'raw.events', names=event.get_names(), values=event.get_values() )
+    writer.insert( table='raw.events', names=event.get_names(), values=event.get_values() )
     event.clear()
     return True

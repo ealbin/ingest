@@ -174,7 +174,7 @@ class Football:
         if self.hist             is not None: values += format.set_numeric(self.hist)      + ', '
         if self.xbn              is not None: values += str(self.xbn)                      + ', '
         if self.aborted          is not None: values += format.boolean(self.aborted)       + ', '
-        if self.block_uuid       is not None: values += format.varchar(self.block_uuid)    + ', '
+        if self.block_uuid       is not None: values += str(self.block_uuid)               + ', '
         if self.n_events         is not None: values += str(self.n_events)                 + ', '
         if values != '': values = values[:-2]
         if self.__debug_mode: print '[raw.exposure_block] values[:100]: ' + values[:100]

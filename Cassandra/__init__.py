@@ -22,6 +22,13 @@ inteded use:
 __debug_mode = False
 
 import raw_keyspace
+import writer
+
+########################
+# initialize Cassandra #
+########################
+writer.init_raw.clear()  # comment out to save database
+writer.init_raw.do_it()  # tells Cassandra the structure
 
 class __BallBag:
     """private class to isolate the user
