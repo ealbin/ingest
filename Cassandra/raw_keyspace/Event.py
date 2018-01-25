@@ -15,6 +15,9 @@ class Football:
         self.__debug_mode = False
         self.clear()
 
+    def load(self):
+        pass
+        
     def clear(self):
         self.device_id          = None # varchar
         self.submit_time        = None # varint
@@ -25,8 +28,7 @@ class Football:
         self.app_code           = None # varchar
         self.remote_addr        = None # inet
     
-        self.event_id           = None # uuid
-        self.run_id             = None # varint
+        self.run_id             = None # uuid
         self.run_id_hi          = None # varint
         self.precal_id          = None # varint
         self.precal_id_hi       = None # varint
@@ -102,7 +104,6 @@ class Football:
         if self.user_id            is not None: names += 'user_id, '
         if self.app_code           is not None: names += 'app_code, '
         if self.remote_addr        is not None: names += 'remote_addr, '
-        if self.event_id           is not None: names += 'event_id, '
         if self.run_id             is not None: names += 'run_id, '
         if self.run_id_hi          is not None: names += 'run_id_hi, '
         if self.precal_id          is not None: names += 'precal_id, '
@@ -136,9 +137,12 @@ class Football:
         if self.timestamp_nano     is not None: names += 'timestamp_nano, '
         if self.timestamp_ntp      is not None: names += 'timestamp_ntp, '
         if self.timestamp_target   is not None: names += 'timestamp_target, '        
-        if self.gps_lat            is not None: names += 'gps_lat, '
-        if self.gps_lon            is not None: names += 'gps_lon, '
-        if self.gps_altitude       is not None: names += 'gps_altitude, '
+        #if self.gps_lat            is not None: names += 'gps_lat, '
+        #if self.gps_lon            is not None: names += 'gps_lon, '
+        #if self.gps_altitude       is not None: names += 'gps_altitude, '
+        names += 'gps_lat, ' # used as primary key, must be present
+        names += 'gps_lon, '
+        names += 'gps_altitude, '        
         if self.gps_accuracy       is not None: names += 'gps_accuracy, '
         if self.gps_fixtime        is not None: names += 'gps_fixtime, '
         if self.gps_fixtime_nano   is not None: names += 'gps_fixtime_nano, '
@@ -172,7 +176,6 @@ class Football:
         if self.user_id            is not None: values += str(self.user_id)                    + ', '
         if self.app_code           is not None: values += format.varchar(self.app_code)        + ', '
         if self.remote_addr        is not None: values += format.inet(self.remote_addr)        + ', '
-        if self.event_id           is not None: values += str(self.event_id)                   + ', '
         if self.run_id             is not None: values += str(self.run_id)                     + ', '
         if self.run_id_hi          is not None: values += str(self.run_id_hi)                  + ', '
         if self.precal_id          is not None: values += str(self.precal_id)                  + ', '
@@ -207,8 +210,11 @@ class Football:
         if self.timestamp_ntp      is not None: values += str(self.timestamp_ntp)              + ', '
         if self.timestamp_target   is not None: values += str(self.timestamp_target)           + ', '
         if self.gps_lat            is not None: values += str(self.gps_lat)                    + ', '
+        else: values += '-1, ' # used as primary key, must be present
         if self.gps_lon            is not None: values += str(self.gps_lon)                    + ', '
+        else: values += '-1, '        
         if self.gps_altitude       is not None: values += str(self.gps_altitude)               + ', '
+        else: values += '-1, '        
         if self.gps_accuracy       is not None: values += str(self.gps_accuracy)               + ', '
         if self.gps_fixtime        is not None: values += str(self.gps_fixtime)                + ', '        
         if self.gps_fixtime_nano   is not None: values += str(self.gps_fixtime_nano)           + ', '
@@ -238,7 +244,8 @@ class Football:
         if self.__debug_mode: print '[raw.event] metadata set'
         return True
 
-    def set_attributes(self, basics):
+    def set_attributes(self, basics, device_id=None):
+        self.device_id = device_id
         for basic in basics:
             try:
                 setattr( self, basic['field'].name, basic['value'] )

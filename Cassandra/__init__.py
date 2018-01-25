@@ -130,10 +130,12 @@ class __BallBag:
         is_sucessful = raw_keyspace.insert_exposure_block( basics, daq_state=daq_state, block_uuid=block_uuid, n_events=n_events )
         return is_sucessful
 
-    def insert_event(self, basics, block_uuid=None, pixels=[], byteblock={}, zerobias={}):
+    def insert_event(self, basics, device_id=None, block_uuid=None, pixels=[], byteblock={}, zerobias={}):
         """INSERT event object into Cassandra
            Parameters:
                basics     : Google protobuf field descriptor object and value 
+               
+               device_id  : device_id (sometimes not included in event basics)
                
                block_uuid : unique identifier to parent exposure block
                
@@ -143,7 +145,7 @@ class __BallBag:
                
                zerobias   : name-value attribute pairs for zero bias square
         """
-        is_sucessful = raw_keyspace.insert_event( basics, block_uuid=block_uuid, pixels=pixels, byteblock=byteblock, zerobias=zerobias )
+        is_sucessful = raw_keyspace.insert_event( basics, device_id=device_id, block_uuid=block_uuid, pixels=pixels, byteblock=byteblock, zerobias=zerobias )
         return is_sucessful
 
 #-----------------------------------------------------------------------------

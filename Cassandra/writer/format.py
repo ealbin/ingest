@@ -22,8 +22,7 @@ def set_numeric( array ):
     string = '{ '
     for a in array:
         string += str(a) + ', '
-    string.rstrip(', ')
-    string += ' }'
+    string = string[:-2] + ' }'
     return string
 
 def byte_block( block ):
@@ -47,7 +46,6 @@ def zero_bias( square ):
 def pixels( pixels ):
     string = '{ '
     for n, pixel in enumerate(pixels):
-        string += 'pixel_{0}: '.format(n)
         string += '{ '
         
         if 'x'            in pixel: string += 'x: {0}, '.format( pixel['x'] )

@@ -110,12 +110,13 @@ def insert_exposure_block( basics, daq_state='', block_uuid=None, n_events=0 ):
     exposure_block.clear()
     return True
     
-def insert_event( basics, block_uuid=None, pixels=[], byteblock={}, zerobias={} ):
-    event.set_attributes( basics )
+def insert_event( basics, device_id=None, block_uuid=None, pixels=[], byteblock={}, zerobias={} ):
+    event.set_attributes( basics, device_id=device_id )
     event.set_block_uuid( block_uuid )
     event.set_pixels( pixels )
     event.set_byteblock( byteblock )
     event.set_zerobias( zerobias )    
     writer.insert( table='raw.events', names=event.get_names(), values=event.get_values() )
-    event.clear()
+#    event.clear()  #  don't clear events between writes so headers/meta data need not be 
+# re-saved everytime
     return True
