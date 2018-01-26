@@ -1,0 +1,9 @@
+Cassandra data ingestion module
+
+To use in python:
+
+
+import ingest
+
+ingest.from_tarfile( filepath ) 
+(expects a cassandra cluster named "crayvault")
