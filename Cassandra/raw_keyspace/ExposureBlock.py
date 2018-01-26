@@ -24,7 +24,9 @@ class Football:
         self.user_id          = None # varint
         self.app_code         = None # varchar
         self.remote_addr      = None # inet
+        self.reset()
         
+    def reset(self):       
         self.precal_id        = None # varint
         self.precal_id_hi     = None # varint
         
@@ -70,7 +72,7 @@ class Football:
         
         self.block_uuid       = None # varchar
         self.n_events         = None # varint
-        if self.__debug_mode: print '[raw.exposure_block] cleared'    
+        if self.__debug_mode: print '[raw.exposure_block] reset'    
         
     def get_names(self):
         # must be in same order as get_values()

@@ -51,7 +51,7 @@ def pixels( pixels ):
         if 'x'            in pixel: string += 'x: {0}, '.format( pixel['x'] )
         if 'y'            in pixel: string += 'y: {0}, '.format( pixel['y'] )
         if 'val'          in pixel: string += 'val: {0}, '.format( pixel['val'] )
-        if 'adjusted_val' in pixel: string += 'adjusted_val: {0}, '.format( pixel['adjusted_val'] )
+        if 'adjusted_val' in pixel  and pixel['adjusted_val'] is not None: string += 'adjusted_val: {0}, '.format( pixel['adjusted_val'] )
         if 'near_max'     in pixel: string += 'near_max: {0}, '.format( pixel['near_max'] )
         if 'ave_3'        in pixel: string += 'ave_3: {0}, '.format( pixel['ave_3'] )
         if 'ave_5'        in pixel: string += 'ave_5: {0}, '.format( pixel['ave_5'] )

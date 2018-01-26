@@ -27,8 +27,10 @@ class Football:
         self.user_id            = None # varint
         self.app_code           = None # varchar
         self.remote_addr        = None # inet
-    
-        self.run_id             = None # uuid
+        self.reset()
+
+    def reset(self):            
+        self.run_id             = None # varint
         self.run_id_hi          = None # varint
         self.precal_id          = None # varint
         self.precal_id_hi       = None # varint
@@ -244,8 +246,7 @@ class Football:
         if self.__debug_mode: print '[raw.event] metadata set'
         return True
 
-    def set_attributes(self, basics, device_id=None):
-        self.device_id = device_id
+    def set_attributes(self, basics):
         for basic in basics:
             try:
                 setattr( self, basic['field'].name, basic['value'] )
@@ -254,6 +255,17 @@ class Football:
                 return False
         if self.__debug_mode: print '[raw.event] basics set'
         return True
+
+    def set_block_attributes(self, block_basics, daq_state=''):
+        for basic in block_basics:
+            try:
+                setattr( self, basic['field'].name, basic['value'] )
+            except Exception as e:
+                # it's ok not to denormalize everything
+                pass
+        self.daq_state = daq_state
+        if self.__debug_mode: print '[raw.event] block_basics set'
+        return True        
 
 
     def set_block_uuid(self, block_uuid):

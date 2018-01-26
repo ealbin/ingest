@@ -130,22 +130,25 @@ class __BallBag:
         is_sucessful = raw_keyspace.insert_exposure_block( basics, daq_state=daq_state, block_uuid=block_uuid, n_events=n_events )
         return is_sucessful
 
-    def insert_event(self, basics, device_id=None, block_uuid=None, pixels=[], byteblock={}, zerobias={}):
+    def insert_event(self, basics, block_basics=None, daq_state='', block_uuid=None, pixels=[], byteblock={}, zerobias={}):
         """INSERT event object into Cassandra
            Parameters:
-               basics     : Google protobuf field descriptor object and value 
+               basics       : Google protobuf field descriptor object and value 
                
-               device_id  : device_id (sometimes not included in event basics)
+               block_basics : Google protobuf field descriptor object and value
+                              from cooresponding exposure block for denormalization
                
-               block_uuid : unique identifier to parent exposure block
+               daq_state    : string, decoded daq_state enum string              
+
+               block_uuid   : unique identifier to parent exposure block
                
-               pixels     : array of name-value attribute pairs for pixels
+               pixels       : array of name-value attribute pairs for pixels
                
-               byteblock  : name-value attribute pairs for byteblock
+               byteblock    : name-value attribute pairs for byteblock
                
-               zerobias   : name-value attribute pairs for zero bias square
+               zerobias     : name-value attribute pairs for zero bias square
         """
-        is_sucessful = raw_keyspace.insert_event( basics, device_id=device_id, block_uuid=block_uuid, pixels=pixels, byteblock=byteblock, zerobias=zerobias )
+        is_sucessful = raw_keyspace.insert_event( basics, block_basics=block_basics, daq_state=daq_state, block_uuid=block_uuid, pixels=pixels, byteblock=byteblock, zerobias=zerobias )
         return is_sucessful
 
 #-----------------------------------------------------------------------------

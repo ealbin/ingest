@@ -24,7 +24,9 @@ class Football:
         self.user_id            = None # varint
         self.app_code           = None # varchar
         self.remote_addr        = None # inet
-        
+        self.reset()
+    
+    def reset(self):        
         self.run_id             = None # varint
         self.run_id_hi          = None # varint
         self.precal_id          = None # varint
@@ -46,7 +48,7 @@ class Football:
         self.second_hist        = None # set<varint>
         self.hotcell            = None # set<varint>
         self.res_x              = None # varint
-        if self.__debug_mode: print '[raw.precalibration_result] cleared'
+        if self.__debug_mode: print '[raw.precalibration_result] reset'
         
     def get_names(self):
         # must be same order as get_values()

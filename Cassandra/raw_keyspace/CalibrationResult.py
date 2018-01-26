@@ -24,8 +24,10 @@ class Football:
         self.user_id       = None # varint
         self.app_code      = None # varchar
         self.remote_addr   = None # inet
-        
-        self.run_id        = None # varint
+        self.reset()
+     
+    def reset(self):
+        self.run_id        = None # uuid
         self.run_id_hi     = None # varint
         
         self.start_time    = None # varint
@@ -35,7 +37,7 @@ class Football:
         self.hist_l2pixel  = None # set<varint>
         self.hist_maxpixel = None # set<varint>
         self.hist_numpixel = None # set<varint>        
-        if self.__debug_mode: print '[raw.calibration_result] cleared'
+        if self.__debug_mode: print '[raw.calibration_result] reset'
             
     def get_names(self):
         # must be same order as get_values()

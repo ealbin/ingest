@@ -72,14 +72,11 @@ def ingest( block, football ):
     # (in the DNS namespace, because I had to give it one..)
     start_time = None
     end_time   = None
-    device_id  = None
     for basic in basics:
         if basic['field'].name == 'start_time':
             start_time = str( basic['value'] )
         elif basic['field'].name == 'end_time':
             end_time = str( basic['value'] )
-        elif basic['field'].name == 'device_id':
-            device_id = str( basic['value'] )
     if start_time is None or end_time is None:
         football.add_error( '[ExposureBlock] could not find start_time and/or end_time' )
         return False            
@@ -91,8 +88,7 @@ def ingest( block, football ):
             for event in message['value']:
                 # save event to Cassandra
                 n_events += 1
-                print 'device id: ' + str(device_id)
-                if not Event.ingest( event, football, device_id=device_id, block_uuid=block_uuid ):
+                if not Event.ingest( event, football, block_basics=basics, daq_state=state, block_uuid=block_uuid ):
                     football.add_error( '[ExposureBlock] bad event' )
                     continue
         else:

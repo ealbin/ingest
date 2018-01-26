@@ -24,7 +24,9 @@ class Football:
         self.user_id       = None # varint
         self.app_code      = None # varchar
         self.remote_addr   = None # inet
-        
+        self.reset()
+
+    def reset(self):        
         # appears as id / id_hi in Google protobuf
         # appears as run_id / run_id_hi in Cassandra
         self.id            = None # varint
@@ -36,7 +38,7 @@ class Football:
         self.os_params     = None # varchar
         self.camera_params = None # varchar
         self.camera_id     = None # varint
-        if self.__debug_mode: print '[raw.run_config] cleared'
+        if self.__debug_mode: print '[raw.run_config] reset'
         
     def get_names(self):
         # must be in same order as get_values()
