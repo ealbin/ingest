@@ -7,7 +7,7 @@ get_() functions.
 
 """
 
-import writer.format as format
+from ..writer import compose as compose
 
 class Football:
 
@@ -170,14 +170,14 @@ class Football:
     def get_values(self):
         # must be in same order as get_names()
         values = ''
-        if self.device_id          is not None: values += format.varchar(self.device_id)       + ', '
+        if self.device_id          is not None: values += compose.varchar(self.device_id)       + ', '
         if self.submit_time        is not None: values += str(self.submit_time)                + ', '
-        if self.tarfile            is not None: values += format.varchar(self.tarfile)         + ', '
-        if self.tarmember          is not None: values += format.varchar(self.tarmember)       + ', '        
-        if self.host               is not None: values += format.varchar(self.host)            + ', '
+        if self.tarfile            is not None: values += compose.varchar(self.tarfile)         + ', '
+        if self.tarmember          is not None: values += compose.varchar(self.tarmember)       + ', '        
+        if self.host               is not None: values += compose.varchar(self.host)            + ', '
         if self.user_id            is not None: values += str(self.user_id)                    + ', '
-        if self.app_code           is not None: values += format.varchar(self.app_code)        + ', '
-        if self.remote_addr        is not None: values += format.inet(self.remote_addr)        + ', '
+        if self.app_code           is not None: values += compose.varchar(self.app_code)        + ', '
+        if self.remote_addr        is not None: values += compose.inet(self.remote_addr)        + ', '
         if self.run_id             is not None: values += str(self.run_id)                     + ', '
         if self.run_id_hi          is not None: values += str(self.run_id_hi)                  + ', '
         if self.precal_id          is not None: values += str(self.precal_id)                  + ', '
@@ -188,14 +188,14 @@ class Football:
         if self.end_time_nano      is not None: values += str(self.end_time_nano)              + ', '
         if self.start_time_ntp     is not None: values += str(self.start_time_ntp)             + ', '
         if self.end_time_ntp       is not None: values += str(self.end_time_ntp)               + ', '
-        if self.daq_state          is not None: values += format.varchar(self.daq_state)       + ', '
+        if self.daq_state          is not None: values += compose.varchar(self.daq_state)       + ', '
         if self.res_x              is not None: values += str(self.res_x)                      + ', '
         if self.res_y              is not None: values += str(self.res_y)                      + ', '
         if self.L1_thresh          is not None: values += str(self.L1_thresh)                  + ', '
         if self.L2_thresh          is not None: values += str(self.L2_thresh)                  + ', '
-        if self.L0_conf            is not None: values += format.varchar(self.L0_conf)         + ', '
-        if self.L1_conf            is not None: values += format.varchar(self.L1_conf)         + ', '
-        if self.L2_conf            is not None: values += format.varchar(self.L2_conf)         + ', '       
+        if self.L0_conf            is not None: values += compose.varchar(self.L0_conf)         + ', '
+        if self.L1_conf            is not None: values += compose.varchar(self.L1_conf)         + ', '
+        if self.L2_conf            is not None: values += compose.varchar(self.L2_conf)         + ', '       
         if self.L0_processed       is not None: values += str(self.L0_processed)               + ', '
         if self.L1_processed       is not None: values += str(self.L1_processed)               + ', '
         if self.L2_processed       is not None: values += str(self.L2_processed)               + ', '
@@ -206,7 +206,7 @@ class Football:
         if self.L1_skip            is not None: values += str(self.L1_skip)                    + ', '
         if self.L2_skip            is not None: values += str(self.L2_skip)                    + ', '
         if self.frames_dropped     is not None: values += str(self.frames_dropped)             + ', '
-        if self.aborted            is not None: values += format.boolean(self.aborted)         + ', '
+        if self.aborted            is not None: values += compose.boolean(self.aborted)         + ', '
         if self.timestamp          is not None: values += str(self.timestamp)                  + ', '
         if self.timestamp_nano     is not None: values += str(self.timestamp_nano)             + ', '
         if self.timestamp_ntp      is not None: values += str(self.timestamp_ntp)              + ', '
@@ -229,12 +229,12 @@ class Football:
         if self.orient_z           is not None: values += str(self.orient_z)                   + ', '
         if self.avg                is not None: values += str(self.avg)                        + ', '
         if self.std                is not None: values += str(self.std)                        + ', '
-        if self.hist               is not None: values += format.set_numeric(self.hist)        + ', '
+        if self.hist               is not None: values += compose.set_numeric(self.hist)        + ', '
         if self.xbn                is not None: values += str(self.xbn)                        + ', '
         if self.block_uuid         is not None: values += str(self.block_uuid)                 + ', '
-        if self.byte_block         is not None: values += format.byte_block(self.byte_block)   + ', '
-        if self.pixels             is not None: values += format.pixels(self.pixels)           + ', '
-        if self.zero_bias          is not None: values += format.zero_bias(self.zer_bias)      + ', '
+        if self.byte_block         is not None: values += compose.byte_block(self.byte_block)   + ', '
+        if self.pixels             is not None: values += compose.pixels(self.pixels)           + ', '
+        if self.zero_bias          is not None: values += compose.zero_bias(self.zer_bias)      + ', '
         if values != '': values = values[:-2]
         if self.__debug_mode: print '[raw.event] values[:100]: ' + values[:100]
         return values

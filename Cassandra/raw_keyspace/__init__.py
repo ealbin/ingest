@@ -22,7 +22,7 @@ import RunConfig
 import CalibrationResult
 import PreCalibrationResult
 
-import writer
+from .. import writer
 
 misfit                = Misfit.Football()
 exposure_block        = ExposureBlock.Football()

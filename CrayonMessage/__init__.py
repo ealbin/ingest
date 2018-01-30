@@ -8,7 +8,7 @@ intended use:
         Ingest crayon message (and update the football).
 """
 
-import crayfis_data_pb2
+from .. import crayfis_data_pb2
 import DataChunk
 
 def from_msg( serialized_msg, football ):

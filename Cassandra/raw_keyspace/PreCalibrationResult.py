@@ -7,7 +7,7 @@ get_() functions.
 
 """
 
-import writer.format as format
+from ..writer import compose as compose
 
 class Football:
     
@@ -84,29 +84,29 @@ class Football:
     def get_values(self):
         # must be same order as get_names()
         values = ''
-        if self.device_id          is not None: values += format.varchar(self.device_id)          + ', '
+        if self.device_id          is not None: values += compose.varchar(self.device_id)          + ', '
         if self.submit_time        is not None: values += str(self.submit_time)                   + ', '
-        if self.tarfile            is not None: values += format.varchar(self.tarfile)            + ', '
-        if self.tarmember          is not None: values += format.varchar(self.tarmember)          + ', '        
-        if self.host               is not None: values += format.varchar(self.host)               + ', '
+        if self.tarfile            is not None: values += compose.varchar(self.tarfile)            + ', '
+        if self.tarmember          is not None: values += compose.varchar(self.tarmember)          + ', '        
+        if self.host               is not None: values += compose.varchar(self.host)               + ', '
         if self.user_id            is not None: values += str(self.user_id)                       + ', '
-        if self.app_code           is not None: values += format.varchar(self.app_code)           + ', '
-        if self.remote_addr        is not None: values += format.inet(self.remote_addr)           + ', '
+        if self.app_code           is not None: values += compose.varchar(self.app_code)           + ', '
+        if self.remote_addr        is not None: values += compose.inet(self.remote_addr)           + ', '
         if self.run_id             is not None: values += str(self.run_id)                        + ', '
         if self.run_id_hi          is not None: values += str(self.run_id_hi)                     + ', '
         if self.precal_id          is not None: values += str(self.precal_id)                     + ', '
         if self.precal_id_hi       is not None: values += str(self.precal_id_hi)                  + ', '
         if self.start_time         is not None: values += str(self.start_time)                    + ', '
         if self.end_time           is not None: values += str(self.end_time)                      + ', '
-        if self.weights            is not None: values += format.set_numeric(self.weights)        + ', '
+        if self.weights            is not None: values += compose.set_numeric(self.weights)        + ', '
         if self.sample_res_x       is not None: values += str(self.sample_res_x)                  + ', '
         if self.sample_res_y       is not None: values += str(self.sample_res_y)                  + ', '
         if self.interpolation      is not None: values += str(self.interpolation)                 + ', '
         if self.battery_temp       is not None: values += str(self.battery_temp)                  + ', '
-        if self.compressed_weights is not None: values += format.varchar(self.compressed_weights) + ', '
-        if self.compressed_format  is not None: values += format.varchar(self.compressed_format)  + ', '
-        if self.second_hist        is not None: values += format.set_numeric(self.second_hist)    + ', '
-        if self.hotcell            is not None: values += format.set_numeric(self.hotcell)        + ', '
+        if self.compressed_weights is not None: values += compose.varchar(self.compressed_weights) + ', '
+        if self.compressed_format  is not None: values += compose.varchar(self.compressed_format)  + ', '
+        if self.second_hist        is not None: values += compose.set_numeric(self.second_hist)    + ', '
+        if self.hotcell            is not None: values += compose.set_numeric(self.hotcell)        + ', '
         if self.res_x              is not None: values += str(self.res_x)                         + ', '
         if values != '': values = values[:-2]
         if self.__debug_mode: print '[raw.precalibration_result] values[:100]: ' + values[:100]

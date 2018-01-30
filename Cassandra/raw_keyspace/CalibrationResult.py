@@ -7,7 +7,7 @@ get_() functions.
 
 """
 
-import writer.format as format
+from ..writer import compose as compose
 
 class Football:
     
@@ -65,22 +65,22 @@ class Football:
     def get_values(self):
         # must be same order as get_names()
         values = ''
-        if self.device_id     is not None: values += format.varchar(self.device_id)         + ', '
+        if self.device_id     is not None: values += compose.varchar(self.device_id)         + ', '
         if self.submit_time   is not None: values += str(self.submit_time)                  + ', '
-        if self.tarfile       is not None: values += format.varchar(self.tarfile)           + ', '
-        if self.tarmember     is not None: values += format.varchar(self.tarmember)         + ', '        
-        if self.host          is not None: values += format.varchar(self.host)              + ', '
+        if self.tarfile       is not None: values += compose.varchar(self.tarfile)           + ', '
+        if self.tarmember     is not None: values += compose.varchar(self.tarmember)         + ', '        
+        if self.host          is not None: values += compose.varchar(self.host)              + ', '
         if self.user_id       is not None: values += str(self.user_id)                      + ', '
-        if self.app_code      is not None: values += format.varchar(self.app_code)          + ', '
-        if self.remote_addr   is not None: values += format.inet(self.remote_addr)          + ', '
+        if self.app_code      is not None: values += compose.varchar(self.app_code)          + ', '
+        if self.remote_addr   is not None: values += compose.inet(self.remote_addr)          + ', '
         if self.run_id        is not None: values += str(self.run_id)                       + ', '
         if self.run_id_hi     is not None: values += str(self.run_id_hi)                    + ', '
         if self.start_time    is not None: values += str(self.start_time)                   + ', '
         if self.end_time      is not None: values += str(self.end_time)                     + ', '
-        if self.hist_pixel    is not None: values += format.set_numeric(self.hist_pixel)    + ', '
-        if self.hist_l2pixel  is not None: values += format.set_numeric(self.hist_l2pixel)  + ', '
-        if self.hist_maxpixel is not None: values += format.set_numeric(self.hist_maxpixel) + ', '
-        if self.hist_numpixel is not None: values += format.set_numeric(self.hist_numpixel) + ', '
+        if self.hist_pixel    is not None: values += compose.set_numeric(self.hist_pixel)    + ', '
+        if self.hist_l2pixel  is not None: values += compose.set_numeric(self.hist_l2pixel)  + ', '
+        if self.hist_maxpixel is not None: values += compose.set_numeric(self.hist_maxpixel) + ', '
+        if self.hist_numpixel is not None: values += compose.set_numeric(self.hist_numpixel) + ', '
         if values != '': values = values[:-2]
         if self.__debug_mode: print '[raw.calibration_result] values[:100]: ' + values[:100]
         return values

@@ -7,7 +7,7 @@ get_() functions.
 
 """
 
-import writer.format as format
+from ..writer import compose as compose
 
 class Football:
 
@@ -49,13 +49,13 @@ class Football:
     def get_values(self):
         # must be same order as get_names()
         values = ''
-        if self.errors      is not None: values += format.varchar(self.errors)     + ', '
-        if self.device_id   is not None: values += format.varchar(self.device_id)  + ', '
+        if self.errors      is not None: values += compose.varchar(self.errors)     + ', '
+        if self.device_id   is not None: values += compose.varchar(self.device_id)  + ', '
         if self.submit_time is not None: values += str(self.submit_time)           + ', '
-        if self.tarfile     is not None: values += format.varchar(self.tarfile)    + ', ' 
-        if self.tarmember   is not None: values += format.varchar(self.tarmember)  + ', '
-        if self.host        is not None: values += format.varchar(self.host)       + ', '
-        if self.message     is not None: values += format.blob(self.message)       + ', '
+        if self.tarfile     is not None: values += compose.varchar(self.tarfile)    + ', ' 
+        if self.tarmember   is not None: values += compose.varchar(self.tarmember)  + ', '
+        if self.host        is not None: values += compose.varchar(self.host)       + ', '
+        if self.message     is not None: values += compose.blob(self.message)       + ', '
         if values != '': values = values[:-2]
         if self.__debug_mode: print '[raw.misfit] values[:100]: ' + values[:100]
         return values

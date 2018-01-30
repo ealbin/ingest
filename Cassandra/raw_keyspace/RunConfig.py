@@ -7,7 +7,7 @@ get_() functions.
 
 """
 
-import writer.format as format
+from ..writer import compose as compose
 
 class Football:
 
@@ -66,21 +66,21 @@ class Football:
     def get_values(self):
         # must be in same order as get_names()
         values = ''
-        if self.device_id     is not None: values += format.varchar(self.device_id)     + ', '
+        if self.device_id     is not None: values += compose.varchar(self.device_id)     + ', '
         if self.submit_time   is not None: values += str(self.submit_time)              + ', '
-        if self.tarfile       is not None: values += format.varchar(self.tarfile)       + ', '
-        if self.tarmember     is not None: values += format.varchar(self.tarmember)     + ', '        
-        if self.host          is not None: values += format.varchar(self.host)          + ', '
+        if self.tarfile       is not None: values += compose.varchar(self.tarfile)       + ', '
+        if self.tarmember     is not None: values += compose.varchar(self.tarmember)     + ', '        
+        if self.host          is not None: values += compose.varchar(self.host)          + ', '
         if self.user_id       is not None: values += str(self.user_id)                  + ', '
-        if self.app_code      is not None: values += format.varchar(self.app_code)      + ', '
-        if self.remote_addr   is not None: values += format.inet(self.remote_addr)      + ', '
+        if self.app_code      is not None: values += compose.varchar(self.app_code)      + ', '
+        if self.remote_addr   is not None: values += compose.inet(self.remote_addr)      + ', '
         if self.id            is not None: values += str(self.id)                       + ', '
         if self.id_hi         is not None: values += str(self.id_hi)                    + ', '
         if self.start_time    is not None: values += str(self.start_time)               + ', '
-        if self.crayfis_build is not None: values += format.varchar(self.crayfis_build) + ', '
-        if self.hw_params     is not None: values += format.varchar(self.hw_params)     + ', '
-        if self.os_params     is not None: values += format.varchar(self.os_params)     + ', '
-        if self.camera_params is not None: values += format.varchar(self.camera_params) + ', '
+        if self.crayfis_build is not None: values += compose.varchar(self.crayfis_build) + ', '
+        if self.hw_params     is not None: values += compose.varchar(self.hw_params)     + ', '
+        if self.os_params     is not None: values += compose.varchar(self.os_params)     + ', '
+        if self.camera_params is not None: values += compose.varchar(self.camera_params) + ', '
         if self.camera_id     is not None: values += str(self.camera_id)                + ', '
         if values != '': values = values[:-2]
         if self.__debug_mode: print '[raw.run_config] values[:100]: ' + values[:100]

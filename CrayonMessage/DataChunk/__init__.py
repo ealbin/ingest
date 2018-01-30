@@ -8,7 +8,7 @@ intended use:
         Ingest serialized datachunk (update Cassandra via the football).
 """    
 
-import crayfis_data_pb2
+from ... import crayfis_data_pb2
 
 import ExposureBlock
 import RunConfig
