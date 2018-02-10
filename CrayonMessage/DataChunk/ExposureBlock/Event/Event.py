@@ -73,7 +73,7 @@ def ingest( event, football, block_basics=None, daq_state=None, block_uuid=None 
                     zerobias = ZeroBiasSquare.ingest(square, football)
                             
         else:
-            football.add_error( '[Event] message["field"].name = {0} [!= {pixels, byteblocks, zerobiassquares}]; '.format(message['field'].name) )
+            football.add_error( '[Event] message["field"].name = {0} [!= \{pixels, byteblocks, zerobiassquares\}]; '.format(message['field'].name) )
 
     if not football.get_n_errors() == 0:
         return False
