@@ -17,7 +17,6 @@ try:
 except Exception as e:
     print 
     print 'ERROR: failed to connect with crayvault'
-    return False
 
 def insert( table='', names='', values='' ):
     starttime = time.time()
