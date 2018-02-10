@@ -4,4 +4,4 @@
 import writer
 
 def insert( table='', names='', values='' ):
-    writer.insert( table=table, names=names, values=values )
+    return writer.insert( table=table, names=names, values=values )
