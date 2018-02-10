@@ -1,4 +1,7 @@
 """Access interface to Cassandra
+
+return True if write sucessful
+return False if there is a problem
 """
 
 import crayvault
@@ -14,6 +17,7 @@ try:
 except Exception as e:
     print 
     print 'ERROR: failed to connect with crayvault'
+    return False
 
 def insert( table='', names='', values='' ):
     starttime = time.time()
@@ -26,9 +30,11 @@ def insert( table='', names='', values='' ):
     except Exception as e:
         print
         print 'ERROR: {0}'.format(e)
-        print '     INSERT into ' + table + ' ( ' + names + ' )'
-        print '     VALUES ( ' + values + ' ) '
-        print
+#        print '     INSERT into ' + table + ' ( ' + names + ' )'
+#        print '     VALUES ( ' + values + ' ) '
+#        print
+        return False
+    return True
 
 
 
