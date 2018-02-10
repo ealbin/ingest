@@ -24,8 +24,9 @@ def from_tarfile( filepath ):
         
     Returns
     -------
-    None
-        Writes data contained in filepath to Cassandra
+    boolean
+        Writes data contained in filepath to Cassandra and returns true.
+        If there was a problem that couldn't be dealt with, returns false.
     """
     __debug_mode = False
     __debug_N    = 100
@@ -36,7 +37,7 @@ def from_tarfile( filepath ):
         if __debug_mode: print 'LOADED tarfile successfully: {0}'.format(crayfile.name)
     except Exception as e:
         print 'terminal error: {0} cannot be found/opened.'.format(filepath)
-        return
+        return False
                 
     craymsgs = [ m for m in crayfile.getmembers() if m.name.endswith('.msg') ]
     if __debug_mode: print 'FOUND {0} messages'.format(len(craymsgs))
@@ -58,3 +59,4 @@ def from_tarfile( filepath ):
 
         if __debug_mode and msg_i == __debug_N - 1 : print 'DEBUG break after {0} messages'.format(__debug_N); break
     crayfile.close()
+    return True

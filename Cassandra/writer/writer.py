@@ -17,12 +17,12 @@ except Exception as e:
 
 def insert( table='', names='', values='' ):
     starttime = time.time()
-    print 'Writing: {0}'.format(table)
-    print '\t{0}...{1}  <=>  {2}...{3}'.format(names[:20], names[-20:], values[:20], values[-20:])
+#    print 'Writing: {0}'.format(table)
+#    print '\t{0}...{1}  <=>  {2}...{3}'.format(names[:20], names[-20:], values[:20], values[-20:])
     command  = """INSERT INTO {0} ( {1} ) VALUES ( {2} ) IF NOT EXISTS;""".format( table, names, values )
     try:
         __session.execute( command )
-        print '\tinsertion time: {0:.3} ms'.format( (time.time() - starttime) * 1000. )
+#        print '\tinsertion time: {0:.3} ms'.format( (time.time() - starttime) * 1000. )
     except Exception as e:
         print
         print 'ERROR: {0}'.format(e)

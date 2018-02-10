@@ -27,7 +27,7 @@ import writer
 ########################
 # initialize Cassandra #
 ########################
-writer.init_raw.clear()  # comment out to save database
+#writer.init_raw.clear()  # comment out to save database
 writer.init_raw.do_it()  # tells Cassandra the structure
 
 class __BallBag:

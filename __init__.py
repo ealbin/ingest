@@ -20,7 +20,8 @@ def from_tarfile( filepath ):
         
     Returns
     -------
-    None
-        Writes data contained in filepath to Cassandra
+    boolean
+        Writes data contained in filepath to Cassandra and returns True.
+        Returns False if a non-recoverable error occurs
     """
-    ingest.from_tarfile( filepath )
+    return ingest.from_tarfile( filepath )

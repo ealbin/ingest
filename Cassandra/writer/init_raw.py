@@ -1,4 +1,5 @@
 from crayvault import get_session
+import sys
 
 __session = get_session()
 
@@ -6,7 +7,21 @@ __session = get_session()
 # KEYSPACE: raw
 
 def clear():
-    __session.execute( 'DROP KEYSPACE IF EXISTS raw' ) #!! clean start
+    progress = [ '|', '\\', '--', '/' ]
+    i = 0
+    print '>> WARNING clearing Cassandra, starting fresh...'
+    while (True):
+        try:
+            __session.execute( 'DROP KEYSPACE IF EXISTS raw' ) #!! clean start
+        except Exception as e:
+            print '\r>> waiting on Cassandra...{0}'.format(progress[i % 4]),
+            sys.stdout.flush()
+            i += 1
+            continue
+        print '\r>> waiting on Cassandra... done.'
+        sys.stdout.flush()
+        break
+
 #-----------------------------------------------------------------------------
 
 def do_it():
