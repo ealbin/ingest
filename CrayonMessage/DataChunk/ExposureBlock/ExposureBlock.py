@@ -88,6 +88,11 @@ def ingest( block, football ):
             for event in message['value']:
                 # save event to Cassandra
                 n_events += 1
+                if __debug_mode: 
+                    print '[ExposureBlock] basics:'                
+                    for basic in basics:
+                        print '\t{0} : {1}'.format( basic['field'].name, str(basic['value'])[:30])
+                    print '-------------------'
                 if not Event.ingest( event, football, block_basics=basics, daq_state=state, block_uuid=block_uuid ):
                     football.add_error( '[ExposureBlock] bad event' )
                     continue

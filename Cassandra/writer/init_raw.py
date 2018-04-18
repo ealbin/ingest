@@ -64,7 +64,7 @@ def do_it():
     
     # misfits table
     __session.execute( """CREATE TABLE IF NOT EXISTS raw.misfits (
-                        reasons     varchar,
+                        errors      varchar,
                         device_id   varchar,
                         submit_time varint,
                         tarfile     varchar,

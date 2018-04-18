@@ -74,6 +74,7 @@ def from_string( serialized_chunk, football ):
     # save DataChunks to Cassandra
     for message in messages:
         if message['field'].name == 'exposure_blocks':
+            if __debug_mode: print '[DataChunk] exposure_block'        
             for block in message['value']:
                 if not ExposureBlock.ingest(block, football):
                     football.add_error( '[DataChunk] bad exposure_block' )
@@ -81,13 +82,15 @@ def from_string( serialized_chunk, football ):
                     return
 
         elif message['field'].name == 'run_configs':
+            if __debug_mode: print '[DataChunk] run_config'        
             for config in message['value']:
                 if not RunConfig.ingest(config, football):
                     football.add_error( '[DataChunk] bad run_config' )
                     football.insert_misfit()
                     return
 
-        elif message['field'].name == 'calibration_results':                
+        elif message['field'].name == 'calibration_results':       
+            if __debug_mode: print '[DataChunk] calibration_result'                    
             for result in message['value']:
                 if not CalibrationResult.ingest(result, football):
                     football.add_error( '[DataChunk] bad calibration_result' )
@@ -95,6 +98,7 @@ def from_string( serialized_chunk, football ):
                     return
                 
         elif message['field'].name == 'precalibration_results':
+            if __debug_mode: print '[DataChunk] precalibration_result' 
             for result in message['value']:
                 if not PreCalibrationResult.ingest(result, football):
                     football.add_error( '[DataChunk] bad precalibration_result' )
