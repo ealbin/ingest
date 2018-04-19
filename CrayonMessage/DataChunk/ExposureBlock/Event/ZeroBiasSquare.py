@@ -54,6 +54,6 @@ def ingest( square, football ):
         if basic['field'].name not in zbsdict.keys():
             football.add_error( '[ZeroBiasSquare] unknown attribute: {0}'.format(basic['field'].name) )
             continue
-        zbsdict[ basic['field'].name ] = basic['field'].value
+        zbsdict[ basic['field'].name ] = basic['value']
         
     return zbsdict    

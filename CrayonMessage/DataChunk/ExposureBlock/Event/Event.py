@@ -59,21 +59,15 @@ def ingest( event, football, block_basics=None, daq_state=None, block_uuid=None 
                 pixels.append( Pixel.ingest(pixel, football) )
         
         elif message['field'].name == 'byteblocks':
-            for byteblock in message['value']:
-                if byteblock is not None:
-                    football.add_error( '[Event] too many byteblocks' )
-                else:
-                    byteblock = ByteBlock.ingest(byteblock, football)
+            #football.add_error( '[Event] too many byteblocks' )
+            byteblock = ByteBlock.ingest(message['value'], football)
                 
-        elif message['field'].name == 'zerobiassquares':
-            for square in message['value']:
-                if zerobias is not None:
-                    football.add_error( '[Event] too many zero-bias squares' )
-                else:
-                    zerobias = ZeroBiasSquare.ingest(square, football)
+        elif message['field'].name == 'zero_bias':
+            #football.add_error( '[Event] too many zero-bias squares' )            
+            zerobias = ZeroBiasSquare.ingest(message['value'], football)
                             
         else:
-            football.add_error( '[Event] message["field"].name = {0} [!= {{pixels, byteblocks, zerobiassquares}}]; '.format(message['field'].name) )
+            football.add_error( '[Event] message["field"].name = {0} [!= {{pixels, byteblocks, zero_bias}}]; '.format(message['field'].name) )
 
     if not football.get_n_errors() == 0:
         return False
