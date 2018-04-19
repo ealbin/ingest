@@ -29,6 +29,8 @@ def insert( table='', names='', values='' ):
     except Exception as e:
         print
         print 'ERROR: {0}'.format(e)
+#        print values
+#        print
 #        print '     INSERT into ' + table + ' ( ' + names + ' )'
 #        print '     VALUES ( ' + values + ' ) '
 #        print

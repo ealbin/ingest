@@ -161,7 +161,7 @@ class Football:
         if self.xbn                is not None: names += 'xbn, '
         if self.block_uuid         is not None: names += 'block_uuid, '
         if self.byte_block         is not None: names += 'byte_block, '
-        if self.pixels             is not None: names += 'pixels, '
+        if self.pixels             is not None and len(self.pixels) > 0: names += 'pixels, '
         if self.zero_bias          is not None: names += 'zero_bias, '
         if names != '': names = names[:-2]
         if self.__debug_mode: print '[raw.event] names: ' + names
@@ -233,8 +233,8 @@ class Football:
         if self.xbn                is not None: values += str(self.xbn)                        + ', '
         if self.block_uuid         is not None: values += str(self.block_uuid)                 + ', '
         if self.byte_block         is not None: values += compose.byte_block(self.byte_block)   + ', '
-        if self.pixels             is not None: values += compose.pixels(self.pixels)           + ', '
-        if self.zero_bias          is not None: values += compose.zero_bias(self.zer_bias)      + ', '
+        if self.pixels             is not None and len(self.pixels) > 0: values += compose.pixels(self.pixels)           + ', '
+        if self.zero_bias          is not None: values += compose.zero_bias(self.zero_bias)      + ', '
         if values != '': values = values[:-2]
         if self.__debug_mode: print '[raw.event] values[:100]: ' + values[:100]
         return values
@@ -274,8 +274,8 @@ class Football:
     def set_pixels(self, pixels):
         self.pixels = pixels
             
-    def set_byteblock(self, byteblock):
-        self.byteblock = byteblock
+    def set_byteblock(self, byte_block):
+        self.byte_block = byte_block
         
-    def set_zerobias(self, zerobias):
-        self.zerobias = zerobias
+    def set_zerobias(self, zero_bias):
+        self.zero_bias = zero_bias

@@ -1,4 +1,4 @@
-from crayvault import get_session
+valfrom crayvault import get_session
 import sys
 
 __session = get_session()
@@ -46,7 +46,7 @@ def do_it():
     __session.execute( """CREATE TYPE IF NOT EXISTS raw.square (
                         x_min           varint,
                         y_min           varint,
-                        val             varint,
+                        val             set<varint>,
                         frame_number    varint ); """ )
     
     # byteblock type def

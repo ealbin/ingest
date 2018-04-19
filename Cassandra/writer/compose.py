@@ -35,10 +35,13 @@ def byte_block( block ):
     return string
 
 def zero_bias( square ):
+    if square['x_min'] == None: square['x_min'] = -1
+    if square['y_min'] == None: square['y_min'] = -1
+    if square['frame_number'] == None: square['frame_number'] = -1    
     string  = '{ '
     if 'x_min'        in square: string += 'x_min: {0}, '.format( square['x_min'] )
     if 'y_min'        in square: string += 'y_min: {0}, '.format( square['y_min'] ) 
-    if 'val'          in square: string += 'val: {0}, '.format( square['val'] )
+    if 'val'          in square: string += 'val: {0}, '.format( set_numeric( square['val'] ) )
     if 'frame_number' in square: string += 'frame_number: {0}, '.format( square['frame_number'] )
     string = string[:-2] + ' }'
     return string
