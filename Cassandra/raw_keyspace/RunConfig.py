@@ -98,7 +98,7 @@ class Football:
             try:
                 setattr( self, basic['field'].name, basic['value'] )
             except Exception as e:
-                if self.__debug_mode: print '[raw.run_config] attribute unknown: ' + basic['field'].name
+                print '[raw.run_config] attribute unknown: ' + basic['field'].name
                 return False
         if self.__debug_mode: print '[raw.run_config] basics set'
         return True

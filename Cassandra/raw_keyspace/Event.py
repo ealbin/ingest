@@ -251,7 +251,7 @@ class Football:
             try:
                 setattr( self, basic['field'].name, basic['value'] )
             except Exception as e:
-                if self.__debug_mode: print '[raw.event] attribute unknown: ' + basic['field'].name
+                print '[raw.event] attribute unknown: ' + basic['field'].name
                 return False
         if self.__debug_mode: print '[raw.event] basics set'
         return True

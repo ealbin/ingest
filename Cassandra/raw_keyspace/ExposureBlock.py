@@ -203,7 +203,7 @@ class Football:
             try:
                 setattr( self, basic['field'].name, basic['value'] )
             except Exception as e:
-                if self.__debug_mode: print '[raw.exposure_block] attribute unknown: ' + basic['field'].name
+                print '[raw.exposure_block] attribute unknown: ' + basic['field'].name
                 return False
         if self.__debug_mode: print '[raw.exposure_block] basics set'
         return True
