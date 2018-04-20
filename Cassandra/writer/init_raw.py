@@ -1,4 +1,4 @@
-valfrom crayvault import get_session
+from crayvault import get_session
 import sys
 
 __session = get_session()
