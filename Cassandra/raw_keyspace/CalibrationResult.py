@@ -27,7 +27,7 @@ class Football:
         self.reset()
      
     def reset(self):
-        self.run_id        = None # uuid
+        self.run_id        = None # varint
         self.run_id_hi     = None # varint
         
         self.start_time    = None # varint
