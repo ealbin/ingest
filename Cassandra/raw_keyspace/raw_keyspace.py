@@ -85,30 +85,53 @@ def insert_misfit():
     is_sucessful = writer.insert( table='raw.misfits', names=misfit.get_names(), values=misfit.get_values() )
     if not is_sucessful:
         print '[WARNING] FAILURE TO LOG MISFIT'
+        print '          errors: {0}'.format(misfit.errors)
+        print '          file: {0}'.format(misfit.tarfile)
+        print '          member: {0}'.format(misfit.tarmember)
     clear()
     return is_sucessful
     
 def insert_run_config( basics ):
     run_config.set_attributes( basics )
     is_sucessful = writer.insert( table='raw.run_configs', names=run_config.get_names(), values=run_config.get_values() )
+    if not is_sucessful:
+        print '[ISSUE] run config'
+        print '      errors: {0}'.format(misfit.errors)
+        print '      file: {0}'.format(misfit.tarfile)
+        print '      member: {0}'.format(misfit.tarmember)
     run_config.reset()
     return is_sucessful
 
 def insert_calibration_result( basics ):
     calibration_result.set_attributes( basics )
     is_sucessful = writer.insert( table='raw.calibration_results', names=calibration_result.get_names(), values=calibration_result.get_values() )
+    if not is_sucessful:
+        print '[ISSUE] calibration result'
+        print '      errors: {0}'.format(misfit.errors)
+        print '      file: {0}'.format(misfit.tarfile)
+        print '      member: {0}'.format(misfit.tarmember)
     calibration_result.reset()
     return is_sucessful
 
 def insert_precalibration_result( basics, compressed_weights='' ):
     precalibration_result.set_attributes( basics, compressed_weights=compressed_weights )
     is_sucessful = writer.insert( table='raw.precalibration_results', names=precalibration_result.get_names(), values=precalibration_result.get_values() )
+    if not is_sucessful:
+        print '[ISSUE] precalibration result'
+        print '      errors: {0}'.format(misfit.errors)
+        print '      file: {0}'.format(misfit.tarfile)
+        print '      member: {0}'.format(misfit.tarmember)
     precalibration_result.reset()
     return is_sucessful
 
 def insert_exposure_block( basics, daq_state='', block_uuid=None, n_events=0 ):
     exposure_block.set_attributes( basics, daq_state=daq_state, block_uuid=block_uuid, n_events=n_events )
     is_sucessful = writer.insert( table='raw.exposure_blocks', names=exposure_block.get_names(), values=exposure_block.get_values() )
+    if not is_sucessful:
+        print '[ISSUE] exposure_block'
+        print '      errors: {0}'.format(misfit.errors)
+        print '      file: {0}'.format(misfit.tarfile)
+        print '      member: {0}'.format(misfit.tarmember)
     exposure_block.reset()
     return is_sucessful
     
@@ -120,5 +143,10 @@ def insert_event( basics, block_basics=None, daq_state='', block_uuid=None, pixe
     event.set_byteblock( byteblock )
     event.set_zerobias( zerobias )    
     is_sucessful = writer.insert( table='raw.events', names=event.get_names(), values=event.get_values() )
+    if not is_sucessful:
+        print '[ISSUE] event'
+        print '      errors: {0}'.format(misfit.errors)
+        print '      file: {0}'.format(misfit.tarfile)
+        print '      member: {0}'.format(misfit.tarmember)
     event.reset()
     return is_sucessful
