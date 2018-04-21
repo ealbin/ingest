@@ -240,7 +240,7 @@ def do_it():
                         app_code            varchar,
                         remote_addr         inet,
     
-                        run_id              varchar, # usually arrives as a UUID (?)
+                        run_id              varchar, 
                         run_id_hi           varint,
                         
                         start_time          varint,
@@ -250,7 +250,7 @@ def do_it():
                         hist_l2pixel        set<varint>,
                         hist_maxpixel       set<varint>,
                         hist_numpixel       set<varint>,
-                        PRIMARY KEY ( device_id ) );""" )
+                        PRIMARY KEY ( device_id ) );""" ) # (run_id anomalously arrives as UUID?)
     
     # precalibration_results table
     __session.execute( """CREATE TABLE IF NOT EXISTS raw.precalibration_results (
