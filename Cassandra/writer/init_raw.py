@@ -240,7 +240,7 @@ def do_it():
                         app_code            varchar,
                         remote_addr         inet,
     
-                        run_id              varint,
+                        run_id              varchar, # usually arrives as a UUID (?)
                         run_id_hi           varint,
                         
                         start_time          varint,

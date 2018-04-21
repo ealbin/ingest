@@ -27,7 +27,7 @@ class Football:
         self.reset()
      
     def reset(self):
-        self.run_id        = None # varint
+        self.run_id        = None # varchar (usually arrives as a UUID..?)
         self.run_id_hi     = None # varint
         
         self.start_time    = None # varint
@@ -73,7 +73,7 @@ class Football:
         if self.user_id       is not None: values += str(self.user_id)                      + ', '
         if self.app_code      is not None: values += compose.varchar(self.app_code)          + ', '
         if self.remote_addr   is not None: values += compose.inet(self.remote_addr)          + ', '
-        if self.run_id        is not None: values += str(self.run_id)                       + ', '
+        if self.run_id        is not None: values += compose.varchar(self.run_id)            + ', '
         if self.run_id_hi     is not None: values += str(self.run_id_hi)                    + ', '
         if self.start_time    is not None: values += str(self.start_time)                   + ', '
         if self.end_time      is not None: values += str(self.end_time)                     + ', '
